@@ -1,0 +1,52 @@
+# Default experiment configuration. Every run copies its resolved config into results/<run>/config.yaml.
+
+run_name: null                 # defaults to <frames-dir-name>_<mode>
+results_root: results
+
+vlm:
+  backend: http                # http (OpenAI-compatible server) | mock
+  base_url: http://localhost:8080/v1
+  model: mlx-community/Qwen2.5-VL-7B-Instruct-4bit
+  temperature: 0.0
+  max_tokens: 80
+  timeout_s: 120
+  image_max_side: 768          # frames are downscaled before encoding to bound vision tokens
+
+perception:
+  enabled: true                # ignored in naive mode
+  device: auto                 # auto | mps | cpu
+  depth_model: depth-anything/Depth-Anything-V2-Small-hf
+  detector_model: yolov8s-worldv2.pt
+  detector_conf: 0.30
+  vocabulary:
+    - person
+    - car
+    - bicycle
+    - motorcycle
+    - bus
+    - truck
+    - dog
+    - stairs
+    - door
+    - pole
+    - tree
+    - bench
+    - trash can
+    - traffic light
+    - crosswalk
+    - curb
+    - construction barrier
+    - bollard
+    - sign post
+    - shopping cart
+
+context:
+  memory_frames: 3             # rolling window of prior frame cue summaries
+  include_last_instruction: true
+  prompt_version: v1
+
+judge:
+  backend: http                # judge uses the same server, text-only
+  model: null                  # null = reuse vlm.model
+  temperature: 0.0
+  max_tokens: 300

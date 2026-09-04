@@ -1,0 +1,26 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+build/
+dist/
+
+# Data and models (keep small samples only)
+data/*
+!data/samples/
+!data/samples/.gitkeep
+results/*
+!results/.gitkeep
+*.mp4
+*.mov
+*.pt
+*.safetensors
+.cache/
+
+# OS / editors
+.DS_Store
+.vscode/
+.idea/
