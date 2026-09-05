@@ -50,6 +50,15 @@ Conventions: one entry per milestone; decisions get a **Decision:** line with th
 - **Judge pre-check** (one naive record, live 7B, cues borrowed from the smoke context run): returns well-formed JSON, parses to all five scores. 17 s while sharing the GPU with the naive run; expect ~8–10 s standalone, so the four judge passes are ~3 h. Observation: it scored a 72-word, mid-sentence-truncated paragraph **3/5 on conciseness**, which is lenient. Watch this dimension in the Day-5 human agreement check.
 - **Viewer pre-check:** `streamlit run frontend/app.py` serves (HTTP 200) on the smoke results.
 
+### Memory pressure during the naive run (19:10)
+- macOS reported low memory and killed a background wait shell. Swap in use: 30 GB of 37 GB. The VLM server's 6 GB footprint was ~98 % *compressed* (paged out): the model weights were being swapped while other apps (Cursor helpers, two node processes, opencode, several Claude sessions, >10 GB together) held physical memory.
+- Effect on data: naive latency was a flat **5.0 s median through frame 119**, then degraded to 6.2–6.7 s medians with spikes to 49 s from frame ~120 on (also the window in which I ran the perception contact sheet, the judge pre-check and the viewer alongside the server).
+- **Decision:** the full 580-frame runs are used for *quality* (H1, H2) only. **H3 latency is re-measured on a 50-frame subset per condition in a quiet state** (no other GPU/memory load, other apps closed), reported separately with the machine state noted. Records keep per-frame `latency_s` either way, so the contaminated window can be shown, not hidden.
+- Kept the 7B model: the pressure is external, not the pipeline's own budget (docs/HARDWARE.md decision rule assumes a quiet machine).
+
+### Needs Aaron (added 19:15)
+- [ ] While the chain runs (next ~4–5 h), closing Cursor / opencode / stray node processes will stop the model weights from being paged out. Otherwise the run still completes, just slower.
+
 ### Notes for the write-up
 - London frames carry a burned-in timecode overlay (top-left); the VLM may read it. Mention as a data artefact.
 - Judge and generator share one server; perception (torch/MPS) and the VLM (MLX/Metal) share the GPU during context runs, so context latency includes some contention. Report perception time separately from VLM time (both are in `records.jsonl`: `latency_s` is VLM only).
