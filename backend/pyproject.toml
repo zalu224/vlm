@@ -24,6 +24,9 @@ perception = [
     "torch>=2.3",
     "transformers>=4.44",
     "ultralytics>=8.2",
+    # YOLO-World's set_classes() needs OpenAI CLIP; ultralytics tries to pip-install it at
+    # runtime, which fails in venvs without pip (uv). Pin it explicitly instead.
+    "clip @ git+https://github.com/ultralytics/CLIP.git",
 ]
 dev = [
     "pytest>=8.0",
