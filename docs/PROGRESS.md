@@ -47,6 +47,8 @@ Conventions: one entry per milestone; decisions get a **Decision:** line with th
 - **Naive baseline already shows the expected failure mode:** verbose third-person paragraphs ("The person wearing the camera should proceed cautiously... listen for any sounds...") that hit the 80-token cap mid-sentence. Mean 72 words per instruction on the first 29 frames, median latency 4.97 s.
 - **Launched** (background, `logs/run_naive.log` then `logs/run_chain.log`): naive on both walks → context on both walks → judge all four (naive judged with `--cues-from` the matching context run) → two reports. Estimated 3–4 h total. Cue code at commit after this entry.
 - Disk after all downloads: 8.8 GB free.
+- **Judge pre-check** (one naive record, live 7B, cues borrowed from the smoke context run): returns well-formed JSON, parses to all five scores. 17 s while sharing the GPU with the naive run; expect ~8–10 s standalone, so the four judge passes are ~3 h. Observation: it scored a 72-word, mid-sentence-truncated paragraph **3/5 on conciseness**, which is lenient. Watch this dimension in the Day-5 human agreement check.
+- **Viewer pre-check:** `streamlit run frontend/app.py` serves (HTTP 200) on the smoke results.
 
 ### Notes for the write-up
 - London frames carry a burned-in timecode overlay (top-left); the VLM may read it. Mention as a data artefact.
