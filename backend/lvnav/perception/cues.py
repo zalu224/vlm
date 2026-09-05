@@ -9,9 +9,13 @@ Conventions
 * Depth maps are 2-D float arrays normalised to [0, 1] where **1 = closest**.
   Depth Anything outputs relative inverse depth, so this matches its native
   orientation after min-max normalisation.
-* The image is split into three vertical zones (left / centre / right) and only
-  the lower `roi_fraction` of the image is used for free-space estimation, which
-  is where the walkable surface and near obstacles appear in egocentric video.
+* The image is split into three vertical zones (left / centre / right). Free
+  space is judged on an *approach band* of rows (by default 50-80 % of the image
+  height). In an egocentric frame the ground at the very bottom is always the
+  closest surface, so including it would mark every zone blocked; the approach
+  band is where an obstacle within the next few steps stands out above the
+  receding ground plane (validated on real Depth Anything V2 output, see
+  docs/PROGRESS.md, Day 1).
 """
 
 from __future__ import annotations
@@ -77,19 +81,25 @@ def proximity_from_depth(value: float, near_thresh: float = 0.65, mid_thresh: fl
 
 def free_space_from_depth(
     depth: np.ndarray,
-    roi_fraction: float = 0.5,
-    blocked_thresh: float = 0.65,
-    partial_thresh: float = 0.45,
+    band: tuple[float, float] = (0.5, 0.8),
+    blocked_thresh: float = 0.80,
+    partial_thresh: float = 0.55,
 ) -> dict[str, str]:
-    """Classify each vertical zone of the lower ROI as clear / partly blocked / blocked.
+    """Classify each vertical zone as clear / partly blocked / blocked.
 
-    Uses the 90th percentile of closeness in each zone so that a single thin pole
-    still registers, while remaining robust to noisy pixels.
+    Only the rows between `band[0]` and `band[1]` of the image height are inspected.
+    Within each zone the 90th percentile of closeness is used so that a single thin
+    pole still registers while remaining robust to noisy pixels. The bottom rows are
+    deliberately excluded: they contain the ground at the user's feet, which is the
+    closest surface in every frame and would otherwise dominate the percentile.
     """
     if depth.ndim != 2:
         raise ValueError("depth must be a 2-D array")
+    lo, hi = band
+    if not 0.0 <= lo < hi <= 1.0:
+        raise ValueError(f"band must satisfy 0 <= lo < hi <= 1, got {band}")
     h, w = depth.shape
-    roi = depth[int(h * (1.0 - roi_fraction)) :, :]
+    roi = depth[int(h * lo) : int(h * hi), :]
     edges = np.linspace(0, w, 4).astype(int)
     out: dict[str, str] = {}
     for zone, (a, b) in zip(ZONES, zip(edges[:-1], edges[1:], strict=True), strict=True):

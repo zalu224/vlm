@@ -35,3 +35,19 @@ Conventions: one entry per milestone; decisions get a **Decision:** line with th
 ### Open questions / risks
 - YouTube walking tours are shot at head height with a stabilised camera and mostly look ahead at the sidewalk; that is close to but not identical to a chest-mounted BLV wearable. Note this in the write-up's limitations.
 - Dataset licence: both videos are "Creative Commons Attribution (reuse allowed)". Attribution goes in `docs/DATA.md` and the write-up.
+
+### Day 1, later: perception calibrated, VLM live, first runs launched
+
+- **Frames extracted** at 1 fps, ≤1024 px long side: `data/suwon` 295 frames, `data/london` 285 frames (580 total, ≥300 target met). Raw video kept in `data/raw/` for now (207 MB).
+- **Mock pipeline on real frames** (`--limit 10`, both conditions, judge, report): passes. Day-1 artefact done.
+- **Root-cause fix:** YOLO-World needed the `clip` package; see `docs/HARDWARE.md`. Pinned in `pyproject.toml`.
+- **Perception timing on MPS:** first call ~5 s (kernel warm-up), then **0.12–0.15 s per frame** for depth + detector together.
+- **Free-space bug found and fixed.** With the scaffold's rule (90th-percentile closeness over the whole lower half) every zone read *blocked* on 5 of 6 frames, including open road. Depth heatmaps showed why: the ground at the user's feet is the closest surface in every egocentric frame and dominates the percentile. Measured closeness on clear sidewalk: 0.2–0.4 through 80 % of the height, spiking to 0.9+ only in the bottom 10 %. **Decision:** score an *approach band* (rows 50–80 %) instead, thresholds blocked ≥ 0.80, partly ≥ 0.55. Validated on a 12-frame contact sheet spanning both walks: open street → clear, shopper at arm's length on the left → left blocked, bike rack near right → right blocked, plaza with people at ~5–10 m → partly blocked. Three new unit tests with a ground-ramp fixture that matches the measured profile.
+- **VLM server:** `mlx_vlm.server` with Qwen2.5-VL-7B-Instruct-4bit on :8080. `/v1/models` present. One frame + naive prompt: 12.6 s cold, **5.0 s warm** (448 prompt tokens, 80 completion). Well under the 8 s decision threshold, so 7B stays.
+- **Naive baseline already shows the expected failure mode:** verbose third-person paragraphs ("The person wearing the camera should proceed cautiously... listen for any sounds...") that hit the 80-token cap mid-sentence. Mean 72 words per instruction on the first 29 frames, median latency 4.97 s.
+- **Launched** (background, `logs/run_naive.log` then `logs/run_chain.log`): naive on both walks → context on both walks → judge all four (naive judged with `--cues-from` the matching context run) → two reports. Estimated 3–4 h total. Cue code at commit after this entry.
+- Disk after all downloads: 8.8 GB free.
+
+### Notes for the write-up
+- London frames carry a burned-in timecode overlay (top-left); the VLM may read it. Mention as a data artefact.
+- Judge and generator share one server; perception (torch/MPS) and the VLM (MLX/Metal) share the GPU during context runs, so context latency includes some contention. Report perception time separately from VLM time (both are in `records.jsonl`: `latency_s` is VLM only).

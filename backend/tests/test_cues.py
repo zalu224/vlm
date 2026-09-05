@@ -39,3 +39,37 @@ def test_fuse_without_depth_uses_box_bottom():
     cues = fuse(None, dets, image_size=(100, 100))
     assert cues.free_space["centre"] == "unknown"
     assert cues.obstacles[0].proximity == "near"
+
+
+def _ground_ramp(h: int = 100, w: int = 90) -> np.ndarray:
+    """Synthetic closeness map of an empty walkway: far at the horizon, near at the feet.
+
+    Mirrors Depth Anything's relative inverse depth after min-max normalisation, where
+    the ground at the bottom edge of an egocentric frame is always the closest surface.
+    """
+    depth = np.zeros((h, w), dtype=np.float32)
+    # Measured on Depth Anything V2 output for open sidewalk: closeness stays around
+    # 0.2-0.4 through 80 % of the height and only spikes in the bottom rows, so the
+    # ramp is quadratic rather than linear.
+    t = np.linspace(0.0, 1.0, h - h // 2)
+    depth[h // 2 :, :] = (0.1 + 0.85 * t**2)[:, None]
+    return depth
+
+
+def test_free_space_ignores_ground_plane():
+    fs = free_space_from_depth(_ground_ramp())
+    assert fs == {"left": "clear", "centre": "clear", "right": "clear"}
+
+
+def test_free_space_detects_obstacle_in_approach_band():
+    depth = _ground_ramp()
+    depth[55:75, 30:60] = 0.9  # something close, standing in the centre zone, mid-height
+    fs = free_space_from_depth(depth)
+    assert fs == {"left": "clear", "centre": "blocked", "right": "clear"}
+
+
+def test_free_space_partly_blocked_between_thresholds():
+    depth = _ground_ramp()
+    depth[55:75, 0:30] = 0.65  # a bit closer than the ground would be here, but not near
+    fs = free_space_from_depth(depth)
+    assert fs["left"] == "partly blocked" and fs["centre"] == "clear"
