@@ -101,7 +101,9 @@ show_prompt_context = st_ui.sidebar.checkbox("Show cues and memory", value=True)
 judged_options = judged_files(RESULTS_ROOT / run_a, RESULTS_ROOT / run_b) or ["judged.jsonl"]
 default_judged = next((n for n in judged_options if "v2" in n), judged_options[0])
 judged_name = st_ui.sidebar.selectbox(
-    "Judge file", judged_options, index=judged_options.index(default_judged),
+    "Judge file",
+    judged_options,
+    index=judged_options.index(default_judged),
     help="judged.jsonl: judge v1, all frames. judged_v2_every4.jsonl: judge v2, every 4th frame.",
 )
 
