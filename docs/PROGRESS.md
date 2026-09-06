@@ -187,3 +187,20 @@ Latency: all context arms 4.1–4.8 s median vs 4.9 s naive; H3 (< 40 % overhead
 | london_context_v2_nomem | 3.05 | 3.78 | 3.06 | 3.21 | 4.26 | 3.47 | 0.02 | 110 / 102 |
 
 Even under the biased v1 judge, **v2-nomem beats naive on Suwon** (142 wins vs 85 losses) and is level on London (110 vs 102). The v1-judge conciseness column still tracks correctness rather than length (v2-nomem 3.1 vs naive 2.6–2.9 for 8 vs 65 words), so per-dimension claims wait for judge v2 (chain3 started 03:13). Hallucination under v1 is the one dimension where every context arm trails naive; check whether v2 keeps that, since v1 gave naive paragraphs a reflexive 5.
+
+### 04:10: judge v2, Suwon, every 4th frame (74 frames per arm)
+
+| Run | safety | action. | spatial | concise | halluc. | overall | uniform | wins / losses vs naive |
+|---|---|---|---|---|---|---|---|---|
+| suwon_naive | 1.60 | 2.63 | 2.15 | 2.49 | 2.51 | 2.28 | 0.10 | |
+| suwon_context (v1) | 1.22 | 3.03 | 1.84 | 3.88 | 3.97 | 2.79 | 0.00 | 51 / 15 |
+| suwon_context_v1_nomem | 1.51 | 2.99 | 2.22 | 3.68 | 3.97 | 2.87 | 0.01 | 49 / 22 |
+| suwon_context_v2_nomem | **2.41** | **3.53** | **2.97** | 3.84 | **4.03** | **3.35** | 0.05 | **58 / 11** |
+
+Δ (v2-nomem − naive): safety +0.81, actionability +0.90, spatial +0.82, conciseness +1.35, hallucination +1.52. Judge latency 10–11 s (machine quiet overnight). 1 parse failure in 296.
+
+- **The v1 verdict flips under v2.** v1 had every context arm losing to naive; v2 has every context arm winning. The difference is the halo: v1 wrote its overall dislike of the collapsed instruction into conciseness and hallucination.
+- **Naive hallucinates more than v1 said** (2.51 vs 4.52): v2 catches invented white canes, tactile paving, crosswalks, stop signs that the naive prompt elicits. H2 holds under v2.
+- **H1 nuance:** the largest gains are on hallucination and conciseness, not spatial accuracy as predicted (spatial +0.82 is mid-pack). Report as is.
+- **Judge v2 quirk to note:** it sometimes scores an *omission* as hallucination ("does not mention the bus" → hallucination 3). Dimension definition should say unsupported mentions only; v3 candidate, not this week.
+- Pre-registered context-v1 wins on v2 too (51/15) but only via conciseness and hallucination; its safety (1.22) is *below* naive because "Move forward" into a near person is scored 1. Honest result: the v1 prompt made things shorter, not safer; the echo removal plus decision rule made them safer.
