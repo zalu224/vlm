@@ -101,7 +101,11 @@ def cmd_judge(args) -> int:
 def cmd_report(args) -> int:
     from .eval import write_report
 
-    out = write_report(args.a, args.b, args.out, judged_name=args.judged_name)
+    try:
+        out = write_report(args.a, args.b, args.out, judged_name=args.judged_name)
+    except FileNotFoundError as exc:
+        print(f"error: {exc}", file=sys.stderr)
+        return 2
     print(f"Report: {out}")
     print(out.read_text())
     return 0

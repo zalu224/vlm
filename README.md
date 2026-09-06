@@ -1,5 +1,7 @@
 # Context-Engineered VLM Guidance for Low-Vision Navigation
 
+[![ci](https://github.com/zalu224/vlm/actions/workflows/ci.yml/badge.svg)](https://github.com/zalu224/vlm/actions/workflows/ci.yml) · Repository: https://github.com/zalu224/vlm
+
 A one-week, laptop-scale research study of whether **structured spatial context** (rolling scene memory + explicit obstacle and free-space cues) improves the navigation instructions a vision-language model (VLM) gives to a person who is blind or has low vision (pBLV), compared with naive single-frame prompting.
 
 Everything runs locally on an Apple Silicon Mac with 18 GB of unified memory. No cloud APIs, no GPU cluster, no fine-tuning.
@@ -69,7 +71,7 @@ Expected throughput on an M3 Pro-class chip: 3–8 s per frame for the 7B model,
 
 ```bash
 # 1. Clone and set up the backend (Python 3.11+ recommended)
-git clone <your-fork-url> lvnav && cd lvnav
+git clone https://github.com/zalu224/vlm.git lvnav && cd lvnav
 make setup                       # creates .venv, installs backend + frontend deps
 
 # 2. Start the local VLM server (separate terminal; downloads ~3–6 GB on first run)

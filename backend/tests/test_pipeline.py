@@ -175,3 +175,14 @@ def test_spearman_and_agreement(frames_dir, tmp_path):
     res = agreement(sheet, key, cfg.results_root)
     assert res["safety"]["n"] == 4 and res["safety"]["exact"] == 1.0
     assert res["overall"]["n"] == 4
+
+
+def test_report_missing_judged_file_is_a_clear_error(frames_dir, tmp_path):
+    import pytest
+
+    cfg = _cfg(tmp_path)
+    backend = build_backend("mock", cfg.vlm)
+    a = run_pipeline(frames_dir, "naive", backend, cfg)
+    judge_run(a, backend, version="v2", every=2)
+    with pytest.raises(FileNotFoundError, match="judged_v2_every2.jsonl"):
+        write_report(a, a)

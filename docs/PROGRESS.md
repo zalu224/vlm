@@ -266,3 +266,8 @@ Same 50 Suwon frames, nothing else on the GPU: naive median 4.78 s (p90 4.81), c
 - [ ] Record the three walks; then `make frames`, the four `make run-*` targets, `make judge-v2`, `make report-v2` per walk (≈ 1.5 h of machine time per walk, unattended).
 - [ ] Slides (≤ 8) from `docs/WRITEUP.md`; rehearse the viewer on Suwon frames 248 (judge over-anchoring), 212 (crossing), London 44 (bollard miss) and a few v2 wins.
 - [ ] Optional: GuideDog access; email to the professor with repo link and write-up.
+
+### 09:30: remote and CI
+- Remote `origin` = https://github.com/zalu224/vlm.git; `main` pushed (21 commits). GitHub Actions `ci` passed on the push (lint + tests + mock CLI smoke, 30 s).
+- Clean-clone reproducibility check run from the README quick start (setup, test, lint, mock pipeline incl. judge v2 and manual-sheet): result logged below.
+- **Clean-clone check passed**: `git clone` → `make setup` (Python 3.11, incl. perception extra with the git `clip` pin) → `make test` (20 passed) → `make lint` → mock naive/context runs → judge v1 and v2 → v1 and v2 reports → blinded manual sheet. One rough edge found and fixed: asking `lvnav report` for a judged file that does not exist raised a traceback; it now prints which judged files the run has and exits 2. Definition-of-done item "reproducible from a clean clone" is met.

@@ -101,6 +101,13 @@ def write_report(
     """Paired report of two runs. `judged_name` selects which judged file to read (e.g.
     `judged_v2_every4.jsonl`); the report is written next to it in run B by default."""
     run_a, run_b = Path(run_a), Path(run_b)
+    for run in (run_a, run_b):
+        if not (run / judged_name).exists():
+            have = sorted(p.name for p in run.glob("judged*.jsonl")) or ["none"]
+            raise FileNotFoundError(
+                f"{run / judged_name} not found. Judged files in {run}: {', '.join(have)}. "
+                "Run `lvnav judge` on this run, or pass --judged-name."
+            )
     a = read_jsonl(run_a / judged_name)
     b = read_jsonl(run_b / judged_name)
     sa, sb = summarise(a), summarise(b)
