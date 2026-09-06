@@ -90,3 +90,16 @@ Context is *faster* than naive despite ~700 extra prompt tokens, because it emit
 4. **Cue anchoring overrides the image.** london/000130: cues say centre clear → "The road ahead is clear" while the image shows a road-closed barrier that the naive condition noticed. This is the regression class H2 needs to watch (detector vocabulary has no "barrier"/"sign" that fired here).
 
 **Decision:** keep `context-v1` as the pre-registered condition and report it as is. Add `context-v2` (Day-4 prompt iteration per WEEK_PLAN): explicit cue → action decision rule (stop / slow / veer / continue), output format instead of example phrases, an instruction to check the image for hazards the cues miss, and memory kept but with an anti-repetition instruction that names the previous instruction as "already said". Also add a config-only ablation arm `context-v1` with `include_last_instruction: false` to test whether memory feedback alone causes the collapse. Report adds a repetition metric (unique-instruction ratio, share of the most common instruction) so this is measured, not anecdotal.
+
+### Day-4 prompt iteration, done early (12-frame trials, every 25th frame of each walk)
+
+| Arm | Suwon unique /12 | London unique /12 | Safety verbs | Notes |
+|---|---|---|---|---|
+| context-v1 (full run, same frames) | 3 | 6 | none | "Two steps ahead, there's a person. Move forward." |
+| context-v1, no last-instruction echo | 12 | 11 | "move slowly", "step cautiously", "keep left" | diverse, sometimes garbled ("aheadft"); one degenerate output on frame 0 |
+| context-v2, with echo | 4 | 5 | none | worse than v1; decision rule ignored |
+| **context-v2, no echo** | **11** | **11** | "STOP", "slow down and keep to the left/right" | follows the decision rule; some cue parroting ("The centre is partly blocked") remains |
+
+**Finding:** the repetition collapse is caused by feeding the model its own last instruction at temperature 0, not by the prompt wording. With the echo removed, both prompts diversify; v2's decision rule then takes effect (STOP for a bus directly ahead, slow-and-keep-to-a-side for a partly blocked centre), whereas with the echo v2 is *worse* than v1. Trial records: `results/trial_*`.
+
+**Decision:** four arms go into the write-up: naive, context-v1 (pre-registered), context-v1-nomem (isolates the memory feedback), context-v2-nomem (Day-4 candidate). Config `backend/configs/context_v2_nomem.yaml`. Full runs + judging queued behind the current chain (`logs/run_chain2.sh`, ~2.5 h after chain 1 ends). Rolling *cue* memory (last 3 frames) stays on in every context arm; only the echoed instruction is removed.
