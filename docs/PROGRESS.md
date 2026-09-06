@@ -204,3 +204,11 @@ Even under the biased v1 judge, **v2-nomem beats naive on Suwon** (142 wins vs 8
 - **H1 nuance:** the largest gains are on hallucination and conciseness, not spatial accuracy as predicted (spatial +0.82 is mid-pack). Report as is.
 - **Judge v2 quirk to note:** it sometimes scores an *omission* as hallucination ("does not mention the bus" → hallucination 3). Dimension definition should say unsupported mentions only; v3 candidate, not this week.
 - Pre-registered context-v1 wins on v2 too (51/15) but only via conciseness and hallucination; its safety (1.22) is *below* naive because "Move forward" into a near person is scored 1. Honest result: the v1 prompt made things shorter, not safer; the echo removal plus decision rule made them safer.
+
+### 04:40: human spot-check sheet ready
+
+- `results/manual_sheet_suwon.csv`: 74 rows (37 naive + 37 context-v2-nomem, every 8th Suwon frame, shuffled, condition hidden). Key: `results/manual_sheet_suwon_key.csv`. Every row has a judge-v2 score (every-8th ⊂ every-4th) and a judge-v1 score.
+- New commands: `lvnav manual-sheet --runs ...` (blinded, shuffled) and `lvnav agreement --sheet ... --key ... --judged-name ...` (Spearman ρ per dimension). Protocol in `docs/RUBRIC.md`.
+
+### Needs Aaron (added 04:40)
+- [ ] Score `results/manual_sheet_suwon.csv` (open each `frame_path`, fill the five 1–5 columns, don't open the key). ~74 rows, maybe 45–60 min. Then run the two `lvnav agreement` commands from `docs/RUBRIC.md`.
