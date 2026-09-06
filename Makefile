@@ -9,7 +9,7 @@ VLM_MODEL ?= mlx-community/Qwen2.5-VL-7B-Instruct-4bit
 VLM_PORT  ?= 8080
 FPS       ?= 1
 
-.PHONY: setup serve-vlm frames run-naive run-context judge report viewer test lint clean
+.PHONY: setup serve-vlm frames run-naive run-context run-context-v2 judge judge-v2 report report-v2 viewer test lint clean
 
 setup:
 	$(PY) -m venv $(VENV)
@@ -32,11 +32,25 @@ run-naive:
 run-context:
 	$(BIN)/lvnav run --frames $(FRAMES) --mode context --backend $(BACKEND)
 
+# Best arm from the Day-4 iteration: prompt v2, last instruction not echoed into memory.
+run-context-v2:
+	$(BIN)/lvnav run --frames $(FRAMES) --mode context --backend $(BACKEND) \
+	  --config backend/configs/context_v2_nomem.yaml --run-name $(notdir $(FRAMES))_context_v2_nomem
+
 judge:
 	$(BIN)/lvnav judge --run $(RUN) --backend $(BACKEND)
 
+# Judge v2 (reason before each score) on every EVERY-th frame; CUES_FROM for naive runs.
+EVERY ?= 4
+judge-v2:
+	$(BIN)/lvnav judge --run $(RUN) --backend $(BACKEND) --judge-version v2 --every $(EVERY) \
+	  $(if $(CUES_FROM),--cues-from $(CUES_FROM),)
+
 report:
 	$(BIN)/lvnav report --a $(A) --b $(B)
+
+report-v2:
+	$(BIN)/lvnav report --a $(A) --b $(B) --judged-name judged_v2_every$(EVERY).jsonl
 
 viewer:
 	$(BIN)/streamlit run frontend/app.py
