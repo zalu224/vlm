@@ -41,13 +41,23 @@ st_ui.markdown(
 
 # --------------------------------------------------------------------------- data
 @st_ui.cache_data(show_spinner=False)
-def load_run(run_dir: str) -> tuple[list[dict], bool]:
+def load_run(run_dir: str, judged_name: str) -> tuple[list[dict], bool]:
+    """Rows from the chosen judged file if present, else the unjudged records."""
     d = Path(run_dir)
-    judged = d / "judged.jsonl"
+    judged = d / judged_name
     src = judged if judged.exists() else d / "records.jsonl"
     with src.open() as fh:
         rows = [json.loads(line) for line in fh if line.strip()]
     return rows, judged.exists()
+
+
+def judged_files(*run_dirs: Path) -> list[str]:
+    """Judged filenames present in all given run dirs, e.g. judged.jsonl, judged_v2_every4.jsonl."""
+    common: set[str] | None = None
+    for d in run_dirs:
+        names = {p.name for p in d.glob("judged*.jsonl")}
+        common = names if common is None else common & names
+    return sorted(common or [])
 
 
 def available_runs() -> list[str]:
@@ -81,13 +91,22 @@ if not runs:
     st_ui.stop()
 
 default_a = next((r for r in runs if r.endswith("_naive")), runs[0])
-default_b = next((r for r in runs if r.endswith("_context")), runs[-1])
+default_b = next(
+    (r for r in runs if r.endswith("_context_v2_nomem")),
+    next((r for r in runs if r.endswith("_context")), runs[-1]),
+)
 run_a = st_ui.sidebar.selectbox("Baseline (naive)", runs, index=runs.index(default_a))
 run_b = st_ui.sidebar.selectbox("Treatment (context)", runs, index=runs.index(default_b))
 show_prompt_context = st_ui.sidebar.checkbox("Show cues and memory", value=True)
+judged_options = judged_files(RESULTS_ROOT / run_a, RESULTS_ROOT / run_b) or ["judged.jsonl"]
+default_judged = next((n for n in judged_options if "v2" in n), judged_options[0])
+judged_name = st_ui.sidebar.selectbox(
+    "Judge file", judged_options, index=judged_options.index(default_judged),
+    help="judged.jsonl: judge v1, all frames. judged_v2_every4.jsonl: judge v2, every 4th frame.",
+)
 
-rows_a, judged_a = load_run(str(RESULTS_ROOT / run_a))
-rows_b, judged_b = load_run(str(RESULTS_ROOT / run_b))
+rows_a, judged_a = load_run(str(RESULTS_ROOT / run_a), judged_name)
+rows_b, judged_b = load_run(str(RESULTS_ROOT / run_b), judged_name)
 by_id_a = {r["frame_id"]: r for r in rows_a}
 by_id_b = {r["frame_id"]: r for r in rows_b}
 frame_ids = sorted(set(by_id_a) & set(by_id_b))
@@ -126,7 +145,8 @@ if judged_a and judged_b:
             ),
             use_container_width=True,
         )
-        report = RESULTS_ROOT / run_b / "report.md"
+        suffix = judged_name.removeprefix("judged").removesuffix(".jsonl")
+        report = RESULTS_ROOT / run_b / f"report{suffix}.md"
         if report.exists():
             with st_ui.expander("Full paired report"):
                 st_ui.markdown(report.read_text())

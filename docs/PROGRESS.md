@@ -251,3 +251,18 @@ Viewed the top regressions of context-v2-nomem under naive:
 ### 05:45: H3 latency re-measured on a quiet machine
 
 Same 50 Suwon frames, nothing else on the GPU: naive median 4.78 s (p90 4.81), context-v2-nomem 4.79 s (p90 5.26); prompt tokens 448 vs 999, completion 79 vs 13. Perception adds 0.12–0.15 s → +3 % total. H3 holds. `docs/RESULTS.md` §7 and the README row updated. All three hypotheses now have verdicts; the remaining Day-5 item is Aaron's human spot-check.
+
+---
+
+## Day 2 (2026-09-06), 06:00: Day-6 deliverables drafted; runs shut down
+
+- `docs/WRITEUP.md`: 2-page write-up (abstract, motivation, method, results, findings, failure catalogue, limitations, references). Human-agreement numbers are the one placeholder.
+- Viewer: sidebar "Judge file" selector (v1 all frames vs v2 every-4th), defaults to the v2 file and the `_context_v2_nomem` run; report expander follows the selection. Smoke-launched: HTTP 200.
+- Makefile: `run-context-v2`, `judge-v2`, `report-v2` targets; README quick start uses them.
+- VLM server stopped (frees ~6 GB). All chains and monitors finished. Restart with `make serve-vlm` for the demo or the agreement run (agreement itself needs no model).
+
+### Remaining for the week (all need Aaron)
+- [ ] Score `results/manual_sheet_suwon.csv`, run `lvnav agreement` twice (v1 and v2 judged files), paste both tables into `docs/RESULTS.md` §6 and `docs/WRITEUP.md`.
+- [ ] Record the three walks; then `make frames`, the four `make run-*` targets, `make judge-v2`, `make report-v2` per walk (≈ 1.5 h of machine time per walk, unattended).
+- [ ] Slides (≤ 8) from `docs/WRITEUP.md`; rehearse the viewer on Suwon frames 248 (judge over-anchoring), 212 (crossing), London 44 (bollard miss) and a few v2 wins.
+- [ ] Optional: GuideDog access; email to the professor with repo link and write-up.
