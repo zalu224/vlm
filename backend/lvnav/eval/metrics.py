@@ -95,10 +95,14 @@ def paired_deltas(a: list[dict], b: list[dict]) -> list[dict]:
     return rows
 
 
-def write_report(run_a: Path, run_b: Path, out_path: Path | None = None) -> Path:
+def write_report(
+    run_a: Path, run_b: Path, out_path: Path | None = None, judged_name: str = "judged.jsonl"
+) -> Path:
+    """Paired report of two runs. `judged_name` selects which judged file to read (e.g.
+    `judged_v2_every4.jsonl`); the report is written next to it in run B by default."""
     run_a, run_b = Path(run_a), Path(run_b)
-    a = read_jsonl(run_a / "judged.jsonl")
-    b = read_jsonl(run_b / "judged.jsonl")
+    a = read_jsonl(run_a / judged_name)
+    b = read_jsonl(run_b / judged_name)
     sa, sb = summarise(a), summarise(b)
     deltas = paired_deltas(a, b)
     wins = sum(d["delta"] > 0 for d in deltas)
@@ -108,6 +112,7 @@ def write_report(run_a: Path, run_b: Path, out_path: Path | None = None) -> Path
     lines = [
         f"# Paired comparison: `{run_a.name}` (A) vs `{run_b.name}` (B)",
         "",
+        f"Judged file: `{judged_name}`.",
         f"Frames judged: A = {sa['n']}, B = {sb['n']}, paired = {len(deltas)}.",
         f"B better on {wins} frames, worse on {losses}, tied on {ties}.",
         "",
@@ -162,6 +167,8 @@ def write_report(run_a: Path, run_b: Path, out_path: Path | None = None) -> Path
             "",
         ]
 
-    out_path = out_path or (run_b / "report.md")
+    if out_path is None:
+        suffix = judged_name.removeprefix("judged").removesuffix(".jsonl")
+        out_path = run_b / f"report{suffix}.md"
     out_path.write_text("\n".join(lines))
     return out_path

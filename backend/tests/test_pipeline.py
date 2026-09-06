@@ -110,3 +110,16 @@ def test_conciseness_auto_anchors():
     )
     assert conciseness_auto("Here is what to do:\n1. Listen for sounds.\n2. Use your cane.") == 1
     assert conciseness_auto(" ".join(["word"] * 40) + ".") == 3
+
+
+def test_report_from_alternate_judged_file(frames_dir, tmp_path):
+    cfg = _cfg(tmp_path)
+    backend = build_backend("mock", cfg.vlm)
+    perception = build_perception(cfg.perception, use_mock=True)
+    a = run_pipeline(frames_dir, "naive", backend, cfg)
+    b = run_pipeline(frames_dir, "context", backend, cfg, perception=perception)
+    judge_run(a, backend, cues_from=b, version="v2", every=2)
+    judge_run(b, backend, version="v2", every=2)
+    report = write_report(a, b, judged_name="judged_v2_every2.jsonl")
+    assert report.name == "report_v2_every2.md"
+    assert "judged_v2_every2.jsonl" in report.read_text()

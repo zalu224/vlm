@@ -54,7 +54,8 @@ lvnav run   --frames data/walk01 --mode naive   [--limit 20] [--run-name walk01_
 lvnav run   --frames data/walk01 --mode context [--limit 20]
 lvnav judge --run results/walk01_context
 lvnav judge --run results/walk01_naive --cues-from results/walk01_context
-lvnav report --a results/walk01_naive --b results/walk01_context [--out report.md]
+lvnav judge --run results/walk01_context --judge-version v2 --every 4     # writes judged_v2_every4.jsonl
+lvnav report --a results/walk01_naive --b results/walk01_context [--out report.md] [--judged-name judged_v2_every4.jsonl]
 lvnav manual-sheet --run results/walk01_context --every 8
 ```
 

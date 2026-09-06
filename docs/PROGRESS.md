@@ -137,3 +137,17 @@ This is exactly the failure the VL-Guide paper (2510.00766) reports for generic 
 - **Computed conciseness** (`conciseness_auto`, model-free, rubric scale) added to every report as an objective anchor for that dimension.
 - Next: re-judge every 8th frame of `suwon_naive` and `suwon_context` with v2; if uniform-vector rate stays > 30 % or conciseness still tracks correctness, the local judge is the bottleneck and the Claude-judge option goes back to Aaron with this evidence.
 - Judge v1 numbers stay in the repo and the write-up as the pre-registered evaluator; v2 is reported as the corrected one, with judge–human agreement for both.
+
+### Judge v2 first look (23:40; 16 Suwon context frames, every 8th, before the job was killed by memory pressure)
+
+| | v1 | v2 |
+|---|---|---|
+| uniform score vectors | 16/16 | **0/16** |
+| conciseness mean (8-word instruction) | 1.27 | **3.94** |
+| safety mean | 1.13 | 1.00 |
+| hallucination mean | 2.07 | 3.44 |
+| judge latency (GPU shared with chain2) | ~8 s | ~42 s |
+
+Reasons now match scores ("directs the pedestrian into the path of a person" → safety 1; "concise, one sentence" → conciseness 4). The halo is gone and the safety verdict on the collapsed v1 instruction is still 1, which is the correct outcome. **v2 is the evaluator for the write-up; v1 stays reported as the pre-registered one.**
+
+Cost: ~5× v1 output tokens. Plan: judge v2 on **every 4th frame** of all eight runs (4 arms × 2 walks ≈ 580 calls, ~3 h quiet) after chain2; the every-8th subset of that is the human spot-check set. Do not run anything else on the GPU meanwhile: swap hit 16.5/17.4 GB and macOS killed the first v2 job at frame 16.

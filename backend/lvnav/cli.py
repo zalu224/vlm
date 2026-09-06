@@ -101,7 +101,7 @@ def cmd_judge(args) -> int:
 def cmd_report(args) -> int:
     from .eval import write_report
 
-    out = write_report(args.a, args.b, args.out)
+    out = write_report(args.a, args.b, args.out, judged_name=args.judged_name)
     print(f"Report: {out}")
     print(out.read_text())
     return 0
@@ -168,6 +168,9 @@ def main(argv: list[str] | None = None) -> int:
     p.add_argument("--a", type=Path, required=True, help="baseline run dir")
     p.add_argument("--b", type=Path, required=True, help="treatment run dir")
     p.add_argument("--out", type=Path, default=None)
+    p.add_argument(
+        "--judged-name", default="judged.jsonl", help="judged file to read in both run dirs"
+    )
     p.set_defaults(func=cmd_report)
 
     p = sub.add_parser("manual-sheet", help="CSV for human spot-check scoring")
