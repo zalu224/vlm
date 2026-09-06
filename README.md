@@ -170,7 +170,7 @@ Judge v2, every 4th frame of both walks, paired per frame, n = 144. Δ is contex
 | Spatial accuracy | 2.45 | 2.97 | +0.53 |
 | Conciseness | 2.57 | 3.86 | +1.28 |
 | Hallucination (↑ = fewer) | 2.60 | 4.09 | +1.48 |
-| Median VLM latency (s), all frames | 4.9 | 4.7 | −0.2 |
+| Median VLM latency (s), same 50 frames, quiet machine | 4.78 | 4.79 (+0.15 perception) | +3 % |
 | Words per instruction | 65 | 9 | |
 
 Two things the week turned up that were not in the proposal: the pre-registered context prompt collapsed into one repeated sentence because the rolling memory echoed the model's own last instruction (removing that one line fixes it), and the 7B model used as judge produced halo-effect scores until the judge prompt demanded a reason before each score. Both are documented in `docs/RESULTS.md`.

@@ -1,6 +1,6 @@
 # Results
 
-Context-engineered VLM guidance for low-vision navigation: one-week ablation on egocentric video. Numbers here are copied from `results/*/report*.md` and `docs/PROGRESS.md`; the commands that produced them are in the root README. Status: **judge results final; human spot-check pending** (see §6).
+Context-engineered VLM guidance for low-vision navigation: one-week ablation on egocentric video. Numbers here are copied from `results/*/report*.md` and `docs/PROGRESS.md`; the commands that produced them are in the root README. Status: **judge and latency results final; human spot-check pending** (see §6).
 
 ## 1. Setup in one paragraph
 
@@ -70,7 +70,18 @@ Blinded sheet: `results/manual_sheet_suwon.csv`, 74 rows (37 naive + 37 context-
 
 ## 7. Latency (H3)
 
-_Quiet-machine re-measurement on 50 identical Suwon frames, naive vs context-v2-nomem: see the table appended below once the run completes. Full-run medians (all frames, GPU shared at times): naive 4.9 s, context arms 4.1–4.8 s; perception adds 0.12–0.15 s per frame on MPS after warm-up._
+Quiet-machine re-measurement, same 50 Suwon frames, same server, nothing else on the GPU (`results/latency_naive`, `results/latency_v2_nomem`):
+
+| | naive | context-v2-nomem |
+|---|---|---|
+| prompt tokens (mean) | 448 | 999 |
+| completion tokens (mean) | 79 | 13 |
+| VLM latency, median | 4.78 s | 4.79 s |
+| VLM latency, p90 | 4.81 s | 5.26 s |
+| perception (depth + detector, MPS, warm) | — | 0.12–0.15 s |
+| **total per frame, median** | **4.78 s** | **≈ 4.94 s (+3 %)** |
+
+The extra ~550 prompt tokens cost about as much as the ~65 completion tokens they save: at this model size prefill is cheap and decoding dominates. H3's bound (< 40 % overhead) holds with a wide margin; the overhead that exists is perception, as predicted. Full-run medians on all 580 frames (partly under memory pressure from other applications) were 4.9 s naive and 4.1–4.8 s for the context arms, consistent with this.
 
 ## 8. Failure catalogue (largest regressions of context-v2-nomem under naive, judge v2)
 
@@ -85,7 +96,7 @@ _Quiet-machine re-measurement on 50 identical Suwon frames, naive vs context-v2-
 
 - **H1 (quality): supported in direction, not in detail.** The best context arm is better on all five dimensions with CIs excluding zero. But the predicted "largest gain on spatial accuracy" is wrong: spatial is the *smallest* gain (+0.53); hallucination (+1.48) and conciseness (+1.28) are the largest.
 - **H2 (hallucination): supported.** Naive invents white canes, tactile paving, crosswalks and signals; the context arms rarely mention anything not in the frame or cues.
-- **H3 (latency): supported, provisionally.** Context arms are no slower than naive at the VLM (shorter outputs outweigh ~700 extra prompt tokens); perception adds ~3 %. Final numbers in §7.
+- **H3 (latency): supported.** Median VLM latency is identical (4.78 vs 4.79 s on the same 50 frames, quiet machine); perception adds ~3 %, well under the 40 % bound.
 - **Unplanned finding:** prompt-level context helps only if the temporal memory does not include the model's own previous output; and a 7B open model used as judge needs per-dimension reasoning before it produces usable scores.
 
 ## 10. Limitations

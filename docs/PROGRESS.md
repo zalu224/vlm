@@ -247,3 +247,7 @@ Viewed the top regressions of context-v2-nomem under naive:
 - **london/000044** — bollard at near range just right of centre, not detected (bollard is in the vocabulary); context said "Continue. There's a person far ahead on the left"; naive mentioned the bollard. → *detector miss + cue anchoring*, the genuine failure class.
 
 `docs/RESULTS.md` written with all tables, the two findings (memory echo; judge halo), hypotheses verdicts, failure catalogue and limitations. Latency section awaits the quiet-machine run (started 05:05). Disk is back to 16 GB free (external cleanup).
+
+### 05:45: H3 latency re-measured on a quiet machine
+
+Same 50 Suwon frames, nothing else on the GPU: naive median 4.78 s (p90 4.81), context-v2-nomem 4.79 s (p90 5.26); prompt tokens 448 vs 999, completion 79 vs 13. Perception adds 0.12–0.15 s → +3 % total. H3 holds. `docs/RESULTS.md` §7 and the README row updated. All three hypotheses now have verdicts; the remaining Day-5 item is Aaron's human spot-check.
