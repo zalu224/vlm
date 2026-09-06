@@ -82,10 +82,14 @@ make frames VIDEO=data/walk01.mp4 OUT=data/walk01
 make run-naive   FRAMES=data/walk01
 make run-context FRAMES=data/walk01
 
+# 4b. The best context arm (prompt v2, no last-instruction echo)
+make run-context-v2 FRAMES=data/walk01
+
 # 5. Score with the LLM judge and build the comparison report
-make judge   RUN=results/walk01_naive
-make judge   RUN=results/walk01_context
-make report  A=results/walk01_naive B=results/walk01_context
+make judge-v2 RUN=results/walk01_context_v2_nomem
+make judge-v2 RUN=results/walk01_naive CUES_FROM=results/walk01_context_v2_nomem
+make report-v2 A=results/walk01_naive B=results/walk01_context_v2_nomem
+# (judge v1 on all frames: make judge RUN=... ; make report A=... B=...)
 
 # 6. Open the viewer for the presentation
 make viewer
@@ -143,32 +147,37 @@ Each line of `results/<run>/records.jsonl` is one frame:
  "latency_s": 4.21, "prompt_tokens": 1180, "completion_tokens": 27}
 ```
 
-`judged.jsonl` adds a `scores` object with the five rubric dimensions (1–5) and a `judge_rationale` string. `report.md` contains paired per-dimension means, latency statistics and the ten largest score deltas for qualitative inspection.
+`judged.jsonl` adds a `scores` object with the five rubric dimensions (1–5), a `judge_rationale` string, the verbatim `judge_raw` output and `judge_version`. Judge-v2 subset files are named `judged_v2_every<N>.jsonl`. `report.md` contains paired per-dimension means, latency statistics and the ten largest score deltas for qualitative inspection.
 
 ## Status and roadmap
 
 - [x] Backend pipeline, mock backend, unit tests
 - [x] Streamlit viewer
-- [ ] Collect or download egocentric walking footage (see `docs/WEEK_PLAN.md`, Day 1)
-- [ ] Run both conditions on ≥ 300 frames
-- [ ] Human spot-check of 40 frames against the judge
-- [ ] Fill in the results table below
+- [x] Egocentric walking footage: two CC-BY POV walks, 580 frames (`docs/DATA.md`); self-recorded corridor / sidewalk / crossing walks still to add
+- [x] Four arms run on all 580 frames: naive, context-v1, context-v1-nomem, context-v2-nomem
+- [x] Judged with judge v1 (all frames) and judge v2 (every 4th frame); paired reports
+- [ ] Human spot-check of 74 frames (`results/manual_sheet_suwon.csv`) and judge–human agreement
+- [x] Results table below; full analysis in `docs/RESULTS.md`; day-by-day log in `docs/PROGRESS.md`
 
 ### Results
 
-_To be filled after the Day 5 evaluation run._
+Judge v2, every 4th frame of both walks, paired per frame, n = 144. Δ is context-v2-nomem minus naive; 95 % confidence intervals in `docs/RESULTS.md`.
 
-| Dimension | Naive | Context | Δ |
+| Dimension | Naive | Context (v2, no echo) | Δ |
 |---|---|---|---|
-| Safety | | | |
-| Actionability | | | |
-| Spatial accuracy | | | |
-| Conciseness | | | |
-| Hallucination (↑ = fewer) | | | |
-| Median latency (s) | | | |
+| Safety | 1.76 | 2.37 | +0.60 |
+| Actionability | 2.95 | 3.61 | +0.66 |
+| Spatial accuracy | 2.45 | 2.97 | +0.53 |
+| Conciseness | 2.57 | 3.86 | +1.28 |
+| Hallucination (↑ = fewer) | 2.60 | 4.09 | +1.48 |
+| Median VLM latency (s), all frames | 4.9 | 4.7 | −0.2 |
+| Words per instruction | 65 | 9 | |
+
+Two things the week turned up that were not in the proposal: the pre-registered context prompt collapsed into one repeated sentence because the rolling memory echoed the model's own last instruction (removing that one line fixes it), and the 7B model used as judge produced halo-effect scores until the judge prompt demanded a reason before each score. Both are documented in `docs/RESULTS.md`.
 
 ## Changelog
 
+- **v0.2.0** (2026-09-06) — First full results. Free-space cue now scored on an approach band (ground plane excluded). Context prompt v2 and `include_last_instruction: false` ablation configs. Judge v2 (per-dimension reasons), `--judge-version`, `--every`, `--judged-name`; `judged.jsonl` gains `judge_raw` and `judge_version`; reports gain repetition and computed-conciseness rows. Blinded `manual-sheet` and `agreement` commands. Docs: `PROGRESS.md`, `DATA.md`, `RESULTS.md`.
 - **v0.1.0** — Initial scaffold: backend package, mock-tested pipeline, judge, report generator, Streamlit viewer, documentation set.
 
 ## License

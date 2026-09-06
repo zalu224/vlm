@@ -238,3 +238,12 @@ Even under the biased v1 judge, **v2-nomem beats naive on Suwon** (142 wins vs 8
 Every CI excludes zero. Ordering of gains: hallucination > conciseness > actionability > safety > spatial. **H1 holds in direction, but its sub-claim (largest gain on spatial accuracy) does not**: spatial is the *smallest* gain. **H2 holds** (hallucination +1.48, the largest). H3 pending the quiet-machine run started 05:05.
 
 Judge-v2 parse failures: 4 of 592 (0.7 %). Uniform score vectors ≤ 5 % on every run (v1: up to 49 %).
+
+### 05:20: failure catalogue (frames inspected) and docs/RESULTS.md drafted
+
+Viewed the top regressions of context-v2-nomem under naive:
+- **suwon/000248** — a person bending down mid-alley; detector said `none detected`; the context arm still said "There's a person bending down a few steps ahead" (correct, from the image); judge v2 penalised it for contradicting the cues. → *judge over-anchoring*, not a system failure.
+- **suwon/000212** — zebra crossing, pedestrian signal is **green**; naive said it was red and told the user to wait; context said "person ahead on your right" and never mentioned the crossing. Judge preferred naive. → *scene semantics cues cannot carry* + judge error.
+- **london/000044** — bollard at near range just right of centre, not detected (bollard is in the vocabulary); context said "Continue. There's a person far ahead on the left"; naive mentioned the bollard. → *detector miss + cue anchoring*, the genuine failure class.
+
+`docs/RESULTS.md` written with all tables, the two findings (memory echo; judge halo), hypotheses verdicts, failure catalogue and limitations. Latency section awaits the quiet-machine run (started 05:05). Disk is back to 16 GB free (external cleanup).
