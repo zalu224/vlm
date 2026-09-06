@@ -172,3 +172,18 @@ Generation-only statistics (no judge involved). `uniq` = unique instructions / f
 Reading: removing the echo lifts unique-instruction ratio from ~0.1 to ~0.5 at the same length; the v2 decision rule then adds the safety verbs (Suwon: "stop" in 20 % of frames vs 0 % for v1) and side-relative directions (45–69 % vs 12–48 %). The most common v2-nomem outputs are exactly the rule's three branches ("STOP. There's a person directly ahead." ×25; "The centre is partly blocked. Slow down and keep to the right." ×14; "Continue. There's a person ahead and to the right." ×13), which is the intended behaviour at temperature 0, not collapse. Residual cue parroting ("The centre is partly blocked") is the next prompt-iteration target, not for this week.
 
 Latency: all context arms 4.1–4.8 s median vs 4.9 s naive; H3 (< 40 % overhead) holds with margin on VLM time alone, and perception adds ~0.15 s. Still to be re-measured on a quiet machine.
+
+### 03:15: judge v1 on all four arms (pre-registered evaluator, full frames)
+
+| Run | safety | action. | spatial | concise | halluc. | overall | uniform vectors | wins / losses vs naive |
+|---|---|---|---|---|---|---|---|---|
+| suwon_naive | 2.75 | 3.24 | 2.74 | 2.61 | 4.52 | 3.17 | 0.13 | |
+| suwon_context (v1) | 1.42 | 2.14 | 1.69 | 2.01 | 3.08 | 2.07 | 0.49 | 69 / 176 |
+| suwon_context_v1_nomem | 2.00 | 2.62 | 2.17 | 2.35 | 3.62 | 2.55 | 0.32 | 101 / 139 |
+| suwon_context_v2_nomem | 2.99 | 3.54 | 3.03 | 3.11 | 3.56 | **3.25** | 0.14 | **142 / 85** |
+| london_naive | 3.15 | 3.89 | 3.13 | 2.93 | 4.86 | 3.59 | 0.04 | |
+| london_context (v1) | 2.27 | 2.87 | 2.36 | 2.54 | 4.12 | 2.83 | 0.08 | 69 / 156 |
+| london_context_v1_nomem | 2.08 | 2.90 | 2.32 | 2.59 | 4.17 | 2.81 | 0.11 | 67 / 159 |
+| london_context_v2_nomem | 3.05 | 3.78 | 3.06 | 3.21 | 4.26 | 3.47 | 0.02 | 110 / 102 |
+
+Even under the biased v1 judge, **v2-nomem beats naive on Suwon** (142 wins vs 85 losses) and is level on London (110 vs 102). The v1-judge conciseness column still tracks correctness rather than length (v2-nomem 3.1 vs naive 2.6–2.9 for 8 vs 65 words), so per-dimension claims wait for judge v2 (chain3 started 03:13). Hallucination under v1 is the one dimension where every context arm trails naive; check whether v2 keeps that, since v1 gave naive paragraphs a reflexive 5.
