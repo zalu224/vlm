@@ -212,3 +212,29 @@ Even under the biased v1 judge, **v2-nomem beats naive on Suwon** (142 wins vs 8
 
 ### Needs Aaron (added 04:40)
 - [ ] Score `results/manual_sheet_suwon.csv` (open each `frame_path`, fill the five 1–5 columns, don't open the key). ~74 rows, maybe 45–60 min. Then run the two `lvnav agreement` commands from `docs/RUBRIC.md`.
+
+### 05:05: judge v2 complete on both walks; all three chains finished
+
+**London, judge v2, every 4th frame (72 per arm)**
+
+| Run | safety | action. | spatial | concise | halluc. | overall | wins / losses vs naive |
+|---|---|---|---|---|---|---|---|
+| london_naive | 1.92 | 3.27 | 2.75 | 2.65 | 2.69 | 2.65 | |
+| london_context (v1) | 1.85 | 3.25 | 2.26 | 3.86 | 3.74 | 2.99 | 37 / 28 |
+| london_context_v1_nomem | 1.53 | 3.66 | 2.59 | 4.00 | 4.13 | 3.18 | 42 / 18 |
+| london_context_v2_nomem | **2.33** | **3.69** | **2.97** | 3.88 | **4.15** | **3.41** | **50 / 16** |
+
+**Pooled, both walks, paired per frame: context-v2-nomem − naive (judge v2, n = 144)**
+
+| Dimension | mean Δ | 95 % CI | better / worse |
+|---|---|---|---|
+| safety | +0.60 | +0.27 … +0.94 | 54 / 32 |
+| actionability | +0.66 | +0.42 … +0.89 | 74 / 22 |
+| spatial accuracy | +0.53 | +0.28 … +0.78 | 47 / 19 |
+| conciseness | +1.28 | +1.10 … +1.46 | 107 / 6 |
+| hallucination | +1.48 | +1.12 … +1.83 | 87 / 18 |
+| overall | +0.91 | +0.71 … +1.11 | 108 / 27 |
+
+Every CI excludes zero. Ordering of gains: hallucination > conciseness > actionability > safety > spatial. **H1 holds in direction, but its sub-claim (largest gain on spatial accuracy) does not**: spatial is the *smallest* gain. **H2 holds** (hallucination +1.48, the largest). H3 pending the quiet-machine run started 05:05.
+
+Judge-v2 parse failures: 4 of 592 (0.7 %). Uniform score vectors ≤ 5 % on every run (v1: up to 49 %).
