@@ -123,3 +123,55 @@ def test_report_from_alternate_judged_file(frames_dir, tmp_path):
     report = write_report(a, b, judged_name="judged_v2_every2.jsonl")
     assert report.name == "report_v2_every2.md"
     assert "judged_v2_every2.jsonl" in report.read_text()
+
+
+def test_blinded_manual_sheet(frames_dir, tmp_path):
+    import csv
+
+    from lvnav.eval.spotcheck import write_blinded_sheet
+
+    cfg = _cfg(tmp_path)
+    backend = build_backend("mock", cfg.vlm)
+    perception = build_perception(cfg.perception, use_mock=True)
+    a = run_pipeline(frames_dir, "naive", backend, cfg)
+    b = run_pipeline(frames_dir, "context", backend, cfg, perception=perception)
+    sheet, key = write_blinded_sheet([a, b], tmp_path / "sheet.csv", every=2, seed=1)
+    rows = list(csv.DictReader(sheet.open()))
+    keys = list(csv.DictReader(key.open()))
+    assert len(rows) == 6 and len(keys) == 6  # 3 frames x 2 runs
+    assert "run" not in rows[0] and "instruction" in rows[0] and "safety" in rows[0]
+    assert {k["run"] for k in keys} == {a.name, b.name}
+    assert [r["item"] for r in rows] == [k["item"] for k in keys]
+    # shuffled: not simply run A then run B
+    assert [k["run"] for k in keys] != [a.name] * 3 + [b.name] * 3
+    # cues come from the context run for the naive rows too, so the scorer sees the same evidence
+    assert all(r["cues"].startswith("Free space:") for r in rows)
+
+
+def test_spearman_and_agreement(frames_dir, tmp_path):
+    import csv
+
+    from lvnav.eval.spotcheck import agreement, spearman, write_blinded_sheet
+
+    assert spearman([1, 2, 3, 4], [1, 2, 3, 4]) == 1.0
+    assert spearman([1, 2, 3, 4], [4, 3, 2, 1]) == -1.0
+    assert spearman([2, 2, 2], [1, 2, 3]) is None
+    cfg = _cfg(tmp_path)
+    backend = build_backend("mock", cfg.vlm)
+    a = run_pipeline(frames_dir, "naive", backend, cfg)
+    judge_run(a, backend)
+    sheet, key = write_blinded_sheet([a], tmp_path / "s.csv", every=1)
+    # "human" copies the judge's scores for the first four rows, leaves the rest blank
+    judged = {r["frame_id"]: r for r in read_jsonl(a / "judged.jsonl")}
+    rows = list(csv.DictReader(sheet.open()))
+    keys = {k["item"]: k for k in csv.DictReader(key.open())}
+    for r in rows[:4]:
+        for d in judged[keys[r["item"]]["frame_id"]]["scores"]:
+            r[d] = str(judged[keys[r["item"]]["frame_id"]]["scores"][d])
+    with sheet.open("w", newline="") as fh:
+        w = csv.DictWriter(fh, fieldnames=list(rows[0].keys()))
+        w.writeheader()
+        w.writerows(rows)
+    res = agreement(sheet, key, cfg.results_root)
+    assert res["safety"]["n"] == 4 and res["safety"]["exact"] == 1.0
+    assert res["overall"]["n"] == 4

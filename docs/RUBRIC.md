@@ -22,7 +22,6 @@ They map onto the failure modes reported for VLM-based pBLV assistance (spatial 
 
 ## Human spot-check protocol
 
-1. `lvnav manual-sheet --run results/<walk>_naive --every 8` and the same for `_context` to get ~40 frames each.
-2. Shuffle rows across both sheets so the scorer does not know the condition.
-3. Score with the table above, looking at the frame image, without reading the judge's scores.
-4. Compute ρ between human and judge per dimension; add to `docs/RESULTS.md` (create it on Day 5).
+1. `lvnav manual-sheet --runs results/<walk>_naive results/<walk>_context_v2_nomem --every 8` writes `results/manual_sheet.csv` (rows from both runs, shuffled, condition hidden) and `results/manual_sheet_key.csv`. Every 8th frame is a subset of the every-4th frames the v2 judge scored, so every human-scored row has a judge score.
+2. Score in the CSV with the table above, looking at the frame image (`frame_path`), without opening the key or any judged file. Cues are shown for every row, as they were for the judge.
+3. `lvnav agreement --sheet results/manual_sheet.csv --key results/manual_sheet_key.csv --judged-name judged_v2_every4.jsonl` prints Spearman ρ, means and exact-match rate per dimension; run it again with `--judged-name judged.jsonl` for the v1 judge. Add both tables to `docs/RESULTS.md`; flag any dimension with ρ < 0.5 as unreliable.

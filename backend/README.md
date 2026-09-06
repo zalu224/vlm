@@ -21,7 +21,7 @@ Python 3.11+. On Apple Silicon, `torch` wheels from PyPI include MPS support; no
 
 ```
 lvnav/
-├── cli.py               lvnav <subcommand>  (extract-frames | run | judge | report | manual-sheet)
+├── cli.py               lvnav <subcommand>  (extract-frames | run | judge | report | manual-sheet | agreement)
 ├── config.py            typed config, loaded from configs/default.yaml, saved per run
 ├── pipeline.py          frame → (perception) → prompt → VLM → records.jsonl
 ├── data/frames.py       video sampling and frame listing
@@ -56,7 +56,8 @@ lvnav judge --run results/walk01_context
 lvnav judge --run results/walk01_naive --cues-from results/walk01_context
 lvnav judge --run results/walk01_context --judge-version v2 --every 4     # writes judged_v2_every4.jsonl
 lvnav report --a results/walk01_naive --b results/walk01_context [--out report.md] [--judged-name judged_v2_every4.jsonl]
-lvnav manual-sheet --run results/walk01_context --every 8
+lvnav manual-sheet --runs results/walk01_naive results/walk01_context_v2_nomem --every 8   # blinded sheet + key
+lvnav agreement --sheet results/manual_sheet.csv --key results/manual_sheet_key.csv --judged-name judged_v2_every4.jsonl
 ```
 
 `--backend mock` replaces both the VLM and the perception models with deterministic fakes. The full pipeline, judge and report run in seconds this way; it is what CI uses.

@@ -6,13 +6,13 @@ extract-frames   Sample frames from a video at a fixed rate.
 run              Generate instructions for every frame under one condition.
 judge            Score a run with the LLM judge.
 report           Build a paired comparison report from two judged runs.
-manual-sheet     Export a CSV for human spot-check scoring.
+manual-sheet     Export a blinded, shuffled CSV for human spot-check scoring.
+agreement        Judge–human agreement from a scored sheet.
 """
 
 from __future__ import annotations
 
 import argparse
-import csv
 import sys
 from pathlib import Path
 
@@ -108,23 +108,34 @@ def cmd_report(args) -> int:
 
 
 def cmd_manual_sheet(args) -> int:
-    """Write a CSV with blank score columns for human spot-checking (Day 5)."""
-    from .eval.rubric import DIMENSIONS
-    from .pipeline import read_jsonl
+    """Write a blinded, shuffled CSV (plus a key file) for human spot-check scoring."""
+    from .eval.spotcheck import write_blinded_sheet
 
-    rows = read_jsonl(Path(args.run) / "records.jsonl")
-    if args.every > 1:
-        rows = rows[:: args.every]
-    out = Path(args.out or Path(args.run) / "manual_scores.csv")
-    with out.open("w", newline="") as fh:
-        w = csv.writer(fh)
-        w.writerow(["frame_id", "frame_path", "cues", "instruction", *DIMENSIONS, "notes"])
-        for r in rows:
-            w.writerow(
-                [r["frame_id"], r["frame_path"], r.get("cues") or "", r["instruction"]]
-                + [""] * (len(DIMENSIONS) + 1)
-            )
-    print(f"Manual scoring sheet with {len(rows)} rows: {out}")
+    out = Path(args.out or Path(args.runs[0]).parent / "manual_sheet.csv")
+    sheet, key = write_blinded_sheet(args.runs, out, every=args.every, seed=args.seed)
+    n = sum(1 for _ in key.open()) - 1  # key has one line per row; the sheet has multi-line cells
+    print(f"Blinded sheet with {n} rows: {sheet}\nKey (do not open while scoring): {key}")
+    return 0
+
+
+def cmd_agreement(args) -> int:
+    """Judge–human agreement (Spearman rho per dimension) from a scored sheet."""
+    import json
+
+    from .eval.spotcheck import agreement
+
+    res = agreement(args.sheet, args.key, args.results_root, judged_name=args.judged_name)
+    print(f"Agreement against `{args.judged_name}`:")
+    print("| dimension | n | Spearman rho | mean human | mean judge | exact match |")
+    print("|---|---|---|---|---|---|")
+    for d, r in res.items():
+        print(
+            f"| {d.replace('_', ' ')} | {r['n']} | {r['rho']} | {r['mean_human']} | "
+            f"{r['mean_judge']} | {r['exact']} |"
+        )
+    if args.out:
+        Path(args.out).write_text(json.dumps(res, indent=2))
+        print(f"Saved: {args.out}")
     return 0
 
 
@@ -173,11 +184,20 @@ def main(argv: list[str] | None = None) -> int:
     )
     p.set_defaults(func=cmd_report)
 
-    p = sub.add_parser("manual-sheet", help="CSV for human spot-check scoring")
-    p.add_argument("--run", type=Path, required=True)
-    p.add_argument("--every", type=int, default=1, help="take every Nth frame")
-    p.add_argument("--out", type=Path, default=None)
+    p = sub.add_parser("manual-sheet", help="blinded CSV for human spot-check scoring")
+    p.add_argument("--runs", type=Path, nargs="+", required=True, help="run dirs to interleave")
+    p.add_argument("--every", type=int, default=8, help="take every Nth frame of each run")
+    p.add_argument("--seed", type=int, default=0, help="shuffle seed")
+    p.add_argument("--out", type=Path, default=None, help="default: results/manual_sheet.csv")
     p.set_defaults(func=cmd_manual_sheet)
+
+    p = sub.add_parser("agreement", help="judge-human agreement from a scored sheet")
+    p.add_argument("--sheet", type=Path, required=True, help="scored manual_sheet.csv")
+    p.add_argument("--key", type=Path, required=True, help="matching _key.csv")
+    p.add_argument("--results-root", type=Path, default=Path("results"))
+    p.add_argument("--judged-name", default="judged.jsonl")
+    p.add_argument("--out", type=Path, default=None, help="save the table as JSON")
+    p.set_defaults(func=cmd_agreement)
 
     args = parser.parse_args(argv)
     return args.func(args)
