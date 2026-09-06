@@ -95,6 +95,8 @@ make serve-vlm VLM_MODEL=mlx-community/Qwen2.5-VL-3B-Instruct-4bit
 |---|---|
 | `naive-v1` | Generic assistant system prompt; "tell them what to do next". |
 | `context-v1` | BLV guide rules (≤ 2 spoken sentences, hazard first, body-relative, no scene description, state uncertainty, don't repeat) + sensor cues + rolling memory. |
+| `context-v2` | Day-4 iteration after reading v1 outputs (see `docs/PROGRESS.md`). Adds an explicit cue → action decision rule (STOP / SLOW DOWN / CONTINUE), removes example phrases that v1 copied verbatim, tells the model to check the image for hazards the cues miss, and reframes memory as "what you already said". Config: `configs/context_v2.yaml`. |
+| `context-v1` + `include_last_instruction: false` | Ablation arm, same prompt as v1 with the last instruction dropped from memory. Config: `configs/context_v1_nomem.yaml`. |
 
 To iterate: add `BLV_SYSTEM_V2` / `CONTEXT_USER_V2` in `context/prompts.py`, extend `build_context_prompt`, set `context.prompt_version: v2` in a copied config, and add a row here. Never edit a version in place after a run has used it.
 

@@ -60,3 +60,19 @@ def test_records_are_valid_jsonl(frames_dir, tmp_path):
     assert len(lines) == 2
     for line in lines:
         json.loads(line)
+
+
+def test_summarise_reports_repetition():
+    from lvnav.eval.metrics import summarise
+
+    rows = [
+        {"instruction": "Path clear. Move forward.", "scores": {}, "latency_s": 1.0},
+        {"instruction": "Path clear. Move forward.", "scores": {}, "latency_s": 1.0},
+        {"instruction": "Path clear. Move forward.", "scores": {}, "latency_s": 1.0},
+        {"instruction": "Stop. Person ahead.", "scores": {}, "latency_s": 1.0},
+    ]
+    s = summarise(rows)
+    assert s["repetition"]["unique"] == 2
+    assert s["repetition"]["unique_ratio"] == 0.5
+    assert s["repetition"]["top_share"] == 0.75
+    assert s["repetition"]["top"] == "Path clear. Move forward."

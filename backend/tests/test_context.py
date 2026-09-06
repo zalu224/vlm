@@ -21,3 +21,16 @@ def test_prompts_are_versioned_and_filled():
     assert c.version == "context-v1"
     assert "Free space: x" in c.user and "memory text" in c.user
     assert "at most two short sentences" in c.system
+
+
+def test_context_v2_has_decision_rule_and_no_example_phrases():
+    import pytest
+
+    c = build_context_prompt("Free space: x", "memory text", version="v2")
+    assert c.version == "context-v2"
+    assert "STOP" in c.system and "SLOW DOWN" in c.system and "CONTINUE" in c.system
+    # v1 leaked its example phrases verbatim into outputs; v2 must not offer them.
+    assert "two steps ahead" not in c.system and "knee height" not in c.system
+    assert "Free space: x" in c.user and "memory text" in c.user
+    with pytest.raises(ValueError):
+        build_context_prompt("c", "m", version="v9")

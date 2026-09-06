@@ -1,0 +1,36 @@
+# Ablation arm: context v1 with the last instruction removed from memory (tests whether
+# memory feedback alone causes the repetition collapse seen in context-v1).
+# Run with: lvnav run --frames data/<walk> --mode context --config backend/configs/context_v1_nomem.yaml
+#           --run-name <walk>_context_v1_nomem
+run_name: null
+results_root: results
+
+vlm:
+  backend: http
+  base_url: http://localhost:8080/v1
+  model: mlx-community/Qwen2.5-VL-7B-Instruct-4bit
+  temperature: 0.0
+  max_tokens: 80
+  timeout_s: 120
+  image_max_side: 768
+
+perception:
+  enabled: true
+  device: auto
+  depth_model: depth-anything/Depth-Anything-V2-Small-hf
+  detector_model: yolov8s-worldv2.pt
+  detector_conf: 0.30
+  vocabulary: [person, car, bicycle, motorcycle, bus, truck, dog, stairs, door, pole, tree, bench,
+               trash can, traffic light, crosswalk, curb, construction barrier, bollard, sign post,
+               shopping cart]
+
+context:
+  memory_frames: 3
+  include_last_instruction: false
+  prompt_version: v1
+
+judge:
+  backend: http
+  model: null
+  temperature: 0.0
+  max_tokens: 300

@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import statistics as st
+from collections import Counter
 from pathlib import Path
 
 from ..pipeline import read_jsonl
@@ -27,6 +28,16 @@ def summarise(judged: list[dict]) -> dict:
         }
     words = [len(r["instruction"].split()) for r in judged]
     out["words"] = {"mean": _mean(words), "max": max(words) if words else None}
+    # Repetition: a condition that keeps emitting the same sentence regardless of the
+    # scene has collapsed, even if each individual instruction scores well.
+    counts = Counter(r["instruction"].strip() for r in judged)
+    top, top_n = counts.most_common(1)[0] if counts else ("", 0)
+    out["repetition"] = {
+        "unique": len(counts),
+        "unique_ratio": round(len(counts) / len(judged), 3) if judged else None,
+        "top": top,
+        "top_share": round(top_n / len(judged), 3) if judged else None,
+    }
     out["overall"] = _mean([v["mean"] for v in out["dimensions"].values() if v["mean"] is not None])
     return out
 
@@ -94,6 +105,11 @@ def write_report(run_a: Path, run_b: Path, out_path: Path | None = None) -> Path
         f"| median latency (s) | {sa['latency_s'].get('median')} | {sb['latency_s'].get('median')} |",
         f"| p90 latency (s) | {sa['latency_s'].get('p90')} | {sb['latency_s'].get('p90')} |",
         f"| mean words / instruction | {sa['words']['mean']} | {sb['words']['mean']} |",
+        f"| unique instructions / frames | {sa['repetition']['unique_ratio']} | {sb['repetition']['unique_ratio']} |",
+        f"| share of most common instruction | {sa['repetition']['top_share']} | {sb['repetition']['top_share']} |",
+        "",
+        f'Most common A: "{sa["repetition"]["top"]}"  ',
+        f'Most common B: "{sb["repetition"]["top"]}"',
         "",
         "## Largest improvements (B over A)",
         "",

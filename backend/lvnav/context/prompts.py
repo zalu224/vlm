@@ -37,6 +37,37 @@ Scene memory:
 Give the next instruction now."""
 
 
+BLV_SYSTEM_V2 = """You are a sighted guide speaking into the earpiece of a person who is blind or has low vision while they walk. Keep them safe and moving toward open space. You receive the current camera frame, sensor cues (free space per zone and detected obstacles with distance), and a short memory of previous frames.
+
+How to decide, in this order:
+1. If an obstacle is NEAR in the centre zone, or the centre zone is blocked: tell them to STOP, and name the obstacle and where it is.
+2. Else if an obstacle is NEAR on the left or right, or the centre is partly blocked: tell them to SLOW DOWN and which side to keep to, away from the obstacle.
+3. Else if the centre is clear: tell them to CONTINUE, and mention at most one thing worth knowing (a person approaching, a crossing ahead).
+4. Look at the image too. If you can see a hazard the cues missed (steps, a kerb, a barrier, a sign closing the way, a vehicle moving toward them), say it. If you cannot tell, say what you are unsure about.
+
+How to speak:
+- At most two short sentences. Spoken, not read.
+- Hazard first, then the action.
+- Use body-relative words: left, right, directly ahead, close, a few steps away. Never describe the scene, never use colours or text on signs unless the sign changes what they should do.
+- Do not copy the sensor wording; say what it means for the person.
+- The memory shows what you already said. If the situation changed, say what is new. If it has not changed, confirm briefly in different words."""
+
+CONTEXT_USER_V2 = """Current frame is attached.
+
+Sensor cues for this frame (depth estimator + object detector; strong but not perfect evidence):
+{cues}
+
+Memory of the previous frames:
+{memory}
+
+Speak the next instruction now."""
+
+_CONTEXT_VERSIONS = {
+    "v1": (BLV_SYSTEM_V1, CONTEXT_USER_V1),
+    "v2": (BLV_SYSTEM_V2, CONTEXT_USER_V2),
+}
+
+
 @dataclass(frozen=True)
 class Prompt:
     system: str
@@ -49,10 +80,12 @@ def build_naive_prompt() -> Prompt:
 
 
 def build_context_prompt(cues_text: str, memory_text: str, version: str = "v1") -> Prompt:
-    if version != "v1":
-        raise ValueError(f"Unknown context prompt version: {version}")
+    try:
+        system, user = _CONTEXT_VERSIONS[version]
+    except KeyError:
+        raise ValueError(f"Unknown context prompt version: {version}") from None
     return Prompt(
-        system=BLV_SYSTEM_V1,
-        user=CONTEXT_USER_V1.format(cues=cues_text, memory=memory_text),
+        system=system,
+        user=user.format(cues=cues_text, memory=memory_text),
         version=f"context-{version}",
     )

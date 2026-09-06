@@ -62,3 +62,31 @@ Conventions: one entry per milestone; decisions get a **Decision:** line with th
 ### Notes for the write-up
 - London frames carry a burned-in timecode overlay (top-left); the VLM may read it. Mention as a data artefact.
 - Judge and generator share one server; perception (torch/MPS) and the VLM (MLX/Metal) share the GPU during context runs, so context latency includes some contention. Report perception time separately from VLM time (both are in `records.jsonl`: `latency_s` is VLM only).
+
+---
+
+## Day 1, evening (still 2026-09-05): context runs done, first paired reading
+
+### Numbers (generation only; judging still running)
+
+| Run | n | median VLM latency | p90 | mean words | hit 80-token cap | unique instructions |
+|---|---|---|---|---|---|---|
+| suwon_naive | 295 | 4.93 s | 5.89 s | 66.0 | 226 (77 %) | — |
+| london_naive | 285 | 4.84 s | 5.98 s | 63.3 | 137 (48 %) | — |
+| suwon_context | 295 | 4.14 s | 4.29 s | 8.0 | 0 | **26** |
+| london_context | 285 | 4.26 s | 4.39 s | 9.9 | 0 | **41** |
+
+Context is *faster* than naive despite ~700 extra prompt tokens, because it emits ~8 words instead of 80 tokens; decoding dominates. (Latency caveat from the memory-pressure note still applies; these medians are consistent with the quiet-state 5.0 s baseline.)
+
+### Reading 21 paired outputs (every ~30th frame of both walks)
+
+**Naive (v1)** behaves as the literature predicts: third-person ("The person wearing the camera should..."), scene description, numbered lists, hallucinated aids (tactile paving, white cane) and occasional nonsense (london/000280: "choose two stations you would like to see"). But it sometimes *reads the scene* usefully: london/000130 it read a "Road Ahead Closed" sign and a diversion arrow.
+
+**Context (v1)** is concise (2 sentences, ~8 words) and mostly spatially grounded, but shows three failure modes that v1's rules did not prevent:
+
+1. **Mode collapse via memory feedback.** With temperature 0 and the last instruction in the prompt, the model repeats itself: "Two steps ahead, there's a person. Move forward." appears on 103/295 Suwon frames regardless of cues. Rule 7 ("do not repeat unless unchanged") was ignored.
+2. **No safety verbs.** "stop" and "slow" occur in **0 %** of context instructions on both walks, even for `person (centre, near)` or all three zones blocked. Everything ends in "Move forward." The prompt asks for hazard-first but gives no decision rule linking cue → action.
+3. **Prompt-example leakage and cue parroting.** Example phrases from the system prompt ("two steps ahead", "at knee height") are copied verbatim: london/000000 "a traffic light is at knee height". Cue wording is echoed with broken semantics: "The car ahead is partly blocked", "A person is partly blocked directly ahead".
+4. **Cue anchoring overrides the image.** london/000130: cues say centre clear → "The road ahead is clear" while the image shows a road-closed barrier that the naive condition noticed. This is the regression class H2 needs to watch (detector vocabulary has no "barrier"/"sign" that fired here).
+
+**Decision:** keep `context-v1` as the pre-registered condition and report it as is. Add `context-v2` (Day-4 prompt iteration per WEEK_PLAN): explicit cue → action decision rule (stop / slow / veer / continue), output format instead of example phrases, an instruction to check the image for hazards the cues miss, and memory kept but with an anti-repetition instruction that names the previous instruction as "already said". Also add a config-only ablation arm `context-v1` with `include_last_instruction: false` to test whether memory feedback alone causes the collapse. Report adds a repetition metric (unique-instruction ratio, share of the most common instruction) so this is measured, not anecdotal.
