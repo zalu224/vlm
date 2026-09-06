@@ -45,6 +45,7 @@ class JudgeConfig:
     model: str | None = None
     temperature: float = 0.0
     max_tokens: int = 300
+    version: str = "v1"  # judge prompt version, see eval/rubric.py
 
 
 @dataclass

@@ -103,3 +103,37 @@ Context is *faster* than naive despite ~700 extra prompt tokens, because it emit
 **Finding:** the repetition collapse is caused by feeding the model its own last instruction at temperature 0, not by the prompt wording. With the echo removed, both prompts diversify; v2's decision rule then takes effect (STOP for a bus directly ahead, slow-and-keep-to-a-side for a partly blocked centre), whereas with the echo v2 is *worse* than v1. Trial records: `results/trial_*`.
 
 **Decision:** four arms go into the write-up: naive, context-v1 (pre-registered), context-v1-nomem (isolates the memory feedback), context-v2-nomem (Day-4 candidate). Config `backend/configs/context_v2_nomem.yaml`. Full runs + judging queued behind the current chain (`logs/run_chain2.sh`, ~2.5 h after chain 1 ends). Rolling *cue* memory (last 3 frames) stays on in every context arm; only the echoed instruction is removed.
+
+---
+
+## Day 1, night (23:10): first judged results — and the judge is the problem
+
+### Judge v1 results (Qwen2.5-VL-7B, same model as generator)
+
+| | Suwon naive | Suwon context-v1 | London naive | London context-v1 |
+|---|---|---|---|---|
+| safety | 2.75 | 1.42 | 3.15 | 2.27 |
+| actionability | 3.24 | 2.14 | 3.89 | 2.87 |
+| spatial accuracy | 2.74 | 1.69 | 3.13 | 2.36 |
+| conciseness | 2.61 | **2.01** | 2.93 | **2.54** |
+| hallucination | 4.52 | 3.09 | 4.86 | 4.12 |
+| overall | 3.17 | 2.07 | 3.59 | 2.83 |
+| B better / worse / tied | | 69 / 176 / 39 | | 69 / 156 / 60 |
+| unique instructions / frames | 0.97 | 0.09 | 0.97 | 0.14 |
+| parse errors | 0 | 11 | 0 | 0 |
+
+Taken at face value: the pre-registered context-v1 **loses on every dimension**. Safety and hallucination losses are plausible (the collapsed "Two steps ahead, there's a person. Move forward." is wrong on most frames). But an 8-word instruction scoring **lower on conciseness** than a 66-word paragraph cut off mid-sentence cannot be right.
+
+### Judge diagnosis
+- **Halo effect.** On 49 % of Suwon context frames all five scores are identical (13 % naive). The same instruction on 103 frames got conciseness 1 on 76 of them, 3 on 14, 5 on 1. The judge forms one opinion and writes it into every box.
+- **Rationale–score mismatch.** Rationales say "the instruction is not concise" about eight words, and naive gets hallucination 5 while the rationale notes "a person in traditional attire, which is not visible in the image".
+- **Length bias.** Naive paragraphs sit at a uniform 3/3/3/3/5.
+- Raw judge text was not saved, so the 11 parse errors cannot be inspected; fixed (`judge_raw` field, schema note in backend README).
+
+This is exactly the failure the VL-Guide paper (2510.00766) reports for generic VLM judges on BLV tasks, reproduced on a 7B open model. It is a result in itself for the write-up.
+
+### Decisions
+- **Judge v2** (`judge.version: v2`, `eval/rubric.py`): a one-sentence *reason before each score*, an explicit statement that dimensions are independent, and length-based anchors for conciseness. Parser accepts both shapes. `lvnav judge --every 8 --judge-version v2` scores a stratified subset so v1 and v2 can be compared cheaply and the same frames feed the human spot-check.
+- **Computed conciseness** (`conciseness_auto`, model-free, rubric scale) added to every report as an objective anchor for that dimension.
+- Next: re-judge every 8th frame of `suwon_naive` and `suwon_context` with v2; if uniform-vector rate stays > 30 % or conciseness still tracks correctness, the local judge is the bottleneck and the Claude-judge option goes back to Aaron with this evidence.
+- Judge v1 numbers stay in the repo and the write-up as the pre-registered evaluator; v2 is reported as the corrected one, with judge–human agreement for both.

@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import re
 import statistics as st
 from collections import Counter
 from pathlib import Path
@@ -12,6 +13,33 @@ from .rubric import DIMENSIONS
 
 def _mean(xs: list[float]) -> float | None:
     return round(st.fmean(xs), 3) if xs else None
+
+
+_SENTENCE_RE = re.compile(r"[.!?]+(?:\s|$)")
+
+
+def conciseness_auto(instruction: str) -> int:
+    """Model-free conciseness score on the rubric's 1-5 scale, from length and form only.
+
+    5 = at most two sentences and at most 20 words; 4 = at most two sentences and at most
+    30 words; 3 = at most three sentences and at most 45 words; 2 = up to 70 words;
+    1 = longer, a list, or cut off mid-sentence. Used alongside the judged score so the
+    dimension has an objective anchor.
+    """
+    text = instruction.strip()
+    words = len(text.split())
+    sentences = max(len(_SENTENCE_RE.findall(text)), 1)
+    truncated = not text.endswith((".", "!", "?", '"'))
+    is_list = bool(re.search(r"(^|\n)\s*(\d+\.|[-*•])\s", text))
+    if truncated or is_list or words > 70:
+        return 1
+    if words > 45 or sentences > 3:
+        return 2
+    if words > 30 or sentences > 2:
+        return 3
+    if words > 20:
+        return 4
+    return 5
 
 
 def summarise(judged: list[dict]) -> dict:
@@ -28,6 +56,7 @@ def summarise(judged: list[dict]) -> dict:
         }
     words = [len(r["instruction"].split()) for r in judged]
     out["words"] = {"mean": _mean(words), "max": max(words) if words else None}
+    out["conciseness_auto"] = _mean([conciseness_auto(r["instruction"]) for r in judged])
     # Repetition: a condition that keeps emitting the same sentence regardless of the
     # scene has collapsed, even if each individual instruction scores well.
     counts = Counter(r["instruction"].strip() for r in judged)
@@ -105,6 +134,7 @@ def write_report(run_a: Path, run_b: Path, out_path: Path | None = None) -> Path
         f"| median latency (s) | {sa['latency_s'].get('median')} | {sb['latency_s'].get('median')} |",
         f"| p90 latency (s) | {sa['latency_s'].get('p90')} | {sb['latency_s'].get('p90')} |",
         f"| mean words / instruction | {sa['words']['mean']} | {sb['words']['mean']} |",
+        f"| conciseness, computed (1–5) | {sa['conciseness_auto']} | {sb['conciseness_auto']} |",
         f"| unique instructions / frames | {sa['repetition']['unique_ratio']} | {sb['repetition']['unique_ratio']} |",
         f"| share of most common instruction | {sa['repetition']['top_share']} | {sb['repetition']['top_share']} |",
         "",

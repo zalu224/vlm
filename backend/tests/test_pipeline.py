@@ -33,6 +33,7 @@ def test_naive_and_context_end_to_end(frames_dir, tmp_path):
     judge_run(a, backend, cues_from=b)
     judge_run(b, backend)
     ja = read_jsonl(a / "judged.jsonl")
+    assert ja[0]["judge_raw"].startswith("{")
     assert set(ja[0]["scores"]) == {
         "safety",
         "actionability",
@@ -76,3 +77,36 @@ def test_summarise_reports_repetition():
     assert s["repetition"]["unique_ratio"] == 0.5
     assert s["repetition"]["top_share"] == 0.75
     assert s["repetition"]["top"] == "Path clear. Move forward."
+
+
+def test_parse_judge_output_v2_shape():
+    text = (
+        '{"safety": {"reason": "hazard first", "score": 4}, "actionability": {"reason": "verb", "score": 5},'
+        ' "spatial_accuracy": {"reason": "ok", "score": 3}, "conciseness": {"reason": "two sentences", "score": 5},'
+        ' "hallucination": {"reason": "none", "score": 7}}'
+    )
+    scores, rationale = parse_judge_output(text)
+    assert scores["safety"] == 4 and scores["hallucination"] is None
+    assert rationale.startswith("safety: hazard first")
+
+
+def test_judge_v2_every_writes_subset_file(frames_dir, tmp_path):
+    cfg = _cfg(tmp_path)
+    backend = build_backend("mock", cfg.vlm)
+    run = run_pipeline(frames_dir, "naive", backend, cfg)
+    out = judge_run(run, backend, version="v2", every=2)
+    assert out.name == "judged_v2_every2.jsonl"
+    rows = read_jsonl(out)
+    assert len(rows) == 3 and rows[0]["judge_version"] == "v2"
+
+
+def test_conciseness_auto_anchors():
+    from lvnav.eval.metrics import conciseness_auto
+
+    assert conciseness_auto("Stop. Person directly ahead.") == 5
+    assert (
+        conciseness_auto("The person wearing the camera should continue walking forward, as the")
+        == 1
+    )
+    assert conciseness_auto("Here is what to do:\n1. Listen for sounds.\n2. Use your cane.") == 1
+    assert conciseness_auto(" ".join(["word"] * 40) + ".") == 3

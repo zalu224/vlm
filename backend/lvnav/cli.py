@@ -90,6 +90,9 @@ def cmd_judge(args) -> int:
         cues_from=args.cues_from,
         max_tokens=cfg.judge.max_tokens,
         temperature=cfg.judge.temperature,
+        version=args.judge_version or cfg.judge.version,
+        every=args.every,
+        out_name=args.out_name,
     )
     print(f"Judged: {out}")
     return 0
@@ -155,6 +158,9 @@ def main(argv: list[str] | None = None) -> int:
         default=None,
         help="borrow perception cues from another run (e.g. judge naive with context cues)",
     )
+    p.add_argument("--judge-version", default=None, help="judge prompt version (default: config)")
+    p.add_argument("--every", type=int, default=1, help="score every Nth frame only")
+    p.add_argument("--out-name", default=None, help="output filename inside the run dir")
     _add_common(p)
     p.set_defaults(func=cmd_judge)
 

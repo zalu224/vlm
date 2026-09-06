@@ -50,3 +50,4 @@ judge:
   model: null                  # null = reuse vlm.model
   temperature: 0.0
   max_tokens: 300
+  version: v1                  # judge prompt version (v1 | v2), see eval/rubric.py

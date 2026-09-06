@@ -87,7 +87,7 @@ make serve-vlm VLM_MODEL=mlx-community/Qwen2.5-VL-3B-Instruct-4bit
 | `latency_s` | float | wall-clock for the VLM call only |
 | `prompt_tokens`, `completion_tokens` | int \| null | from the server's `usage` if provided |
 
-`judged.jsonl` = the same rows plus `scores` (`{dimension: 1–5 | null}`), `judge_rationale`, `judge_latency_s`. `config.yaml` is the fully resolved config used for the run. Changing any of these fields is a contract change: update `frontend/app.py` and the root README.
+`judged.jsonl` = the same rows plus `scores` (`{dimension: 1–5 | null}`), `judge_rationale`, `judge_latency_s`, and `judge_raw` (the verbatim judge output, kept for auditing parse failures and score patterns). `config.yaml` is the fully resolved config used for the run. Changing any of these fields is a contract change: update `frontend/app.py` and the root README.
 
 ## Prompt versions
 
