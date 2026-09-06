@@ -151,3 +151,24 @@ This is exactly the failure the VL-Guide paper (2510.00766) reports for generic 
 Reasons now match scores ("directs the pedestrian into the path of a person" → safety 1; "concise, one sentence" → conciseness 4). The halo is gone and the safety verdict on the collapsed v1 instruction is still 1, which is the correct outcome. **v2 is the evaluator for the write-up; v1 stays reported as the pre-registered one.**
 
 Cost: ~5× v1 output tokens. Plan: judge v2 on **every 4th frame** of all eight runs (4 arms × 2 walks ≈ 580 calls, ~3 h quiet) after chain2; the every-8th subset of that is the human spot-check set. Do not run anything else on the GPU meanwhile: swap hit 16.5/17.4 GB and macOS killed the first v2 job at frame 16.
+
+---
+
+## Day 2 — 2026-09-06 (Sat), 00:45: all four arms generated
+
+Generation-only statistics (no judge involved). `uniq` = unique instructions / frames; `top` = share of the most common instruction; verb columns = share of instructions containing the word; `concA` = computed conciseness (1–5).
+
+| Run | n | median VLM s | words | uniq | top | stop | slow | left/right | concA |
+|---|---|---|---|---|---|---|---|---|---|
+| suwon_naive | 295 | 4.93 | 66.0 | 0.97 | 0.01 | 0.09 | 0.00 | 0.07 | 1.23 |
+| suwon_context (v1) | 295 | 4.14 | 8.0 | 0.09 | 0.35 | 0.00 | 0.00 | 0.12 | 5.00 |
+| suwon_context_v1_nomem | 295 | 4.18 | 8.6 | 0.62 | 0.08 | 0.01 | 0.11 | 0.22 | 4.84 |
+| suwon_context_v2_nomem | 295 | 4.66 | 8.5 | 0.40 | 0.08 | **0.20** | 0.11 | **0.45** | 4.93 |
+| london_naive | 285 | 4.84 | 63.3 | 0.96 | 0.01 | 0.16 | 0.00 | 0.17 | 1.61 |
+| london_context (v1) | 285 | 4.26 | 9.9 | 0.14 | 0.17 | 0.00 | 0.00 | 0.48 | 5.00 |
+| london_context_v1_nomem | 285 | 4.16 | 8.9 | 0.47 | 0.06 | 0.00 | 0.08 | 0.19 | 4.99 |
+| london_context_v2_nomem | 285 | 4.75 | 9.9 | 0.47 | 0.06 | 0.07 | **0.21** | **0.69** | 4.89 |
+
+Reading: removing the echo lifts unique-instruction ratio from ~0.1 to ~0.5 at the same length; the v2 decision rule then adds the safety verbs (Suwon: "stop" in 20 % of frames vs 0 % for v1) and side-relative directions (45–69 % vs 12–48 %). The most common v2-nomem outputs are exactly the rule's three branches ("STOP. There's a person directly ahead." ×25; "The centre is partly blocked. Slow down and keep to the right." ×14; "Continue. There's a person ahead and to the right." ×13), which is the intended behaviour at temperature 0, not collapse. Residual cue parroting ("The centre is partly blocked") is the next prompt-iteration target, not for this week.
+
+Latency: all context arms 4.1–4.8 s median vs 4.9 s naive; H3 (< 40 % overhead) holds with margin on VLM time alone, and perception adds ~0.15 s. Still to be re-measured on a quiet machine.
