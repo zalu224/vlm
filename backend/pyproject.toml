@@ -47,7 +47,7 @@ target-version = "py311"
 [tool.ruff.lint]
 select = ["E", "F", "I", "UP", "B"]
 # Prompt templates and report tables legitimately exceed the line limit.
-per-file-ignores = { "lvnav/context/prompts.py" = ["E501"], "lvnav/eval/rubric.py" = ["E501"], "lvnav/eval/metrics.py" = ["E501"], "tests/*" = ["E501"] }
+per-file-ignores = { "lvnav/context/prompts.py" = ["E501"], "lvnav/eval/rubric.py" = ["E501"], "lvnav/eval/metrics.py" = ["E501"], "tests/*" = ["E501"], "scripts/*" = ["E501"] }
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

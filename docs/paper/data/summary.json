@@ -1,0 +1,338 @@
+{
+  "arms": {
+    "suwon_naive": {
+      "n_frames": 295,
+      "median_vlm_latency_s": 4.93,
+      "mean_words": 66.0,
+      "unique_ratio": 0.973,
+      "top_share": 0.007,
+      "stop_rate": 0.092,
+      "slow_rate": 0.0,
+      "side_rate": 0.071,
+      "cap_hit_rate": 0.766,
+      "conciseness_auto": 1.23,
+      "judge_v1": {
+        "safety": 2.75,
+        "actionability": 3.24,
+        "spatial_accuracy": 2.74,
+        "conciseness": 2.61,
+        "hallucination": 4.52,
+        "overall": 3.17
+      },
+      "judge_v2": {
+        "safety": 1.6,
+        "actionability": 2.63,
+        "spatial_accuracy": 2.15,
+        "conciseness": 2.49,
+        "hallucination": 2.51,
+        "overall": 2.28
+      },
+      "judge_v1_n": 295,
+      "judge_v2_n": 73,
+      "judge_v1_uniform_share": 0.129,
+      "judge_v2_uniform_share": 0.096
+    },
+    "suwon_context": {
+      "n_frames": 295,
+      "median_vlm_latency_s": 4.14,
+      "mean_words": 8.0,
+      "unique_ratio": 0.088,
+      "top_share": 0.349,
+      "stop_rate": 0.0,
+      "slow_rate": 0.0,
+      "side_rate": 0.122,
+      "cap_hit_rate": 0.0,
+      "conciseness_auto": 5.0,
+      "judge_v1": {
+        "safety": 1.42,
+        "actionability": 2.14,
+        "spatial_accuracy": 1.69,
+        "conciseness": 2.01,
+        "hallucination": 3.08,
+        "overall": 2.07
+      },
+      "judge_v2": {
+        "safety": 1.22,
+        "actionability": 3.03,
+        "spatial_accuracy": 1.84,
+        "conciseness": 3.88,
+        "hallucination": 3.97,
+        "overall": 2.79
+      },
+      "judge_v1_n": 284,
+      "judge_v2_n": 74,
+      "judge_v1_uniform_share": 0.489,
+      "judge_v2_uniform_share": 0.0
+    },
+    "suwon_context_v1_nomem": {
+      "n_frames": 295,
+      "median_vlm_latency_s": 4.18,
+      "mean_words": 8.6,
+      "unique_ratio": 0.62,
+      "top_share": 0.078,
+      "stop_rate": 0.01,
+      "slow_rate": 0.112,
+      "side_rate": 0.22,
+      "cap_hit_rate": 0.0,
+      "conciseness_auto": 4.84,
+      "judge_v1": {
+        "safety": 2.0,
+        "actionability": 2.62,
+        "spatial_accuracy": 2.17,
+        "conciseness": 2.35,
+        "hallucination": 3.62,
+        "overall": 2.55
+      },
+      "judge_v2": {
+        "safety": 1.51,
+        "actionability": 2.99,
+        "spatial_accuracy": 2.22,
+        "conciseness": 3.68,
+        "hallucination": 3.97,
+        "overall": 2.87
+      },
+      "judge_v1_n": 295,
+      "judge_v2_n": 74,
+      "judge_v1_uniform_share": 0.319,
+      "judge_v2_uniform_share": 0.014
+    },
+    "suwon_context_v2_nomem": {
+      "n_frames": 295,
+      "median_vlm_latency_s": 4.66,
+      "mean_words": 8.5,
+      "unique_ratio": 0.397,
+      "top_share": 0.085,
+      "stop_rate": 0.2,
+      "slow_rate": 0.112,
+      "side_rate": 0.447,
+      "cap_hit_rate": 0.0,
+      "conciseness_auto": 4.93,
+      "judge_v1": {
+        "safety": 2.99,
+        "actionability": 3.54,
+        "spatial_accuracy": 3.03,
+        "conciseness": 3.11,
+        "hallucination": 3.56,
+        "overall": 3.25
+      },
+      "judge_v2": {
+        "safety": 2.41,
+        "actionability": 3.53,
+        "spatial_accuracy": 2.97,
+        "conciseness": 3.84,
+        "hallucination": 4.03,
+        "overall": 3.36
+      },
+      "judge_v1_n": 295,
+      "judge_v2_n": 74,
+      "judge_v1_uniform_share": 0.139,
+      "judge_v2_uniform_share": 0.054
+    },
+    "london_naive": {
+      "n_frames": 285,
+      "median_vlm_latency_s": 4.84,
+      "mean_words": 63.3,
+      "unique_ratio": 0.965,
+      "top_share": 0.014,
+      "stop_rate": 0.161,
+      "slow_rate": 0.0,
+      "side_rate": 0.168,
+      "cap_hit_rate": 0.481,
+      "conciseness_auto": 1.61,
+      "judge_v1": {
+        "safety": 3.15,
+        "actionability": 3.89,
+        "spatial_accuracy": 3.13,
+        "conciseness": 2.93,
+        "hallucination": 4.86,
+        "overall": 3.59
+      },
+      "judge_v2": {
+        "safety": 1.92,
+        "actionability": 3.27,
+        "spatial_accuracy": 2.75,
+        "conciseness": 2.65,
+        "hallucination": 2.69,
+        "overall": 2.66
+      },
+      "judge_v1_n": 285,
+      "judge_v2_n": 71,
+      "judge_v1_uniform_share": 0.042,
+      "judge_v2_uniform_share": 0.028
+    },
+    "london_context": {
+      "n_frames": 285,
+      "median_vlm_latency_s": 4.26,
+      "mean_words": 9.9,
+      "unique_ratio": 0.144,
+      "top_share": 0.168,
+      "stop_rate": 0.0,
+      "slow_rate": 0.0,
+      "side_rate": 0.477,
+      "cap_hit_rate": 0.0,
+      "conciseness_auto": 5.0,
+      "judge_v1": {
+        "safety": 2.27,
+        "actionability": 2.87,
+        "spatial_accuracy": 2.36,
+        "conciseness": 2.54,
+        "hallucination": 4.12,
+        "overall": 2.83
+      },
+      "judge_v2": {
+        "safety": 1.85,
+        "actionability": 3.25,
+        "spatial_accuracy": 2.26,
+        "conciseness": 3.86,
+        "hallucination": 3.74,
+        "overall": 2.99
+      },
+      "judge_v1_n": 285,
+      "judge_v2_n": 72,
+      "judge_v1_uniform_share": 0.077,
+      "judge_v2_uniform_share": 0.0
+    },
+    "london_context_v1_nomem": {
+      "n_frames": 285,
+      "median_vlm_latency_s": 4.16,
+      "mean_words": 8.9,
+      "unique_ratio": 0.47,
+      "top_share": 0.06,
+      "stop_rate": 0.0,
+      "slow_rate": 0.081,
+      "side_rate": 0.186,
+      "cap_hit_rate": 0.0,
+      "conciseness_auto": 4.99,
+      "judge_v1": {
+        "safety": 2.08,
+        "actionability": 2.9,
+        "spatial_accuracy": 2.32,
+        "conciseness": 2.59,
+        "hallucination": 4.17,
+        "overall": 2.81
+      },
+      "judge_v2": {
+        "safety": 1.53,
+        "actionability": 3.66,
+        "spatial_accuracy": 2.59,
+        "conciseness": 4.0,
+        "hallucination": 4.13,
+        "overall": 3.18
+      },
+      "judge_v1_n": 285,
+      "judge_v2_n": 70,
+      "judge_v1_uniform_share": 0.112,
+      "judge_v2_uniform_share": 0.0
+    },
+    "london_context_v2_nomem": {
+      "n_frames": 285,
+      "median_vlm_latency_s": 4.75,
+      "mean_words": 9.9,
+      "unique_ratio": 0.467,
+      "top_share": 0.06,
+      "stop_rate": 0.074,
+      "slow_rate": 0.214,
+      "side_rate": 0.695,
+      "cap_hit_rate": 0.0,
+      "conciseness_auto": 4.89,
+      "judge_v1": {
+        "safety": 3.05,
+        "actionability": 3.78,
+        "spatial_accuracy": 3.06,
+        "conciseness": 3.21,
+        "hallucination": 4.26,
+        "overall": 3.47
+      },
+      "judge_v2": {
+        "safety": 2.33,
+        "actionability": 3.69,
+        "spatial_accuracy": 2.97,
+        "conciseness": 3.88,
+        "hallucination": 4.15,
+        "overall": 3.4
+      },
+      "judge_v1_n": 285,
+      "judge_v2_n": 72,
+      "judge_v1_uniform_share": 0.018,
+      "judge_v2_uniform_share": 0.028
+    }
+  },
+  "paired_v2_nomem_minus_naive": {
+    "safety": {
+      "n": 144,
+      "mean": 0.604,
+      "ci95": [
+        0.269,
+        0.939
+      ],
+      "better": 54,
+      "worse": 32
+    },
+    "actionability": {
+      "n": 144,
+      "mean": 0.66,
+      "ci95": [
+        0.425,
+        0.895
+      ],
+      "better": 74,
+      "worse": 22
+    },
+    "spatial_accuracy": {
+      "n": 144,
+      "mean": 0.528,
+      "ci95": [
+        0.279,
+        0.777
+      ],
+      "better": 47,
+      "worse": 19
+    },
+    "conciseness": {
+      "n": 144,
+      "mean": 1.285,
+      "ci95": [
+        1.105,
+        1.465
+      ],
+      "better": 107,
+      "worse": 6
+    },
+    "hallucination": {
+      "n": 144,
+      "mean": 1.479,
+      "ci95": [
+        1.125,
+        1.834
+      ],
+      "better": 87,
+      "worse": 18
+    },
+    "overall": {
+      "n": 144,
+      "mean": 0.911,
+      "ci95": [
+        0.71,
+        1.112
+      ],
+      "better": 108,
+      "worse": 27
+    }
+  },
+  "latency": {
+    "latency_naive": {
+      "n": 50,
+      "median_s": 4.78,
+      "p90_s": 4.81,
+      "prompt_tokens": 448,
+      "completion_tokens": 79
+    },
+    "latency_v2_nomem": {
+      "n": 50,
+      "median_s": 4.79,
+      "p90_s": 5.26,
+      "prompt_tokens": 999,
+      "completion_tokens": 13
+    }
+  }
+}

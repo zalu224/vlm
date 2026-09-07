@@ -107,6 +107,11 @@ lvnav/
 ├── Makefile               ← one-line entry points for every stage
 ├── docs/
 │   ├── PROPOSAL.md        ← 2-page research proposal (hand to the professor)
+│   ├── RESULTS.md         ← full results tables, findings, failure catalogue
+│   ├── WRITEUP.md         ← 2-page write-up
+│   ├── PROGRESS.md        ← dated log of everything done and decided
+│   ├── DATA.md            ← footage provenance and licences
+│   ├── paper/             ← PAPER.md with figures/, data/ (per-frame scores), reports/
 │   ├── LITERATURE.md      ← annotated bibliography
 │   ├── RUBRIC.md          ← BLV evaluation rubric + judge prompt rationale
 │   ├── HARDWARE.md        ← memory budget, model choices, fallbacks
@@ -160,6 +165,7 @@ Each line of `results/<run>/records.jsonl` is one frame:
 - [x] Judged with judge v1 (all frames) and judge v2 (every 4th frame); paired reports
 - [ ] Human spot-check of 74 frames (`results/manual_sheet_suwon.csv`) and judge–human agreement
 - [x] Results table below; full analysis in `docs/RESULTS.md`; day-by-day log in `docs/PROGRESS.md`
+- [x] **Paper with figures: `docs/paper/PAPER.md`** (per-frame scores in `docs/paper/data/`, rebuilt by `python backend/scripts/make_paper.py`)
 
 ### Results
 

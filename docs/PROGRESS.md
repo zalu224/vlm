@@ -271,3 +271,11 @@ Same 50 Suwon frames, nothing else on the GPU: naive median 4.78 s (p90 4.81), c
 - Remote `origin` = https://github.com/zalu224/vlm.git; `main` pushed (21 commits). GitHub Actions `ci` passed on the push (lint + tests + mock CLI smoke, 30 s).
 - Clean-clone reproducibility check run from the README quick start (setup, test, lint, mock pipeline incl. judge v2 and manual-sheet): result logged below.
 - **Clean-clone check passed**: `git clone` → `make setup` (Python 3.11, incl. perception extra with the git `clip` pin) → `make test` (20 passed) → `make lint` → mock naive/context runs → judge v1 and v2 → v1 and v2 reports → blinded manual sheet. One rough edge found and fixed: asking `lvnav report` for a judged file that does not exist raised a traceback; it now prints which judged files the run has and exits 2. Definition-of-done item "reproducible from a clean clone" is met.
+
+---
+
+## Day 3 — 2026-09-07: paper with figures
+
+- `backend/scripts/make_paper.py` rebuilds everything under `docs/paper/` from `results/`: per-frame scores for both judges (`data/scores_judge_v1.csv`, 2,320 rows; `data/scores_judge_v2.csv`, 592 rows), `generation_stats.csv`, `summary.json` (all aggregates, CIs, latency), copies of the twelve paired reports, and eight figures (perception cues with the approach band drawn on the depth map; dumbbell naive → best arm; paired deltas with CIs; all arms by walk; generation statistics; judge v1 vs v2; the two largest improvements per walk as annotated frames; the three failure classes as annotated frames). Chart palette is the validated four-slot categorical set (one colour per arm, fixed across every figure).
+- `docs/paper/PAPER.md`: the research summary. Scope note up top: public footage only, self-recorded walks pending. Human-agreement placeholder in §7.
+- Results are now readable without the git-ignored `results/` directory: every number in the paper traces to a committed CSV or JSON.

@@ -27,3 +27,6 @@ results/*
 
 # Local logs
 logs/
+
+# Rendered paper (rebuild with backend/scripts/build_paper_html.py)
+docs/paper/paper.html
