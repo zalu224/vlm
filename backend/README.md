@@ -51,7 +51,9 @@ All commands accept `--config <yaml>` and, where a model is involved, `--backend
 ```bash
 lvnav extract-frames --video data/walk01.mp4 --out data/walk01 --fps 1 [--max-side 1024]
 lvnav run   --frames data/walk01 --mode naive   [--limit 20] [--run-name walk01_naive]
-lvnav run   --frames data/walk01 --mode context [--limit 20]
+lvnav run   --frames data/walk01 --mode cues     # sensor cues, no history
+lvnav run   --frames data/walk01 --mode memory   # history, no sensor cues
+lvnav run   --frames data/walk01 --mode context  # both
 lvnav judge --run results/walk01_context
 lvnav judge --run results/walk01_naive --cues-from results/walk01_context
 lvnav report --a results/walk01_naive --b results/walk01_context [--out report.md]
@@ -127,6 +129,7 @@ make serve-vlm VLM_MODEL=mlx-community/Qwen2.5-VL-3B-Instruct-4bit
 |---|---|
 | `correction-v1` | Shelf verification: yes/no/unsure verdict as JSON, with an explicit instruction that confirming a wrong item is the worst outcome. In `shelf/correction.py`. |
 | `naive-v1` | Generic assistant system prompt; "tell them what to do next". |
+| `cues-v1` / `memory-v1` | The same BLV guide rules with only one context component supplied, isolating each one's contribution. |
 | `context-v1` | BLV guide rules (≤ 2 spoken sentences, hazard first, body-relative, no scene description, state uncertainty, don't repeat) + sensor cues + rolling memory. |
 
 To iterate: add `BLV_SYSTEM_V2` / `CONTEXT_USER_V2` in `context/prompts.py`, extend `build_context_prompt`, set `context.prompt_version: v2` in a copied config, and add a row here. Never edit a version in place after a run has used it.
@@ -136,7 +139,7 @@ To iterate: add `BLV_SYSTEM_V2` / `CONTEXT_USER_V2` in `context/prompts.py`, ext
 - **New cue source** (e.g. optical flow for "approaching" objects): add a callable returning something `fuse()` can consume, or extend `SpatialCues` with a new field and its `to_text()` line. Add a unit test in `tests/test_cues.py`.
 - **New backend** (e.g. a cloud API for a sanity comparison): implement `VLMBackend.generate` in `vlm/`, register it in `build_backend`.
 - **New judge**: `eval/judge.py` takes any `VLMBackend`; a text-only judge just ignores the image argument.
-- **New condition**: add a `Mode` literal and branch in `pipeline.run_pipeline`; keep the record schema unchanged.
+- **New condition**: add a `Mode` literal and add it to `USES_CUES` / `USES_MEMORY` in `pipeline.py`; keep the record schema unchanged. `cues`/`memory` modes exist to attribute the two context components separately, so preserve that separation when adding more.
 
 ## Testing and lint
 

@@ -1,5 +1,7 @@
 import json
 
+import pytest
+
 from lvnav.config import load_config
 from lvnav.eval import judge_run, parse_judge_output, write_report
 from lvnav.perception import build_perception
@@ -60,3 +62,37 @@ def test_records_are_valid_jsonl(frames_dir, tmp_path):
     assert len(lines) == 2
     for line in lines:
         json.loads(line)
+
+
+def test_four_conditions_isolate_context_components(frames_dir, tmp_path):
+    """cues-only carries no history; memory-only carries no sensor cues."""
+    cfg = _cfg(tmp_path)
+    backend = build_backend("mock", cfg.vlm)
+    perception = build_perception(cfg.perception, use_mock=True)
+
+    runs = {
+        "naive": run_pipeline(frames_dir, "naive", backend, cfg),
+        "cues": run_pipeline(frames_dir, "cues", backend, cfg, perception=perception),
+        "memory": run_pipeline(frames_dir, "memory", backend, cfg),
+        "context": run_pipeline(frames_dir, "context", backend, cfg, perception=perception),
+    }
+    rows = {k: read_jsonl(v / "records.jsonl") for k, v in runs.items()}
+    assert {len(r) for r in rows.values()} == {6}
+
+    assert rows["naive"][3]["cues"] is None and rows["naive"][3]["memory"] is None
+    assert rows["cues"][3]["cues"] and rows["cues"][3]["memory"] is None
+    assert rows["memory"][3]["memory"] and rows["memory"][3]["cues"] is None
+    assert rows["context"][3]["cues"] and rows["context"][3]["memory"]
+
+    # Memory-only recalls prior instructions, not cue text it never received.
+    assert "Free space:" not in rows["memory"][3]["memory"]
+    assert "Free space:" in rows["context"][3]["memory"]
+
+    assert rows["cues"][0]["prompt_version"] == "cues-v1"
+    assert rows["memory"][0]["prompt_version"] == "memory-v1"
+
+
+def test_cues_mode_requires_perception(frames_dir, tmp_path):
+    cfg = _cfg(tmp_path)
+    with pytest.raises(ValueError, match="requires a perception stack"):
+        run_pipeline(frames_dir, "cues", build_backend("mock", cfg.vlm), cfg)

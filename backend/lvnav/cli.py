@@ -59,10 +59,15 @@ def cmd_run(args) -> int:
         cfg.perception.enabled = False
     backend = build_backend(cfg.vlm.backend, cfg.vlm)
 
+    from .pipeline import USES_CUES
+
     perception = None
-    if args.mode == "context":
+    if args.mode in USES_CUES:
         if not cfg.perception.enabled:
-            print("error: context mode requires perception; drop --no-perception", file=sys.stderr)
+            print(
+                f"error: {args.mode} mode requires perception; drop --no-perception",
+                file=sys.stderr,
+            )
             return 2
         perception = build_perception(cfg.perception, use_mock=(cfg.vlm.backend == "mock"))
 
@@ -141,7 +146,12 @@ def main(argv: list[str] | None = None) -> int:
 
     p = sub.add_parser("run", help="generate instructions for a frame directory")
     p.add_argument("--frames", type=Path, required=True)
-    p.add_argument("--mode", choices=["naive", "context"], required=True)
+    p.add_argument(
+        "--mode",
+        choices=["naive", "cues", "memory", "context"],
+        required=True,
+        help="naive=no context; cues=sensor cues only; memory=history only; context=both",
+    )
     p.add_argument("--run-name", default=None)
     p.add_argument("--limit", type=int, default=None, help="only process the first N frames")
     p.add_argument("--no-perception", action="store_true")

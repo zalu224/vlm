@@ -21,9 +21,17 @@ class RollingMemory:
     to move left?), not to flood the prompt with history.
     """
 
-    def __init__(self, window: int = 3, include_last_instruction: bool = True) -> None:
+    def __init__(
+        self,
+        window: int = 3,
+        include_last_instruction: bool = True,
+        include_cues: bool = True,
+    ) -> None:
         self.window = window
         self.include_last_instruction = include_last_instruction
+        # In the memory-only condition there are no sensor cues to recall, so the
+        # window carries prior instructions alone.
+        self.include_cues = include_cues
         self._entries: deque[MemoryEntry] = deque(maxlen=window)
 
     def push(self, frame_id: str, cues_text: str, instruction: str) -> None:
@@ -40,7 +48,7 @@ class RollingMemory:
             return "No prior frames yet; this is the start of the walk."
         lines = [f"Previous {len(self._entries)} frame(s), oldest first:"]
         for i, e in enumerate(self._entries, 1):
-            lines.append(f"  {i}. {e.cues_text}")
+            lines.append(f"  {i}. {e.cues_text if self.include_cues else e.instruction}")
         if self.include_last_instruction:
             lines.append(f'Last instruction given: "{self._entries[-1].instruction}"')
         return "\n".join(lines)

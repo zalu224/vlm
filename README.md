@@ -1,19 +1,19 @@
 # Low-Vision Assistive Vision: Two Laptop-Scale Studies
 
-This repository holds two related studies on assistive vision for people who are blind or have low vision (pBLV), sharing one perception and VLM stack. Everything runs locally: no cloud APIs and no fine-tuning. The research framing and questions are in `docs/PROPOSAL.md`; hardware requirements are in `docs/HARDWARE.md`.
+This repository holds two related studies on assistive vision for people who are blind or have low vision (pBLV), sharing one perception and VLM stack. Everything runs locally: no cloud APIs and no fine-tuning. Each study has its own standalone proposal; hardware requirements are in `docs/HARDWARE.md`.
 
 | Study | Question | Manual effort | Docs |
 |---|---|---|---|
-| **A. Walking guidance** | Does structured context improve spoken navigation instructions from a VLM? (RQ4) | Record 3 short walks | `docs/WEEK_PLAN.md` |
-| **B. Last-Shelf** | Can open-vocabulary detection plus a small VLM find and verify a specific household item? (RQ1–RQ3) | ~30 min annotation | `docs/LASTSHELF.md` |
+| **A. Context engineering** | Does structured context improve spoken walking guidance, and which part of it does the work? | Record 3 short walks | `docs/PROPOSAL_CONTEXT.md` |
+| **B. Object retrieval** | Can detection plus a small VLM find a specific household object and verify the user reached the right one? | ~30 min annotation | `docs/PROPOSAL_RETRIEVAL.md` |
 
-Study B is the faster one: image-only, no human trials, roughly 2–3 days end to end. Study A is described first below; jump to [Study B](#study-b--last-shelf) for the shelf work.
+Study B is the faster of the two. Implementation guides: `docs/WEEK_PLAN.md` (A) and `docs/LASTSHELF.md` (B).
 
 ---
 
-# Study A — Context-Engineered VLM Guidance for Walking
+# Study A — Context Engineering for Walking Guidance
 
-A one-week study of whether **structured spatial context** (rolling scene memory + explicit obstacle and free-space cues) improves the navigation instructions a vision-language model (VLM) gives to a person who is blind or has low vision (pBLV), compared with naive single-frame prompting.
+A study of whether **structured spatial context** (rolling scene memory + explicit obstacle and free-space cues) improves the navigation instructions a vision-language model (VLM) gives to a person who is blind or has low vision (pBLV), compared with naive single-frame prompting.
 
 Everything runs locally. No cloud APIs, no fine-tuning.
 
@@ -23,12 +23,16 @@ Everything runs locally. No cloud APIs, no fine-tuning.
 
 > Given egocentric walking video, does injecting engineered context into the VLM prompt produce instructions that are safer, more actionable, and more spatially accurate than single-frame prompting, and at what latency cost?
 
-Two conditions are compared on identical frames:
+Four conditions run on identical frames, isolating the two context components so each one's contribution is attributable:
 
-| Condition | What the VLM sees |
-|---|---|
-| **Naive** (baseline) | The current frame + a generic "help a blind user" prompt |
-| **Context** (ours) | The current frame + a BLV-specific system prompt + free-space/obstacle cues from a depth estimator and open-vocabulary detector + a rolling summary of the last *N* frames and the last instruction given |
+| Condition (`--mode`) | Frame | Sensor cues | Rolling memory |
+|---|---|---|---|
+| `naive` (baseline) | yes | — | — |
+| `cues` | yes | yes | — |
+| `memory` | yes | — | yes |
+| `context` | yes | yes | yes |
+
+Every non-naive condition shares the same BLV guide rules (≤ 2 spoken sentences, hazard first, body-relative directions, state uncertainty), so measured differences are attributable to the context rather than to instruction style.
 
 Instructions are scored on a five-dimension BLV rubric (safety, actionability, spatial accuracy, conciseness, hallucination) by an LLM-as-judge and spot-checked by hand. See `docs/RUBRIC.md`.
 
@@ -91,9 +95,9 @@ make serve-vlm                   # mlx_vlm.server on http://localhost:8080
 # 3. Put an egocentric walking video in data/ and extract frames at 1 fps
 make frames VIDEO=data/walk01.mp4 OUT=data/walk01
 
-# 4. Run both conditions on the same frames
-make run-naive   FRAMES=data/walk01
-make run-context FRAMES=data/walk01
+# 4. Run the conditions on the same frames
+make run-all FRAMES=data/walk01          # naive, cues, memory, context
+#   or individually: make run-naive / run-cues / run-memory / run-context
 
 # 5. Score with the LLM judge and build the comparison report
 make judge   RUN=results/walk01_naive
@@ -151,7 +155,8 @@ lvnav/
 ├── README.md              ← this file: repo-wide conventions and workflow
 ├── Makefile               ← one-line entry points for every stage
 ├── docs/
-│   ├── PROPOSAL.md        ← 2-page research proposal (hand to the professor)
+│   ├── PROPOSAL_CONTEXT.md   ← study A proposal (standalone)
+│   ├── PROPOSAL_RETRIEVAL.md ← study B proposal (standalone)
 │   ├── LITERATURE.md      ← annotated bibliography
 │   ├── RUBRIC.md          ← BLV evaluation rubric + judge prompt rationale
 │   ├── HARDWARE.md        ← memory budget, model choices, fallbacks
@@ -208,7 +213,7 @@ For study B, `results/shelf/` holds `catalog.json`, `detections.jsonl`, `trials.
 - [x] Backend pipeline, mock backend, unit tests
 - [x] Streamlit viewer
 - [ ] Collect egocentric walking footage (see `docs/WEEK_PLAN.md`, Day 1)
-- [ ] Run both conditions on ≥ 300 frames
+- [ ] Run all four conditions on ≥ 300 frames
 - [ ] Human spot-check of 40 frames against the judge
 
 **Study B — Last-Shelf**
@@ -223,14 +228,14 @@ For study B, `results/shelf/` holds `catalog.json`, `detections.jsonl`, `trials.
 
 _To be filled after the evaluation runs._
 
-| Dimension | Naive | Context | Δ |
-|---|---|---|---|
-| Safety | | | |
-| Actionability | | | |
-| Spatial accuracy | | | |
-| Conciseness | | | |
-| Hallucination (↑ = fewer) | | | |
-| Median latency (s) | | | |
+| Dimension | Naive | Cues | Memory | Context |
+|---|---|---|---|---|
+| Safety | | | | |
+| Actionability | | | | |
+| Spatial accuracy | | | | |
+| Conciseness | | | | |
+| Hallucination (↑ = fewer) | | | | |
+| Median latency (s) | | | | |
 
 #### Study B
 
@@ -246,6 +251,7 @@ _To be filled after the evaluation runs._
 
 ## Changelog
 
+- **v0.3.0** — Split the proposal into two standalone studies (`PROPOSAL_CONTEXT.md`, `PROPOSAL_RETRIEVAL.md`). Study A now runs four conditions (`naive`, `cues`, `memory`, `context`) so the two context components can be attributed separately.
 - **v0.2.0** — Added study B (Last-Shelf): catalogue indexing, cached open-vocabulary detection, three-arm search ablation, VLM correction with hard negatives and false-confirm accounting, report generator, and a click-to-annotate Streamlit page.
 - **v0.1.0** — Initial scaffold: backend package, mock-tested pipeline, judge, report generator, Streamlit viewer, documentation set.
 

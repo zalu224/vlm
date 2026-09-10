@@ -27,14 +27,18 @@ Rules:
 7. Do not repeat the last instruction unless the situation has not changed."""
 
 CONTEXT_USER_V1 = """Current frame is attached.
+{cues_block}{memory_block}
+Give the next instruction now."""
 
+CUES_BLOCK_V1 = """
 Sensor cues for this frame (from a depth estimator and object detector; treat as strong but not perfect evidence):
 {cues}
+"""
 
+MEMORY_BLOCK_V1 = """
 Scene memory:
 {memory}
-
-Give the next instruction now."""
+"""
 
 
 @dataclass(frozen=True)
@@ -48,11 +52,27 @@ def build_naive_prompt() -> Prompt:
     return Prompt(system=NAIVE_SYSTEM, user=NAIVE_USER, version="naive-v1")
 
 
-def build_context_prompt(cues_text: str, memory_text: str, version: str = "v1") -> Prompt:
+def build_context_prompt(
+    cues_text: str | None = None,
+    memory_text: str | None = None,
+    version: str = "v1",
+    label: str = "context",
+) -> Prompt:
+    """Build the guidance prompt with whichever context components are supplied.
+
+    Passing only cues, only memory, or both gives the three non-naive conditions.
+    The BLV system prompt is constant across all of them, so any measured difference
+    is attributable to the context components rather than to the instruction style.
+    """
     if version != "v1":
         raise ValueError(f"Unknown context prompt version: {version}")
+    if cues_text is None and memory_text is None:
+        raise ValueError("build_context_prompt needs at least one of cues_text or memory_text")
     return Prompt(
         system=BLV_SYSTEM_V1,
-        user=CONTEXT_USER_V1.format(cues=cues_text, memory=memory_text),
-        version=f"context-{version}",
+        user=CONTEXT_USER_V1.format(
+            cues_block="" if cues_text is None else CUES_BLOCK_V1.format(cues=cues_text),
+            memory_block="" if memory_text is None else MEMORY_BLOCK_V1.format(memory=memory_text),
+        ),
+        version=f"{label}-{version}",
     )

@@ -1,6 +1,6 @@
 # Last-Shelf: fast technical evaluation of item retrieval
 
-A compressed replication of the **search** and **correction** phases of Ruan et al., *A Multimodal Assistive System for Product Localization and Retrieval for People who are Blind or have Low Vision* (arXiv 2601.12486). Sonification and human trials are deliberately out of scope: everything here is measured on a fixed set of roughly 200 shelf photographs. This document is the implementation guide; the research framing and questions (RQ1–RQ3) are in `docs/PROPOSAL.md`.
+A compressed replication of the **search** and **correction** phases of Ruan et al., *A Multimodal Assistive System for Product Localization and Retrieval for People who are Blind or have Low Vision* (arXiv 2601.12486). Sonification and human trials are deliberately out of scope: everything here is measured on a fixed set of roughly 200 shelf photographs. This document is the implementation guide; the research framing and questions are in `docs/PROPOSAL_RETRIEVAL.md`.
 
 ## What the original does, and what this keeps
 

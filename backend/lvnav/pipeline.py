@@ -15,7 +15,12 @@ from .context import RollingMemory, build_context_prompt, build_naive_prompt
 from .data.frames import Frame, list_frames
 from .vlm.base import VLMBackend
 
-Mode = Literal["naive", "context"]
+# Four conditions. `cues` and `memory` isolate the two context components so their
+# individual contributions can be attributed; `context` supplies both.
+Mode = Literal["naive", "cues", "memory", "context"]
+
+USES_CUES = {"cues", "context"}
+USES_MEMORY = {"memory", "context"}
 
 
 @dataclass
@@ -52,15 +57,19 @@ def run_pipeline(
     frames: list[Frame] = list_frames(frames_dir, limit)
     if not frames:
         raise ValueError(f"No image frames found in {frames_dir}")
-    if mode == "context" and perception is None:
-        raise ValueError("context mode requires a perception stack")
+    if mode in USES_CUES and perception is None:
+        raise ValueError(f"{mode!r} mode requires a perception stack")
 
     run_name = run_name or cfg.run_name or f"{frames_dir.name}_{mode}"
     run_dir = Path(cfg.results_root) / run_name
     run_dir.mkdir(parents=True, exist_ok=True)
     cfg.save(run_dir / "config.yaml")
 
-    memory = RollingMemory(cfg.context.memory_frames, cfg.context.include_last_instruction)
+    memory = RollingMemory(
+        cfg.context.memory_frames,
+        cfg.context.include_last_instruction,
+        include_cues=mode in USES_CUES,
+    )
     out_path = run_dir / "records.jsonl"
 
     with out_path.open("w") as fh:
@@ -69,17 +78,21 @@ def run_pipeline(
             if mode == "naive":
                 prompt = build_naive_prompt()
             else:
-                with Image.open(frame.path) as img:
-                    cues = perception(img.convert("RGB"))
-                cues_text = cues.to_text()
-                cues_struct = cues.to_dict() if save_cues_json else None
-                memory_text = memory.to_text()
-                prompt = build_context_prompt(cues_text, memory_text, cfg.context.prompt_version)
+                if mode in USES_CUES:
+                    with Image.open(frame.path) as img:
+                        cues = perception(img.convert("RGB"))
+                    cues_text = cues.to_text()
+                    cues_struct = cues.to_dict() if save_cues_json else None
+                if mode in USES_MEMORY:
+                    memory_text = memory.to_text()
+                prompt = build_context_prompt(
+                    cues_text, memory_text, cfg.context.prompt_version, label=mode
+                )
 
             resp = backend.generate(prompt.system, prompt.user, image=frame.path)
 
-            if mode == "context":
-                memory.push(frame.frame_id, cues_text, resp.text)
+            if mode in USES_MEMORY:
+                memory.push(frame.frame_id, cues_text or "", resp.text)
 
             rec = Record(
                 run=run_name,

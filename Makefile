@@ -9,7 +9,7 @@ VLM_MODEL ?= mlx-community/Qwen2.5-VL-7B-Instruct-4bit
 VLM_PORT  ?= 8080
 FPS       ?= 1
 
-.PHONY: setup serve-vlm frames run-naive run-context judge report viewer test lint clean \
+.PHONY: setup serve-vlm frames run-naive run-cues run-memory run-context run-all judge report viewer test lint clean \
         shelf-index shelf-detect shelf-trials shelf-annotate shelf-search shelf-correct shelf-report
 
 setup:
@@ -30,8 +30,17 @@ frames:
 run-naive:
 	$(BIN)/lvnav run --frames $(FRAMES) --mode naive --backend $(BACKEND)
 
+run-cues:
+	$(BIN)/lvnav run --frames $(FRAMES) --mode cues --backend $(BACKEND)
+
+run-memory:
+	$(BIN)/lvnav run --frames $(FRAMES) --mode memory --backend $(BACKEND)
+
 run-context:
 	$(BIN)/lvnav run --frames $(FRAMES) --mode context --backend $(BACKEND)
+
+# All four conditions on the same frames.
+run-all: run-naive run-cues run-memory run-context
 
 judge:
 	$(BIN)/lvnav judge --run $(RUN) --backend $(BACKEND)

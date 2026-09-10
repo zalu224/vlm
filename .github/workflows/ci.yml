@@ -33,8 +33,9 @@ jobs:
           for i in range(4):
               Image.fromarray(rng.integers(0,255,(120,160,3),dtype=np.uint8)).save(d/f"{i:06d}.jpg")
           EOF
-          lvnav run --frames data/ci --mode naive --backend mock
-          lvnav run --frames data/ci --mode context --backend mock
+          for m in naive cues memory context; do
+            lvnav run --frames data/ci --mode $m --backend mock
+          done
           lvnav judge --run results/ci_naive --backend mock --cues-from results/ci_context
           lvnav judge --run results/ci_context --backend mock
           lvnav report --a results/ci_naive --b results/ci_context
