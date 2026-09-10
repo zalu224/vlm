@@ -1,6 +1,19 @@
-# Context-Engineered VLM Guidance for Low-Vision Navigation
+# Low-Vision Assistive Vision: Two Laptop-Scale Studies
 
-A one-week, laptop-scale research study of whether **structured spatial context** (rolling scene memory + explicit obstacle and free-space cues) improves the navigation instructions a vision-language model (VLM) gives to a person who is blind or has low vision (pBLV), compared with naive single-frame prompting.
+This repository holds two related studies on assistive vision for people who are blind or have low vision (pBLV), sharing one perception and VLM stack. Both run entirely on an Apple Silicon Mac with 18 GB of unified memory: no cloud APIs, no GPU cluster, no fine-tuning.
+
+| Study | Question | Manual effort | Docs |
+|---|---|---|---|
+| **A. Walking guidance** | Does engineered context improve spoken navigation instructions from a VLM? | Record 3 short walks | `docs/PROPOSAL.md` |
+| **B. Last-Shelf** | Can open-vocabulary detection + a small VLM find and verify a specific household item on a shelf? | ~30 min annotation | `docs/LASTSHELF.md` |
+
+Study B is the faster one: image-only, no human trials, roughly 2–3 days end to end. Study A is described first below; jump to [Study B](#study-b--last-shelf) for the shelf work.
+
+---
+
+# Study A — Context-Engineered VLM Guidance for Walking
+
+A one-week study of whether **structured spatial context** (rolling scene memory + explicit obstacle and free-space cues) improves the navigation instructions a vision-language model (VLM) gives to a person who is blind or has low vision (pBLV), compared with naive single-frame prompting.
 
 Everything runs locally on an Apple Silicon Mac with 18 GB of unified memory. No cloud APIs, no GPU cluster, no fine-tuning.
 
@@ -93,6 +106,44 @@ make viewer
 
 To smoke-test the pipeline without any models (CI mode), use `--backend mock` on every command; see `backend/README.md`.
 
+## Study B — Last-Shelf
+
+A compressed replication of the search and correction phases of Ruan et al. (arXiv 2601.12486), a wearable system for helping pBLV locate and retrieve products. The paper solves the **last meter**: wayfinding gets you to the aisle, not to the right jar. Their pipeline is YOLO-World detection plus embedding and colour-histogram matching to find the product, spatialized audio and VLM speech to guide the hand, and a VLM check that verifies the item actually reached.
+
+This version keeps **search** and **correction**, drops navigation and sonification (they need a moving user), and measures everything on ~200 still shelf photographs of household items.
+
+**What it measures**
+
+- *Search*, as a three-arm ablation: detection only → + CLIP similarity → + colour histogram. Detector recall is reported separately so a detector miss is never charged to the matcher.
+- *Correction*: the VLM verifies a crop against the requested item. Positives are the ground-truth crop; negatives are the highest-ranked wrong candidate — the item a user would plausibly grab by mistake. **False confirmations** (saying yes to the wrong item) are counted on their own, because that error is far more harmful than an unnecessary "no".
+- Both phases across model sizes (3B vs 7B), to find which one breaks first as the model shrinks.
+
+**Pipeline**
+
+```
+data/shelf/catalog/<item>/ref*.jpg ──► shelf index   ──► catalog.json  (CLIP + histograms)
+data/shelf/images/*.jpg            ──► shelf detect  ──► detections.jsonl  (run once, reused)
+                                       shelf trials  ──► trials.jsonl   (template)
+                                       annotator     ──► trials.jsonl   (one click per image)
+                                       shelf search  ──► search.jsonl   (all 3 arms, one pass)
+                                       shelf correct ──► correction_<model>.jsonl
+                                       shelf report  ──► report.md + summary.json
+```
+
+```bash
+make serve-vlm                                   # terminal 2
+make shelf-index  SHELF_DATA=data/shelf
+make shelf-detect SHELF_DATA=data/shelf
+make shelf-trials TARGET=cinnamon
+make viewer                                      # "Shelf annotator" page: click the right box
+make shelf-search
+make shelf-correct LABEL=qwen7b
+make shelf-correct LABEL=qwen3b MODEL=mlx-community/Qwen2.5-VL-3B-Instruct-4bit
+make shelf-report
+```
+
+Full design, item-selection guidance, schedule and reporting caveats: `docs/LASTSHELF.md`.
+
 ## Repository layout
 
 ```
@@ -104,20 +155,23 @@ lvnav/
 │   ├── LITERATURE.md      ← annotated bibliography
 │   ├── RUBRIC.md          ← BLV evaluation rubric + judge prompt rationale
 │   ├── HARDWARE.md        ← memory budget, model choices, fallbacks
-│   └── WEEK_PLAN.md       ← day-by-day schedule with deliverables
+│   ├── WEEK_PLAN.md       ← day-by-day schedule for study A
+│   └── LASTSHELF.md       ← study B: design, commands, 2–3 day schedule
 ├── backend/
 │   ├── README.md          ← backend-specific setup, CLI reference, extension points
 │   ├── pyproject.toml
 │   ├── configs/default.yaml
-│   ├── lvnav/             ← the Python package (perception, context, vlm, eval)
+│   ├── lvnav/             ← the Python package (perception, context, vlm, eval, shelf)
 │   ├── scripts/           ← thin wrappers (serve_vlm.sh)
 │   └── tests/             ← pytest suite, runs with the mock backend
 ├── frontend/
 │   ├── README.md          ← viewer-specific notes
 │   ├── requirements.txt
-│   └── app.py             ← Streamlit results viewer for the presentation
-├── data/                  ← videos and extracted frames (git-ignored except samples/)
-└── results/               ← run outputs: records.jsonl, judged.jsonl, report.md
+│   ├── app.py             ← Streamlit results viewer for study A
+│   └── pages/
+│       └── 1_Shelf_annotator.py  ← click-to-annotate ground truth for study B
+├── data/                  ← videos, frames, shelf images (git-ignored except samples/)
+└── results/               ← run outputs; results/shelf/ for study B
 ```
 
 ## Repository conventions (repo-wide)
@@ -143,20 +197,31 @@ Each line of `results/<run>/records.jsonl` is one frame:
  "latency_s": 4.21, "prompt_tokens": 1180, "completion_tokens": 27}
 ```
 
+For study B, `results/shelf/` holds `catalog.json`, `detections.jsonl`, `trials.jsonl`, `search.jsonl`, `correction_<model>.jsonl`, `report.md` and `summary.json`; their fields are documented in `backend/README.md`.
+
 `judged.jsonl` adds a `scores` object with the five rubric dimensions (1–5) and a `judge_rationale` string. `report.md` contains paired per-dimension means, latency statistics and the ten largest score deltas for qualitative inspection.
 
 ## Status and roadmap
 
+**Study A — walking guidance**
+
 - [x] Backend pipeline, mock backend, unit tests
 - [x] Streamlit viewer
-- [ ] Collect or download egocentric walking footage (see `docs/WEEK_PLAN.md`, Day 1)
+- [ ] Collect egocentric walking footage (see `docs/WEEK_PLAN.md`, Day 1)
 - [ ] Run both conditions on ≥ 300 frames
 - [ ] Human spot-check of 40 frames against the judge
-- [ ] Fill in the results table below
+
+**Study B — Last-Shelf**
+
+- [x] Catalogue, detection, search ablation, correction, report, annotator
+- [ ] Photograph ~20 adversarial household items and ~200 shelf images
+- [ ] Annotate trials
+- [ ] Run search and correction at 7B and 3B
+- [ ] Fill in the results tables below
 
 ### Results
 
-_To be filled after the Day 5 evaluation run._
+_To be filled after the evaluation runs._
 
 | Dimension | Naive | Context | Δ |
 |---|---|---|---|
@@ -167,8 +232,21 @@ _To be filled after the Day 5 evaluation run._
 | Hallucination (↑ = fewer) | | | |
 | Median latency (s) | | | |
 
+#### Study B
+
+| Metric | Detection only | + CLIP | + colour |
+|---|---|---|---|
+| Top-1 (target found) | | | |
+| End-to-end Top-1 | | | |
+
+| Model | Correction accuracy | False confirms | Median latency |
+|---|---|---|---|
+| Qwen2.5-VL-7B | | | |
+| Qwen2.5-VL-3B | | | |
+
 ## Changelog
 
+- **v0.2.0** — Added study B (Last-Shelf): catalogue indexing, cached open-vocabulary detection, three-arm search ablation, VLM correction with hard negatives and false-confirm accounting, report generator, and a click-to-annotate Streamlit page.
 - **v0.1.0** — Initial scaffold: backend package, mock-tested pipeline, judge, report generator, Streamlit viewer, documentation set.
 
 ## License

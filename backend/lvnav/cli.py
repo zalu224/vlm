@@ -3,6 +3,7 @@
 Subcommands
 -----------
 extract-frames   Sample frames from a video at a fixed rate.
+shelf            Last-Shelf study: item retrieval and VLM verification on shelf images.
 run              Generate instructions for every frame under one condition.
 judge            Score a run with the LLM judge.
 report           Build a paired comparison report from two judged runs.
@@ -170,7 +171,13 @@ def main(argv: list[str] | None = None) -> int:
     p.add_argument("--out", type=Path, default=None)
     p.set_defaults(func=cmd_manual_sheet)
 
+    from .shelf.cli import register as register_shelf
+
+    register_shelf(sub)
+
     args = parser.parse_args(argv)
+    if getattr(args, "shelf_cmd", None):
+        return args.func(args, _resolve(args))
     return args.func(args)
 
 

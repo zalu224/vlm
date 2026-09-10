@@ -33,8 +33,19 @@ class MockBackend:
         temperature: float | None = None,
     ) -> VLMResponse:
         time.sleep(self.latency_s)
-        # Judge requests ask for JSON; instruction requests get a canned instruction.
-        if "Return ONLY a JSON object" in user:
+        # Correction requests ask for a verdict; judge requests ask for rubric scores;
+        # everything else is treated as a guidance-instruction request.
+        if '"verdict"' in user:
+            seed = int(hashlib.md5((str(image) + user[:64]).encode()).hexdigest()[:8], 16)
+            verdict = ["yes", "no", "unsure"][seed % 3]
+            text = json.dumps(
+                {
+                    "verdict": verdict,
+                    "identified_as": "" if verdict == "yes" else "a similar jar",
+                    "spoken": "Mock verification.",
+                }
+            )
+        elif "Return ONLY a JSON object" in user:
             seed = int(hashlib.md5(user.encode()).hexdigest()[:8], 16)
             base = 2 + (seed % 3)
             scores = {
