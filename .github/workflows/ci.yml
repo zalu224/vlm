@@ -46,17 +46,20 @@ jobs:
           from PIL import Image
           root = pathlib.Path("data/shelf")
           (root/"images").mkdir(parents=True, exist_ok=True)
+          names = ["cinnamon", "oats"]
           for name, col in {"cinnamon": (150,80,40), "oats": (220,200,150)}.items():
               d = root/"catalog"/name; d.mkdir(parents=True, exist_ok=True)
               for r in range(2):
-                  Image.new("RGB",(64,64),col).save(d/f"ref{r}.jpg")
+                  Image.new("RGB",(700,700),col).save(d/f"ref{r}.jpg")
           rng = np.random.default_rng(0)
           for i in range(4):
-              Image.fromarray(rng.integers(0,255,(120,200,3),dtype=np.uint8)).save(root/"images"/f"s{i:03d}.jpg")
+              tgt = names[i % 2]
+              Image.fromarray(rng.integers(0,255,(700,900,3),dtype=np.uint8)).save(root/"images"/f"{tgt}__d1_{i:02d}.jpg")
           PYEOF
+          lvnav shelf check  --catalog data/shelf/catalog --images data/shelf/images
           lvnav shelf index  --catalog data/shelf/catalog --backend mock
           lvnav shelf detect --images  data/shelf/images  --backend mock
-          lvnav shelf trials --default-target cinnamon
+          lvnav shelf trials --from-filename
           python - <<'PYEOF'
           import json, pathlib
           p = pathlib.Path("results/shelf/trials.jsonl")

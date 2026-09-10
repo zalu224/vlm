@@ -18,6 +18,7 @@ from pathlib import Path
 
 from PIL import Image, ImageDraw
 
+from .dataset import target_from_filename
 from .search import load_jsonl
 
 MISSED = -1
@@ -33,26 +34,47 @@ def write_trials(rows: list[dict], path: Path) -> Path:
 
 
 def build_template(
-    detections_path: Path, targets: list[str] | None, out_path: Path, default_target: str | None
+    detections_path: Path,
+    targets: list[str] | None,
+    out_path: Path,
+    default_target: str | None,
+    from_filename: bool = False,
 ) -> Path:
-    """One trial per shelf image. `target` is pre-filled if a per-image mapping is
-    supplied (a `targets.json` of {image_stem: item_id}), otherwise left for the
-    annotator."""
+    """One trial per shelf image, with the requested target pre-filled where possible.
+
+    Three ways to supply the target, in priority order: parsed from the filename
+    (`cinnamon__d1_03.jpg`), looked up in a `targets.json` of {image_stem: item_id},
+    or a single `default_target` for every image. Pre-filling matters: it is the
+    difference between annotating one field per image and two.
+    """
     rows = []
     mapping = {}
     if targets:
         mapping = {Path(k).stem: v for k, v in json.loads(Path(targets[0]).read_text()).items()}
+    unresolved = 0
     for rec in load_jsonl(detections_path):
-        stem = Path(rec["image"]).stem
+        path = Path(rec["image"])
+        target = None
+        if from_filename:
+            target = target_from_filename(path)
+        target = target or mapping.get(path.stem) or default_target
+        if target is None:
+            unresolved += 1
         rows.append(
             {
                 "image": rec["image"],
-                "target": mapping.get(stem, default_target),
+                "target": target,
                 "gt_box": None,
                 "n_boxes": len(rec["boxes"]),
             }
         )
-    return write_trials(rows, out_path)
+    write_trials(rows, out_path)
+    if unresolved:
+        print(
+            f"  note: {unresolved}/{len(rows)} trials have no target yet; "
+            "the annotator will ask for each one"
+        )
+    return Path(out_path)
 
 
 def render_boxes(image_path: Path, boxes: list[dict], out_path: Path | None = None) -> Image.Image:

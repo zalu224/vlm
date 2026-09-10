@@ -65,8 +65,10 @@ lvnav manual-sheet --run results/walk01_context --every 8
 ## Shelf study CLI
 
 ```bash
+lvnav shelf check    [--catalog data/shelf/catalog] [--images data/shelf/images]
 lvnav shelf index    --catalog data/shelf/catalog          # → results/shelf/catalog.json
 lvnav shelf detect   --images  data/shelf/images [--conf 0.15] [--max-boxes 30]
+lvnav shelf trials   --from-filename                       # target from cinnamon__d1_03.jpg
 lvnav shelf trials   --default-target cinnamon             # or --targets targets.json
 lvnav shelf annotate                                       # terminal; the viewer page is faster
 lvnav shelf search   [--text-weight 0.25]                  # all three arms in one pass
@@ -86,6 +88,10 @@ Every shelf subcommand takes `--results` (default `results/shelf`) and `--backen
 `search.jsonl` — per trial: `{image, target, target_name, gt_box, n_candidates, detector_recall, latency_s, hard_distractor_box, variants: {<arm>: {pred_box, pred_score, top1, top3, ranking}}}`.
 
 `correction_<label>.jsonl` — per case: `{model, image, target_name, case: positive|negative, box_id, crop_path, expected, verdict, identified_as, spoken, correct, false_confirm, latency_s, parse_error, raw}`.
+
+### Dataset conventions
+
+Shelf images are named `<item_id>__<free text>.jpg`; the prefix is the requested target, so `--from-filename` fills it in and annotation becomes one decision per image instead of two. `dataset.check()` validates the whole set before any model runs and separates blocking errors (missing reference photos, misnamed files, targets with no catalogue folder) from warnings that belong in the write-up (thin per-item coverage, low resolution, fewer items than planned). It exits non-zero on errors so it can gate a script.
 
 ### Design notes
 

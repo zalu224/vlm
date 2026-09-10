@@ -1,17 +1,89 @@
-# Low-Vision Assistive Vision: Two Laptop-Scale Studies
+# Finding and Verifying Objects for Blind and Low-Vision Users
 
-This repository holds two related studies on assistive vision for people who are blind or have low vision (pBLV), sharing one perception and VLM stack. Everything runs locally: no cloud APIs and no fine-tuning. Each study has its own standalone proposal; hardware requirements are in `docs/HARDWARE.md`.
+**Active study.** Can open-vocabulary detection plus a small vision-language model find a specific household object among visually similar neighbours, and reliably tell the user when they have reached the wrong one?
 
-| Study | Question | Manual effort | Docs |
-|---|---|---|---|
-| **A. Context engineering** | Does structured context improve spoken walking guidance, and which part of it does the work? | Record 3 short walks | `docs/PROPOSAL_CONTEXT.md` |
-| **B. Object retrieval** | Can detection plus a small VLM find a specific household object and verify the user reached the right one? | ~30 min annotation | `docs/PROPOSAL_RETRIEVAL.md` |
+Everything runs locally from a set of photographs taken at home. No cloud APIs, no fine-tuning, no wearable hardware.
 
-Study B is the faster of the two. Implementation guides: `docs/WEEK_PLAN.md` (A) and `docs/LASTSHELF.md` (B).
+| Document | What it is |
+|---|---|
+| `docs/PROPOSAL_RETRIEVAL.md` | The research proposal: questions, method, evaluation, limitations |
+| `docs/MATERIALS.md` | What to buy, photograph, and check before running anything |
+| `docs/LASTSHELF.md` | Implementation guide and schedule |
+| `docs/HARDWARE.md` | Memory budget and model choices |
+
+## Start here
+
+```bash
+make setup                    # one-time environment setup
+make serve-vlm                # local model server, second terminal
+make shelf-check              # validate your dataset before anything else
+```
+
+Then follow `docs/MATERIALS.md` section 8 for the run sequence. The next section explains what each stage does.
+
+A second study on context engineering for walking guidance is **parked**, not abandoned: its code, tests and proposal remain in the repository and can be picked up later. See *Parked work* below.
 
 ---
 
-# Study A — Context Engineering for Walking Guidance
+# The Study
+
+A compressed replication of the search and correction phases of Ruan et al. (arXiv 2601.12486), a wearable system for helping pBLV locate and retrieve products. The paper solves the **last meter**: wayfinding gets you to the aisle, not to the right jar. Their pipeline is YOLO-World detection plus embedding and colour-histogram matching to find the product, spatialized audio and VLM speech to guide the hand, and a VLM check that verifies the item actually reached.
+
+This version keeps **search** and **correction**, drops navigation and sonification (they need a moving user), and measures everything on ~200 still shelf photographs of household items.
+
+**What it measures**
+
+- *Search*, as a three-arm ablation: detection only → + CLIP similarity → + colour histogram. Detector recall is reported separately so a detector miss is never charged to the matcher.
+- *Correction*: the VLM verifies a crop against the requested item. Positives are the ground-truth crop; negatives are the highest-ranked wrong candidate — the item a user would plausibly grab by mistake. **False confirmations** (saying yes to the wrong item) are counted on their own, because that error is far more harmful than an unnecessary "no".
+- Both phases across model sizes (3B vs 7B), to find which one breaks first as the model shrinks.
+
+**Pipeline**
+
+```
+data/shelf/catalog/<item>/ref*.jpg ──► shelf index   ──► catalog.json  (CLIP + histograms)
+data/shelf/images/*.jpg            ──► shelf detect  ──► detections.jsonl  (run once, reused)
+                                       shelf trials  ──► trials.jsonl   (template)
+                                       annotator     ──► trials.jsonl   (one click per image)
+                                       shelf search  ──► search.jsonl   (all 3 arms, one pass)
+                                       shelf correct ──► correction_<model>.jsonl
+                                       shelf report  ──► report.md + summary.json
+```
+
+```bash
+make serve-vlm                                   # terminal 2
+make shelf-check                                 # validate the dataset first
+make shelf-index
+make shelf-detect
+make shelf-trials                                # targets read from filenames
+make viewer                                      # "Shelf annotator" page: one click per image
+make shelf-search
+make shelf-correct LABEL=qwen7b
+make shelf-correct LABEL=qwen3b MODEL=mlx-community/Qwen2.5-VL-3B-Instruct-4bit
+make shelf-report
+```
+
+`make shelf-check` runs first for a reason: it catches missing reference photos, misnamed files and thin per-item coverage in seconds, which is much cheaper than discovering them after annotation. Object selection and the capture protocol are in `docs/MATERIALS.md`; design and caveats in `docs/LASTSHELF.md`.
+
+
+## Hardware feasibility
+
+| Component | Model | Approx. memory | Runs on |
+|---|---|---|---|
+| VLM | `mlx-community/Qwen2.5-VL-7B-Instruct-4bit` | ~5–6 GB | MLX (Metal) |
+| VLM (lighter) | `mlx-community/Qwen2.5-VL-3B-Instruct-4bit` | ~2.5–3 GB | MLX (Metal) |
+| Detector | `yolov8s-worldv2.pt` (YOLO-World) | ~0.3 GB | PyTorch MPS |
+| Matcher | `openai/clip-vit-base-patch32` | ~0.2 GB | PyTorch MPS |
+| Depth (parked study only) | `depth-anything/Depth-Anything-V2-Small-hf` | ~0.3 GB | PyTorch MPS |
+| Runtime overhead | Python, PyTorch, MLX, Streamlit | ~2–3 GB | — |
+| **Total** | | **~9–11 GB** | leaves ~7 GB headroom |
+
+Only one model is resident at a time in practice: detection finishes before verification starts. Expect roughly 3–8 s per verification call on the 7B model and 1–3 s on the 3B, so ~400 verification calls take well under an hour. Details and fallbacks: `docs/HARDWARE.md`.
+
+---
+
+# Parked work: Context Engineering for Walking Guidance
+
+Not part of the active study. Kept intact — code, tests, proposal (`docs/PROPOSAL_CONTEXT.md`) and schedule (`docs/WEEK_PLAN.md`) — as the natural follow-on once object retrieval is finished.
 
 A study of whether **structured spatial context** (rolling scene memory + explicit obstacle and free-space cues) improves the navigation instructions a vision-language model (VLM) gives to a person who is blind or has low vision (pBLV), compared with naive single-frame prompting.
 
@@ -69,20 +141,7 @@ Recent evaluations of frontier VLMs on pBLV navigation find that the main failur
               results/<run>/records.jsonl ──► judge ──► report ──► Streamlit viewer
 ```
 
-## Hardware feasibility (18 GB Apple Silicon)
-
-| Component | Model | Approx. memory | Runs on |
-|---|---|---|---|
-| VLM | `mlx-community/Qwen2.5-VL-7B-Instruct-4bit` | ~5–6 GB | MLX (Metal) |
-| VLM (lighter) | `mlx-community/Qwen2.5-VL-3B-Instruct-4bit` | ~2.5–3 GB | MLX (Metal) |
-| Depth | `depth-anything/Depth-Anything-V2-Small-hf` | ~0.3 GB | PyTorch MPS |
-| Detector | `yolov8s-worldv2.pt` (YOLO-World) | ~0.3 GB | PyTorch MPS |
-| Runtime overhead | Python, PyTorch, MLX, Streamlit | ~2–3 GB | — |
-| **Total** | | **~9–11 GB** | leaves ~7 GB headroom |
-
-Expected throughput on an M3 Pro-class chip: 3–8 s per frame for the 7B model, 1–3 s for the 3B model. At 1 fps sampling, a 5-minute walk (300 frames) evaluates in well under an hour per condition. Details and fallbacks: `docs/HARDWARE.md`.
-
-## Quick start
+### Running the parked study
 
 ```bash
 # 1. Clone and set up the backend (Python 3.11+ recommended)
@@ -110,43 +169,6 @@ make viewer
 
 To smoke-test the pipeline without any models (CI mode), use `--backend mock` on every command; see `backend/README.md`.
 
-## Study B — Last-Shelf
-
-A compressed replication of the search and correction phases of Ruan et al. (arXiv 2601.12486), a wearable system for helping pBLV locate and retrieve products. The paper solves the **last meter**: wayfinding gets you to the aisle, not to the right jar. Their pipeline is YOLO-World detection plus embedding and colour-histogram matching to find the product, spatialized audio and VLM speech to guide the hand, and a VLM check that verifies the item actually reached.
-
-This version keeps **search** and **correction**, drops navigation and sonification (they need a moving user), and measures everything on ~200 still shelf photographs of household items.
-
-**What it measures**
-
-- *Search*, as a three-arm ablation: detection only → + CLIP similarity → + colour histogram. Detector recall is reported separately so a detector miss is never charged to the matcher.
-- *Correction*: the VLM verifies a crop against the requested item. Positives are the ground-truth crop; negatives are the highest-ranked wrong candidate — the item a user would plausibly grab by mistake. **False confirmations** (saying yes to the wrong item) are counted on their own, because that error is far more harmful than an unnecessary "no".
-- Both phases across model sizes (3B vs 7B), to find which one breaks first as the model shrinks.
-
-**Pipeline**
-
-```
-data/shelf/catalog/<item>/ref*.jpg ──► shelf index   ──► catalog.json  (CLIP + histograms)
-data/shelf/images/*.jpg            ──► shelf detect  ──► detections.jsonl  (run once, reused)
-                                       shelf trials  ──► trials.jsonl   (template)
-                                       annotator     ──► trials.jsonl   (one click per image)
-                                       shelf search  ──► search.jsonl   (all 3 arms, one pass)
-                                       shelf correct ──► correction_<model>.jsonl
-                                       shelf report  ──► report.md + summary.json
-```
-
-```bash
-make serve-vlm                                   # terminal 2
-make shelf-index  SHELF_DATA=data/shelf
-make shelf-detect SHELF_DATA=data/shelf
-make shelf-trials TARGET=cinnamon
-make viewer                                      # "Shelf annotator" page: click the right box
-make shelf-search
-make shelf-correct LABEL=qwen7b
-make shelf-correct LABEL=qwen3b MODEL=mlx-community/Qwen2.5-VL-3B-Instruct-4bit
-make shelf-report
-```
-
-Full design, item-selection guidance, schedule and reporting caveats: `docs/LASTSHELF.md`.
 
 ## Repository layout
 
@@ -155,8 +177,9 @@ lvnav/
 ├── README.md              ← this file: repo-wide conventions and workflow
 ├── Makefile               ← one-line entry points for every stage
 ├── docs/
-│   ├── PROPOSAL_CONTEXT.md   ← study A proposal (standalone)
-│   ├── PROPOSAL_RETRIEVAL.md ← study B proposal (standalone)
+│   ├── PROPOSAL_RETRIEVAL.md ← active study proposal
+│   ├── MATERIALS.md          ← equipment, object choice, capture protocol, checklists
+│   ├── PROPOSAL_CONTEXT.md   ← parked study proposal
 │   ├── LITERATURE.md      ← annotated bibliography
 │   ├── RUBRIC.md          ← BLV evaluation rubric + judge prompt rationale
 │   ├── HARDWARE.md        ← memory budget, model choices, fallbacks
@@ -208,7 +231,7 @@ For study B, `results/shelf/` holds `catalog.json`, `detections.jsonl`, `trials.
 
 ## Status and roadmap
 
-**Study A — walking guidance**
+**Parked — walking guidance**
 
 - [x] Backend pipeline, mock backend, unit tests
 - [x] Streamlit viewer
@@ -216,10 +239,11 @@ For study B, `results/shelf/` holds `catalog.json`, `detections.jsonl`, `trials.
 - [ ] Run all four conditions on ≥ 300 frames
 - [ ] Human spot-check of 40 frames against the judge
 
-**Study B — Last-Shelf**
+**Active — object retrieval**
 
 - [x] Catalogue, detection, search ablation, correction, report, annotator
-- [ ] Photograph ~20 adversarial household items and ~200 shelf images
+- [ ] Choose ~20 confusable household objects (`docs/MATERIALS.md` section 2)
+- [ ] Photograph references and ~200 shelf images; `make shelf-check` clean
 - [ ] Annotate trials
 - [ ] Run search and correction at 7B and 3B
 - [ ] Fill in the results tables below
@@ -237,7 +261,7 @@ _To be filled after the evaluation runs._
 | Hallucination (↑ = fewer) | | | | |
 | Median latency (s) | | | | |
 
-#### Study B
+#### Object retrieval
 
 | Metric | Detection only | + CLIP | + colour |
 |---|---|---|---|
@@ -251,6 +275,7 @@ _To be filled after the evaluation runs._
 
 ## Changelog
 
+- **v0.4.0** — Refocused the repository on the object-retrieval study. Added `docs/MATERIALS.md` (equipment, object selection, capture protocol, checklists), `lvnav shelf check` for dataset validation, and filename-derived targets so annotation is one decision per image. The context-engineering study is parked with its code and proposal intact.
 - **v0.3.0** — Split the proposal into two standalone studies (`PROPOSAL_CONTEXT.md`, `PROPOSAL_RETRIEVAL.md`). Study A now runs four conditions (`naive`, `cues`, `memory`, `context`) so the two context components can be attributed separately.
 - **v0.2.0** — Added study B (Last-Shelf): catalogue indexing, cached open-vocabulary detection, three-arm search ablation, VLM correction with hard negatives and false-confirm accounting, report generator, and a click-to-annotate Streamlit page.
 - **v0.1.0** — Initial scaffold: backend package, mock-tested pipeline, judge, report generator, Streamlit viewer, documentation set.

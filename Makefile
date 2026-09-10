@@ -10,7 +10,7 @@ VLM_PORT  ?= 8080
 FPS       ?= 1
 
 .PHONY: setup serve-vlm frames run-naive run-cues run-memory run-context run-all judge report viewer test lint clean \
-        shelf-index shelf-detect shelf-trials shelf-annotate shelf-search shelf-correct shelf-report
+        shelf-check shelf-index shelf-detect shelf-trials shelf-annotate shelf-search shelf-correct shelf-report
 
 setup:
 	$(PY) -m venv $(VENV)
@@ -55,14 +55,19 @@ viewer:
 SHELF_DATA ?= data/shelf
 SHELF_RES  ?= results/shelf
 
+shelf-check:
+	$(BIN)/lvnav shelf check --catalog $(SHELF_DATA)/catalog --images $(SHELF_DATA)/images
+
 shelf-index:
 	$(BIN)/lvnav shelf index --catalog $(SHELF_DATA)/catalog --results $(SHELF_RES) --backend $(BACKEND)
 
 shelf-detect:
 	$(BIN)/lvnav shelf detect --images $(SHELF_DATA)/images --results $(SHELF_RES) --backend $(BACKEND)
 
+# Targets come from filenames (cinnamon__d1_03.jpg); pass TARGET=<item> to override.
 shelf-trials:
-	$(BIN)/lvnav shelf trials --results $(SHELF_RES) --default-target $(TARGET)
+	$(BIN)/lvnav shelf trials --results $(SHELF_RES) \
+		$(if $(TARGET),--default-target $(TARGET),--from-filename)
 
 shelf-annotate:
 	$(BIN)/lvnav shelf annotate --results $(SHELF_RES)

@@ -46,18 +46,23 @@ Working hypothesis: search degrades gracefully, because the geometry comes from 
 
 ## Running it
 
+Materials, object selection and the capture protocol are in `docs/MATERIALS.md`. Once the dataset exists:
+
 ```bash
 # 0. One-time: local VLM server in a second terminal
 make serve-vlm                                      # Qwen2.5-VL-7B-Instruct-4bit
 
-# 1. Reference catalogue -> embeddings + histograms  (seconds)
+# 1. Validate the dataset before spending time on anything else  (seconds)
+lvnav shelf check
+
+# 2. Reference catalogue -> embeddings + histograms  (seconds)
 lvnav shelf index  --catalog data/shelf/catalog
 
 # 2. Detection over every shelf image, cached once   (~2-5 min for 200 images)
 lvnav shelf detect --images  data/shelf/images
 
 # 3. Annotation template, then click through it      (~20-30 min, the only manual step)
-lvnav shelf trials --default-target cinnamon        # or --targets targets.json
+lvnav shelf trials --from-filename                  # targets read from cinnamon__d1_03.jpg
 make viewer                                          # open "Shelf annotator" in the sidebar
 #   ...or in the terminal:  lvnav shelf annotate
 
@@ -79,8 +84,8 @@ Add `--backend mock` to any command to exercise the pipeline with no models at a
 
 | Day | Work | Output |
 |---|---|---|
-| **1 (morning)** | Pick 20 items, shoot 2–3 reference photos each, shoot ~200 shelf images across distances and lighting | `data/shelf/` populated |
-| **1 (afternoon)** | `index`, `detect`, `trials`, then annotate in the viewer | `trials.jsonl` complete |
+| **1 (morning)** | Pick 20 items (`docs/MATERIALS.md` §2), shoot 2–3 reference photos each, shoot ~200 shelf images across distances, lighting and angles | `data/shelf/` populated |
+| **1 (afternoon)** | `check` until clean, then `index`, `detect`, `trials`, and annotate in the viewer | `trials.jsonl` complete |
 | **2 (morning)** | `search`, read the three-arm table, inspect ranking failures; tune `--text-weight` or detector `--conf` **once** and rerun if detector recall is under ~85% | `search.jsonl`, first numbers |
 | **2 (afternoon)** | `correct` with 7B, then 3B | two `correction_*.jsonl` |
 | **3** | `report`, `summary`, write up, assemble figures from the failure cases | `report.md` + write-up |

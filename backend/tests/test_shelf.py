@@ -1,4 +1,5 @@
 import json
+from pathlib import Path
 
 import numpy as np
 import pytest
@@ -216,3 +217,98 @@ def test_false_confirm_is_counted_separately():
     m = correction_metrics(rows)["m"]
     assert m["false_confirm_n"] == 1 and m["false_confirm_pct"] == "100.0%"
     assert m["accuracy_pct"] == "50.0%"
+
+
+# ------------------------------------------------------------------------ dataset
+def test_target_parsed_from_filename():
+    from lvnav.shelf.dataset import target_from_filename
+
+    assert target_from_filename(Path("cinnamon__d1_bright_03.jpg")) == "cinnamon"
+    assert target_from_filename(Path("black_beans__d2_05.png")) == "black_beans"
+    assert target_from_filename(Path("IMG_4821.jpg")) is None
+
+
+def _make_dataset(tmp_path, n_items=2, n_images=4, named=True, refs=2):
+    cat = tmp_path / "catalog"
+    imgs = tmp_path / "images"
+    imgs.mkdir(parents=True)
+    names = [f"item_{i}" for i in range(n_items)]
+    for j, name in enumerate(names):
+        d = cat / name
+        d.mkdir(parents=True)
+        for r in range(refs):
+            Image.new("RGB", (700, 700), (40 * j, 90, 120)).save(d / f"ref{r}.jpg")
+    for i in range(n_images):
+        target = names[i % len(names)]
+        stem = f"{target}__d1_{i:02d}" if named else f"IMG_{i:04d}"
+        Image.new("RGB", (900, 700), (200, 195, 185)).save(imgs / f"{stem}.jpg")
+    return cat, imgs
+
+
+def test_check_passes_on_a_well_formed_dataset(tmp_path):
+    from lvnav.shelf.dataset import check
+
+    cat, imgs = _make_dataset(tmp_path, n_items=3, n_images=12)
+    res = check(cat, imgs)
+    assert res.ok, res.errors
+    assert res.stats["catalogue items"] == 3
+    assert res.stats["images with a valid target"] == 12
+    assert "Dataset check" in res.render()
+
+
+def test_check_flags_unconventional_filenames(tmp_path):
+    from lvnav.shelf.dataset import check
+
+    cat, imgs = _make_dataset(tmp_path, named=False)
+    res = check(cat, imgs)
+    assert not res.ok
+    assert any("item_id" in e for e in res.errors)
+
+
+def test_check_flags_missing_references_and_unknown_targets(tmp_path):
+    from lvnav.shelf.dataset import check
+
+    cat, imgs = _make_dataset(tmp_path)
+    (cat / "empty_item").mkdir()
+    Image.new("RGB", (900, 700)).save(imgs / "not_in_catalog__d1_00.jpg")
+    res = check(cat, imgs)
+    assert not res.ok
+    assert any("no reference photos" in e for e in res.errors)
+    assert any("no catalogue folder" in e for e in res.errors)
+
+
+def test_check_warns_on_thin_coverage_and_small_images(tmp_path):
+    from lvnav.shelf.dataset import check
+
+    cat, imgs = _make_dataset(tmp_path, n_items=2, n_images=2, refs=1)
+    Image.new("RGB", (320, 240)).save(imgs / "item_0__tiny.jpg")
+    res = check(cat, imgs)
+    assert res.ok  # warnings only; a small pilot still runs
+    joined = " ".join(res.warnings)
+    assert "reference photo" in joined
+    assert "short side" in joined
+
+
+def test_template_prefers_filename_target(tmp_path):
+    from lvnav.shelf.annotate import build_template
+
+    det = tmp_path / "detections.jsonl"
+    det.write_text(
+        json.dumps({"image": "/x/cinnamon__d1_00.jpg", "size": [9, 9], "boxes": []})
+        + "\n"
+        + json.dumps({"image": "/x/IMG_0001.jpg", "size": [9, 9], "boxes": []})
+        + "\n"
+    )
+    out = build_template(det, None, tmp_path / "trials.jsonl", None, from_filename=True)
+    rows = load_jsonl(out)
+    assert rows[0]["target"] == "cinnamon"
+    assert rows[1]["target"] is None  # falls through to the annotator
+
+
+def test_template_default_target_fills_the_gap(tmp_path):
+    from lvnav.shelf.annotate import build_template
+
+    det = tmp_path / "detections.jsonl"
+    det.write_text(json.dumps({"image": "/x/IMG_1.jpg", "size": [9, 9], "boxes": []}) + "\n")
+    out = build_template(det, None, tmp_path / "t.jsonl", "oats", from_filename=True)
+    assert load_jsonl(out)[0]["target"] == "oats"

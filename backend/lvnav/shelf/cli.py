@@ -51,9 +51,18 @@ def cmd_trials(args, cfg) -> int:
         [args.targets] if args.targets else None,
         out,
         args.default_target,
+        from_filename=args.from_filename,
     )
     print(f"Trial template -> {out}\nFill in gt_box with `lvnav shelf annotate` or the viewer.")
     return 0
+
+
+def cmd_check(args, cfg) -> int:
+    from .dataset import check
+
+    res = check(args.catalog, args.images)
+    print(res.render())
+    return 0 if res.ok else 1
 
 
 def cmd_annotate(args, cfg) -> int:
@@ -157,6 +166,12 @@ def register(subparsers) -> None:
         sp.add_argument("--detections", type=Path, default=None)
         sp.add_argument("--catalog-json", type=Path, default=None)
 
+    s = sub.add_parser("check", help="validate the dataset before running anything")
+    s.add_argument("--catalog", type=Path, default=Path("data/shelf/catalog"))
+    s.add_argument("--images", type=Path, default=Path("data/shelf/images"))
+    common(s)
+    s.set_defaults(func=cmd_check)
+
     s = sub.add_parser("index", help="embed catalogue reference photos")
     s.add_argument("--catalog", type=Path, required=True)
     s.add_argument("--max-refs", type=int, default=3)
@@ -173,6 +188,11 @@ def register(subparsers) -> None:
     s.set_defaults(func=cmd_detect)
 
     s = sub.add_parser("trials", help="build the annotation template")
+    s.add_argument(
+        "--from-filename",
+        action="store_true",
+        help="read the target from the filename prefix, e.g. cinnamon__d1_03.jpg",
+    )
     s.add_argument("--targets", type=Path, default=None, help="JSON {image_stem: item_id}")
     s.add_argument("--default-target", default=None)
     s.add_argument("--out", type=Path, default=None)
