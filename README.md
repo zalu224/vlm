@@ -1,11 +1,11 @@
 # Low-Vision Assistive Vision: Two Laptop-Scale Studies
 
-This repository holds two related studies on assistive vision for people who are blind or have low vision (pBLV), sharing one perception and VLM stack. Both run entirely on an Apple Silicon Mac with 18 GB of unified memory: no cloud APIs, no GPU cluster, no fine-tuning.
+This repository holds two related studies on assistive vision for people who are blind or have low vision (pBLV), sharing one perception and VLM stack. Everything runs locally: no cloud APIs and no fine-tuning. The research framing and questions are in `docs/PROPOSAL.md`; hardware requirements are in `docs/HARDWARE.md`.
 
 | Study | Question | Manual effort | Docs |
 |---|---|---|---|
-| **A. Walking guidance** | Does engineered context improve spoken navigation instructions from a VLM? | Record 3 short walks | `docs/PROPOSAL.md` |
-| **B. Last-Shelf** | Can open-vocabulary detection + a small VLM find and verify a specific household item on a shelf? | ~30 min annotation | `docs/LASTSHELF.md` |
+| **A. Walking guidance** | Does structured context improve spoken navigation instructions from a VLM? (RQ4) | Record 3 short walks | `docs/WEEK_PLAN.md` |
+| **B. Last-Shelf** | Can open-vocabulary detection plus a small VLM find and verify a specific household item? (RQ1–RQ3) | ~30 min annotation | `docs/LASTSHELF.md` |
 
 Study B is the faster one: image-only, no human trials, roughly 2–3 days end to end. Study A is described first below; jump to [Study B](#study-b--last-shelf) for the shelf work.
 
@@ -15,7 +15,7 @@ Study B is the faster one: image-only, no human trials, roughly 2–3 days end t
 
 A one-week study of whether **structured spatial context** (rolling scene memory + explicit obstacle and free-space cues) improves the navigation instructions a vision-language model (VLM) gives to a person who is blind or has low vision (pBLV), compared with naive single-frame prompting.
 
-Everything runs locally on an Apple Silicon Mac with 18 GB of unified memory. No cloud APIs, no GPU cluster, no fine-tuning.
+Everything runs locally. No cloud APIs, no fine-tuning.
 
 ---
 

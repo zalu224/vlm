@@ -1,57 +1,109 @@
 # Research Proposal
 
-## Context-Engineered Vision-Language Guidance for Low-Vision Navigation: A One-Week Ablation on Egocentric Video
+## Vision-Language Models for Low-Vision Assistance: Finding Objects and Guiding Movement
 
-**Track:** Low-vision assistive technology (human-centered AI, multimodal interaction)
-**Duration:** 7 days
-**Compute:** One Apple Silicon laptop (18 GB unified memory), no external APIs
-**Deliverables:** Reproducible codebase, paired results on ≥ 300 egocentric frames, 2-page write-up, live demo
+**Field:** Human-centered AI, accessibility, computer vision
+**Format:** Two studies, run in sequence
+**Deliverables:** Reproducible codebase, measured results on both studies, written report, live demonstration
 
 ---
 
-### 1. Motivation
+## 1. Summary
 
-Vision-language models (VLMs) can already describe a street scene fluently. Whether that fluency translates into guidance a blind pedestrian can act on within the next two seconds is a different question. Recent evaluations of frontier VLMs on navigation assistance for people who are blind or have low vision (pBLV) identify three recurring failures: unreliable spatial reasoning (left/right and distance errors), verbose or descriptive output that is not actionable when spoken, and weak alignment with what a blind user actually needs to hear. The same literature notes that most benchmarks use static images and explicitly calls for frame-by-frame evaluation on egocentric video from wearable devices.
+People who are blind or have low vision (pBLV) face two everyday problems that current technology handles poorly:
 
-Independently, robotics work on aerial navigation has shown that VLM reasoning becomes far more reliable when it is fed structured context from cheap perception modules (open-vocabulary grounding, geometric cues) rather than asked to infer everything from pixels. This proposal tests whether the same principle — *context engineering rather than model scaling* — closes the gap for assistive guidance.
+1. **Finding a specific object.** Existing aids can announce "there is a jar" but not "that is *your* cinnamon, not the paprika next to it."
+2. **Moving safely through space.** Existing aids describe a scene fluently but rarely say the one thing a person needs to hear in the next two seconds.
 
-### 2. Research question and hypotheses
+Vision-language models (VLMs) are strong at describing images and weak at both of these tasks. This proposal tests a specific idea for closing that gap: rather than using a larger model, **give a smaller model better-structured information** — object locations from a detector, distances from a depth estimator, and a memory of what was just said. We call this *context engineering*.
 
-**RQ.** On egocentric walking video, does injecting engineered context into a VLM's prompt produce navigation instructions that are safer, more actionable and more spatially accurate than naive single-frame prompting, and at what latency cost?
+We run two studies. **Study 1** is object retrieval on shelves, evaluated on still photographs. **Study 2** is walking guidance, evaluated on video from a body-worn camera. Study 1 is faster and comes first.
 
-- **H1 (quality).** The context condition scores higher on safety, actionability and spatial accuracy, with the largest gain on spatial accuracy, because explicit zone/proximity cues remove the model's need to estimate geometry from a single monocular frame.
-- **H2 (hallucination).** The context condition mentions fewer unsupported objects, because the prompt anchors it to detector output and instructs it to flag uncertainty.
-- **H3 (cost).** Context adds under 40 % latency at 1 fps on the target hardware, dominated by perception rather than the longer prompt.
+## 2. Background
 
-### 3. Method
+Recent evaluations of leading VLMs on navigation assistance for pBLV report three recurring failures: unreliable spatial reasoning (confusing left and right, misjudging distance), output that is too long or descriptive to be useful when spoken aloud, and poor alignment with what a blind user actually needs. The same work notes that most benchmarks use isolated still images and calls for evaluation on continuous video from wearable devices.
 
-**Conditions.** Both conditions use the same locally served VLM (Qwen2.5-VL-7B-Instruct, 4-bit, via MLX) at temperature 0 on identical frames sampled at 1 fps.
+Separately, work on aerial robotics has shown that VLM reasoning becomes markedly more reliable when the model is fed structured information from small, cheap perception modules instead of being asked to infer everything from raw pixels. Our studies test whether the same principle holds for assistive technology.
 
-| | Naive | Context |
+Study 1 builds directly on Ruan et al. (2026), a wearable system for helping pBLV locate products in stores. Their pipeline combines open-vocabulary object detection with visual matching to find an item, then uses a VLM to confirm the user reached the right one. We replicate the finding and verification stages on household objects, and extend their work by testing how far the model can be reduced before the system stops working.
+
+## 3. Research questions
+
+Each question below states what is being asked, what will be measured, and what we expect to find.
+
+### RQ1 — Does visual matching actually help find a specific object?
+
+An object detector can propose "there is a box here" but has no notion of *which* box was requested. We add two matching signals on top of detection: similarity between the image and reference photos of the target, and similarity of color distribution.
+
+- **Measured by:** how often the correct object is ranked first (top-1 accuracy), compared across three settings — detection alone, detection plus visual matching, and detection plus visual matching plus color.
+- **Expected:** detection alone performs near chance when several similar containers are visible; visual matching produces a large improvement; color adds a small further gain, mainly on same-shape items in different packaging.
+
+### RQ2 — Can a VLM reliably tell the user they have the wrong object?
+
+After the system points a user toward an object, it must verify what they actually reached for. This is the safety-critical step: telling someone "yes, that is your medication" when it is not is far worse than saying "I am not sure."
+
+- **Measured by:** verification accuracy, and separately the **false-confirmation rate** — how often the model approves the wrong object. Both are measured on correct objects and on deliberately confusable ones.
+- **Expected:** overall accuracy will look acceptable while false confirmations remain too high for deployment, because confirming is the model's default behavior.
+
+### RQ3 — How small can the model be before the system breaks, and which part breaks first?
+
+Assistive devices are worn, so the model should be small enough to run on the device itself. We compare a larger and a smaller VLM across both tasks.
+
+- **Measured by:** the change in accuracy and response time for each stage when moving from the larger to the smaller model.
+- **Expected:** finding objects degrades gently, because the spatial work is done by the detector rather than the VLM. Verification degrades sharply, because it requires reading small printed labels. If confirmed, this identifies fine-grained visual discrimination — not spatial reasoning — as the real bottleneck for wearable assistive vision.
+
+### RQ4 — Does structured context improve spoken walking guidance?
+
+For walking, we compare two ways of prompting the same model on the same video frames: a plain request to describe what to do, versus a prompt containing explicit obstacle positions, distances, walkable space, and a short memory of the last few seconds.
+
+- **Measured by:** five qualities of each spoken instruction, scored 1–5: safety, actionability, spatial accuracy, brevity, and freedom from invented details. Also response time.
+- **Expected:** the largest gain is in spatial accuracy, since explicit measurements remove the model's need to estimate geometry from a single image. Instructions should also become shorter, which matters because they are heard rather than read.
+
+## 4. Study 1 — Finding and verifying household objects
+
+**Materials.** Roughly 20 household objects, chosen to be genuinely difficult: several same-brand items in different varieties (two soup cans, two cereal boxes), a spice rack whose jars differ only by their labels, and a few clearly distinct items as controls. Approximately 200 photographs of these objects on shelves, varied by distance, lighting, viewing angle, and partial blocking. Two or three reference photographs per object.
+
+**Procedure.**
+1. An object detector proposes candidate regions in each photograph.
+2. Each candidate is scored against the requested object using visual similarity and color.
+3. A human marks which candidate is correct, giving ground truth. This is the only manual step.
+4. The VLM is shown the correct object and asked to verify it, then shown the most convincing wrong candidate and asked again.
+
+**What this design gets right.** Detection failures are reported separately from ranking failures, so a missed object is never blamed on the matching stage. The wrong candidates used for verification are the ones the system itself ranked highest, which is what a user would most plausibly reach for by mistake — a harder and more realistic test than a randomly chosen object.
+
+## 5. Study 2 — Walking guidance
+
+**Materials.** Video from a body-worn camera covering an indoor corridor, a sidewalk with pedestrians, and a street crossing. Frames are sampled once per second.
+
+**Procedure.** Each frame is processed twice by the same model: once with a plain prompt, once with a prompt containing measured obstacle positions, walkable space, and recent history. Both instructions are then scored on the five qualities in RQ4 by an automated evaluator that sees the image and the measurements but not the prompts, so neither condition is favored.
+
+**Validation.** Because the automated evaluator is itself a model, a person independently scores a sample of about 40 frames. We report the agreement between human and automated scores for each quality and flag any quality where agreement is weak.
+
+## 6. Limitations
+
+- **No pBLV participants.** Neither study involves blind or low-vision participants, so we measure system behavior, not usefulness. Participant studies require ethical approval and are the natural next step.
+- **Automated scoring is a proxy.** The human validation sample bounds how much confidence to place in it, but does not replace it.
+- **Sample size.** With roughly 200 trials per study, differences of a few percentage points are not meaningful and will be reported as such.
+- **Not comparable to published numbers.** Different objects, models, and settings mean our results replicate the *structure* of prior findings, not their exact values.
+- **Not a usable device.** These are research probes and must not be relied on for real navigation.
+
+## 7. Plan
+
+| Phase | Work | Output |
 |---|---|---|
-| System prompt | generic assistant | BLV guide rules: ≤ 2 spoken sentences, hazard first, body-relative directions, no scene description, state uncertainty |
-| Per-frame input | image | image + free-space per zone (L/C/R) from Depth Anything V2 + obstacles with proximity from YOLO-World |
-| Temporal input | none | rolling memory of the last 3 frames' cues and the last instruction given |
+| 1 | Collect objects, reference photographs, and shelf images | Study 1 dataset |
+| 2 | Run detection, mark ground truth, run matching | Study 1 finding results (RQ1) |
+| 3 | Run verification at both model sizes | Study 1 verification results (RQ2, RQ3) |
+| 4 | Record walking video; run both prompting conditions | Study 2 outputs |
+| 5 | Automated scoring and human validation | Study 2 results (RQ4) |
+| 6 | Analysis, written report, demonstration | Final deliverables |
 
-**Perception.** Depth Anything V2 (Small) yields relative depth; the lower half of the frame is split into three zones and each is labelled clear / partly blocked / blocked from its 90th-percentile closeness. YOLO-World with a 20-term BLV vocabulary (person, pole, stairs, curb, …) provides obstacles; each is assigned a zone and a near/mid/far bucket from the median depth inside its box. The fusion logic is model-free and unit-tested.
+Study 1 (phases 1–3) is self-contained and produces publishable results on its own.
 
-**Evaluation.** Every instruction is scored 1–5 on five dimensions (safety, actionability, spatial accuracy, conciseness, hallucination) by an LLM judge that sees the frame, the perception cues and the instruction but *not* the generating prompt, so both conditions are judged on identical evidence. A stratified sample of 40 frames is scored by hand to estimate judge–human agreement (Spearman ρ per dimension). We report paired per-frame deltas, win/loss counts, and the ten largest improvements and regressions for qualitative analysis.
+## 8. Future work
 
-**Data.** Egocentric walking footage at chest or head height, covering at least one indoor corridor, one sidewalk with pedestrians, and one street crossing. Self-recorded footage is sufficient for the ablation; public egocentric BLV datasets will be used if access is confirmed on Day 1 (see `docs/WEEK_PLAN.md`).
-
-### 4. Expected contribution
-
-1. A controlled, reproducible measurement of how much *prompt-level* context helps a mid-sized open VLM on BLV guidance — a number the current literature does not report.
-2. An open pipeline that runs entirely on a laptop, lowering the barrier for follow-up studies with pBLV participants.
-3. A failure-case catalogue (largest regressions) that points to which cue types matter most, informing what a wearable prototype should actually sense.
-
-### 5. Limitations and ethics
-
-No pBLV participants are involved in this one-week phase; the judge is a proxy and the human spot-check bounds its reliability. Footage is self-recorded in public spaces without identifiable faces retained. The system is a research probe, not an assistive device, and is not to be used for real navigation.
-
-### 6. Extension paths (beyond one week)
-
-- Replace the LLM judge with pBLV participant ratings (IRB required).
-- Stream from a phone camera to test real-time behaviour with speech output.
-- Fine-tune a 3B VLM on judged context-condition outputs (distillation) to recover latency.
-- Port the same context-engineering harness to the drone track: swap depth/detector cues for SLAM pose and obstacle map summaries feeding a diffusion planner.
+- Participant studies with pBLV users, replacing automated scoring with real judgments.
+- Adding the audio guidance channel from the original system, and comparing speech against non-speech sound.
+- Live camera input with spoken output, to test behavior under real timing pressure.
+- Training a small model on the outputs of the larger one, to recover speed without losing accuracy.
+- Applying the same context-engineering approach to the group's drone work, where measured obstacle information would be supplied to a planner in place of detector output.
