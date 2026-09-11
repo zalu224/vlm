@@ -10,6 +10,13 @@ from PIL import Image
 DEFAULT_CLIP = "openai/clip-vit-base-patch32"
 
 
+def _as_tensor(out):
+    """transformers < 5 returns the projected features as a tensor; transformers >= 5
+    wraps them in a BaseModelOutputWithPooling whose `pooler_output` is that same
+    (batch, projection_dim) tensor. Accept both (see docs/HARDWARE.md)."""
+    return out if hasattr(out, "float") else out.pooler_output
+
+
 class ClipEmbedder:
     """Wraps a CLIP checkpoint. ViT-B/32 is ~150 MB and runs comfortably on MPS."""
 
@@ -30,7 +37,7 @@ class ClipEmbedder:
             return np.zeros((0, self.model.config.projection_dim), dtype=np.float32)
         inputs = self.processor(images=images, return_tensors="pt").to(self.device)
         with torch.no_grad():
-            feats = self.model.get_image_features(**inputs)
+            feats = _as_tensor(self.model.get_image_features(**inputs))
         return feats.float().cpu().numpy()
 
     def embed_texts(self, texts: list[str]) -> np.ndarray:
@@ -39,7 +46,7 @@ class ClipEmbedder:
             self.device
         )
         with torch.no_grad():
-            feats = self.model.get_text_features(**inputs)
+            feats = _as_tensor(self.model.get_text_features(**inputs))
         return feats.float().cpu().numpy()
 
 

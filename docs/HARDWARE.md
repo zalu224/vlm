@@ -43,3 +43,6 @@ Record environment problems here with the fix, so they do not recur.
 - **PyTorch MPS op not implemented** — set `PYTORCH_ENABLE_MPS_FALLBACK=1` only as a diagnostic; the proper fix is to update torch (`pip install -U torch`) since Depth Anything and YOLO-World ops are supported on recent releases.
 - **Vision-token blowup** — very large frames produce thousands of vision tokens and slow every call. `vlm.image_max_side: 768` in the config bounds this; do not raise it without checking latency.
 - **Server rejects data-URL images** — the client sends base64 data URLs in the standard OpenAI multimodal format. If a server build rejects them, check its README for the supported image field; do not fall back to sending file paths (non-portable).
+
+- **`AttributeError: 'BaseModelOutputWithPooling' object has no attribute 'float'` from `lvnav shelf index`** — transformers 5.x changed `CLIPModel.get_image_features` / `get_text_features` to return an output object instead of the bare tensor; the projected (batch, 512) features are its `pooler_output`. Fixed 2026-09-10 in `shelf/embed.py` (`_as_tensor`), which accepts both shapes, so the code runs on transformers 4.x and 5.x.
+\n

@@ -183,3 +183,94 @@ Open the **Shelf annotator** page in the viewer sidebar. For each photograph it 
 **After running**
 - [ ] `report.md` reviewed, including the failure cases at the bottom
 - [ ] Warnings from `shelf-check` noted in the write-up as limitations
+
+---
+
+## 11. This project's items (catalogued 2026-09-10)
+
+The seven items photographed so far are organised as the tooling expects: `data/shelf/catalog/<item_id>/ref01.jpg` (front), `ref02.jpg` (left), `ref03.jpg` (right), downscaled to 1600 px with the phone's orientation applied; the untouched originals are in `data/shelf/originals/`. Prompt-facing names are in `catalog/names.json`, the grouping in `data/shelf/ITEMS.md`.
+
+| item_id | what it is | container | group |
+|---|---|---|---|
+| `cinnamon` | McCormick ground cinnamon, red cap | jar | B |
+| `paprika` | Gold Emblem paprika, black cap, orange label | jar | B |
+| `oregano` | Good & Gather oregano leaves, black cap, green label | jar | B |
+| `olive_oil` | extra virgin olive oil, green glass, 250 ml | bottle | B |
+| `balsamic_vinegar` | Napoleon organic balsamic vinegar, gold cap, 500 ml | bottle | B |
+| `frosted_flakes` | Kroger Frosted Flakes, giant size | box | C |
+| `fruit_snacks` | Welch's mixed fruit fruit snacks | box | C |
+
+### What the models already say about them
+
+Both models were run on the 21 reference photos before any shelf photo exists, to check the catalogue and to see how hard the set is.
+
+**Detection (YOLO-World, container vocabulary, conf 0.15).** The main item was boxed in all 21 photos. Spice jars come back as `cup` or `bottle`, boxes as `box`, bottles as `bottle`; the label does not matter, only that a box encloses the item, which it does every time. A few photos also pick up small background objects on the counter (the blue box behind the cinnamon, appliances), which is what shelf photos will look like too. Boxed images: `docs/figures/catalog_boxes/`, contact sheet `docs/figures/catalog_boxes_sheet.jpg`.
+
+**Identification (Qwen2.5-VL-7B, 1024 px, ~7 s each).** Asked for brand, product and size from the front photo, it read all seven correctly, down to "2.37 oz" and "66 club size pouches". Output in `results/shelf/catalog_vlm_id.json`. With a whole clean reference photo the verification stage is easy; the study's question is what happens with a shelf crop.
+
+**Confusability (CLIP ViT-B/32 on the reference photos, cosine; 1.00 = identical).**
+
+| | balsamic | cinnamon | flakes | snacks | olive oil | oregano | paprika |
+|---|---|---|---|---|---|---|---|
+| balsamic_vinegar | 1.00 | 0.69 | 0.53 | 0.61 | **0.89** | 0.63 | 0.68 |
+| cinnamon | | 1.00 | 0.67 | 0.69 | 0.68 | 0.73 | **0.80** |
+| frosted_flakes | | | 1.00 | 0.74 | 0.53 | 0.58 | 0.62 |
+| fruit_snacks | | | | 1.00 | 0.60 | 0.60 | 0.67 |
+| olive_oil | | | | | 1.00 | 0.64 | 0.70 |
+| oregano | | | | | | 1.00 | 0.77 |
+| paprika | | | | | | | 1.00 |
+
+Colour histograms give the same picture (olive oil vs balsamic 0.89; the three jars 0.73 to 0.79). Only one pair is hard for the matcher: the two dark bottles. The three spice jars are moderately alike in shape and not at all in colour, and the two boxes are distinct from everything.
+
+### What this means for the study
+
+The set as it stands is **all Group B and C**: same-shape-different-colour items plus controls. Group A, the confusable pairs the proposal calls "the core of the study", is empty. Section 2 warns about exactly this: with these seven, detection plus CLIP will score near-perfectly, colour will look decisive, and the verification stage will rarely be tested on a plausible wrong item. The results would be real but would not answer RQ1 or RQ2.
+
+Two ways forward, in order of preference.
+
+**Option 1, add same-line siblings (recommended, one shopping trip).** Each current item already anchors a brand line; buying its neighbours gives Group A pairs that differ only by the printed word:
+
+| anchor already owned | add (same brand, same container) | new item_id |
+|---|---|---|
+| McCormick cinnamon (red cap) | McCormick ground nutmeg, ground ginger, or allspice | `nutmeg`, `ginger` |
+| Good & Gather oregano (green label) | Good & Gather basil, thyme, or parsley | `basil`, `thyme` |
+| Gold Emblem paprika (orange label) | Gold Emblem chili powder or cumin | `chili_powder`, `cumin` |
+| Napoleon balsamic (dark bottle) | Napoleon red wine vinegar, or any second dark-glass vinegar/oil | `red_wine_vinegar` |
+| Kroger Frosted Flakes | Kroger Corn Flakes or Frosted Flakes regular size | `corn_flakes` |
+| Welch's mixed fruit snacks | Welch's Berries 'n Cherries or Island Fruits | `fruit_snacks_berry` |
+
+That is six to eight additions for a 13 to 15 item set with at least five confusable pairs, which meets the proposal's minimum. Photograph each new item the same way: three reference photos, ids in lowercase with underscores, then `make shelf-check`.
+
+**Option 2, run a pilot with the seven now.** Valid, and a good rehearsal of the whole pipeline, but report it as a pilot: `make shelf-check` will warn that 7 is below the 15-item target, and the write-up must say that RQ1 is only tested on one hard pair (oil vs vinegar) and three moderate ones (the jars).
+
+### Shelf photographs for seven items
+
+The protocol in section 4 scales down cleanly. The tooling needs every item requested in at least five photos; aim for ten so per-item numbers are not noise.
+
+- **70 photographs** (10 per item as the requested target), 4 to 7 items on the shelf at once, always with a confusable partner next to the target: the two bottles together, at least two jars together.
+- Cover the grid: 3 distances × 3 lighting levels means each combination appears about 8 times across the set. Angles and the 20 % harder cases (occlusion, label turned, crowded) as in section 4.
+- Rearrange between rounds. With only seven items it is very easy for position to become the cue.
+- Chest height, target not centred.
+
+Filenames use the real ids, so the tooling fills in the target itself:
+
+```
+olive_oil__d1_bright_01.jpg      balsamic_vinegar__d2_dim_03.jpg
+paprika__d3_normal_02.jpg        cinnamon__d1_occluded_01.jpg
+frosted_flakes__d2_angled_01.jpg fruit_snacks__d1_crowded_02.jpg
+```
+
+Drop them in `data/shelf/images/`, then:
+
+```bash
+make shelf-check            # must report no errors; the 7-item warning is expected for a pilot
+make shelf-detect           # cached once, reused by every later stage
+make shelf-trials           # targets come from the filenames
+make viewer                 # Shelf annotator: one click per photo, ~6 minutes for 70
+make shelf-search
+make shelf-correct LABEL=qwen7b
+make shelf-correct LABEL=qwen3b MODEL=mlx-community/Qwen2.5-VL-3B-Instruct-4bit
+make shelf-report
+```
+
+`shelf-index` is already done for these seven (`results/shelf/catalog.json`); rerun it after adding items.

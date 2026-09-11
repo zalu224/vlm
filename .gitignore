@@ -24,3 +24,6 @@ results/*
 .DS_Store
 .vscode/
 .idea/
+
+# local logs
+logs/
