@@ -53,3 +53,18 @@ For both public sets the human annotation step is replaced by `lvnav shelf trial
 - `--match contain` (Grocery composites, where the ground truth is the whole tile and the detector rightly boxes only the product inside it): a box qualifies when at least 80 % of it lies inside the tile and it covers at least 15 % of the tile; the box covering most of the tile wins. With plain IoU the composites showed 18 % "recall" while the best box was fully inside the tile in nearly every case.
 
 Detector settings that matter on these sets (`docs/HARDWARE.md` has the measurements): inference size 1280 (the ultralytics default of 640 shrinks a shelf until products are 40 px wide and halves recall), and for GroZi confidence 0.05 with up to 60 boxes, which took recall on a 40-trial sample from 45 % to 68 % at the price of ~29 candidates per shelf. The home-shelf defaults stay at conf 0.15.
+
+## First search results (2026-09-11, no VLM involved)
+
+Detector: YOLO-World, container vocabulary, imgsz 1280; conf 0.15 on Grocery, 0.05 on GroZi. Top-1/top-3 are over trials where the detector found the target; end-to-end top-1 charges detector misses to the system.
+
+| dataset | trials | detector recall | candidates / image | arm | top-1 | top-3 | end-to-end top-1 |
+|---|---|---|---|---|---|---|---|
+| Grocery (composite) | 186 | 74.7 % | 9.3 | det | 15.1 % | 40.3 % | 11.3 % |
+| | | | | + CLIP | 56.8 % | 89.2 % | 42.5 % |
+| | | | | + colour | 59.7 % | 85.6 % | 44.6 % |
+| GroZi-3.2k (val) | 219 | 70.3 % | 28.5 | det | 9.1 % | 21.4 % | 6.4 % |
+| | | | | + CLIP | 34.4 % | 71.4 % | 24.2 % |
+| | | | | + colour | 42.2 % | 79.2 % | 29.7 % |
+
+Reading: detection alone is at chance for the number of candidates, as RQ1 expects; CLIP is the large step; colour adds a further eight points on real shelves and two on composites. The remaining ceiling is the detector (a quarter to a third of targets never get a box), which is why recall is reported first. Correction (the VLM stage) has not been run on these sets yet: `lvnav shelf correct --results results/<dataset> --label qwen7b`, then the 3B, then `shelf report`.
