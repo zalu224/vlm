@@ -134,6 +134,47 @@ def annotate_cli(trials_path: Path, detections_path: Path, catalog_ids: list[str
     return Path(trials_path)
 
 
+def iou(a, b) -> float:
+    """Intersection over union of two xyxy boxes."""
+    ax1, ay1, ax2, ay2 = a
+    bx1, by1, bx2, by2 = b
+    inter = max(0.0, min(ax2, bx2) - max(ax1, bx1)) * max(0.0, min(ay2, by2) - max(ay1, by1))
+    union = (ax2 - ax1) * (ay2 - ay1) + (bx2 - bx1) * (by2 - by1) - inter
+    return inter / union if union > 0 else 0.0
+
+
+def fill_gt_from_boxes(
+    trials: list[dict],
+    detections_path: Path,
+    gt_boxes: dict[str, list[float]],
+    min_iou: float = 0.5,
+) -> list[dict]:
+    """Auto-annotate trials whose ground-truth box is already known (public datasets).
+
+    Mirrors what the human annotator does: pick the detected box that best overlaps the
+    true box; if none overlaps at least `min_iou`, the detector missed the target. The
+    matched IoU is kept on the trial so borderline matches can be audited.
+    """
+    dets = {d["image"]: d for d in load_jsonl(detections_path)}
+    out = []
+    for t in trials:
+        t = dict(t)
+        gt = gt_boxes.get(t["image"])
+        rec = dets.get(t["image"])
+        if gt is None or rec is None:
+            out.append(t)
+            continue
+        best, best_iou = None, 0.0
+        for b in rec["boxes"]:
+            v = iou(gt, b["box"])
+            if v > best_iou:
+                best, best_iou = b["box_id"], v
+        t["gt_box"] = best if best is not None and best_iou >= min_iou else MISSED
+        t["gt_iou"] = round(best_iou, 3)
+        out.append(t)
+    return out
+
+
 def load_ready_trials(trials_path: Path) -> list[dict]:
     """Only trials with both a target and a ground-truth decision are evaluated."""
     rows = load_jsonl(trials_path)

@@ -45,15 +45,46 @@ def cmd_detect(args, cfg) -> int:
 def cmd_trials(args, cfg) -> int:
     from .annotate import build_template
 
+    dets = Path(args.results) / "detections.jsonl" if not args.detections else args.detections
     out = Path(args.out or Path(args.results) / "trials.jsonl")
     build_template(
-        Path(args.results) / "detections.jsonl" if not args.detections else args.detections,
+        dets,
         [args.targets] if args.targets else None,
         out,
         args.default_target,
         from_filename=args.from_filename,
     )
+    if args.gt_boxes:
+        import json
+
+        from .annotate import MISSED, fill_gt_from_boxes, write_trials
+        from .search import load_jsonl
+
+        gt = json.loads(Path(args.gt_boxes).read_text())
+        trials = fill_gt_from_boxes(load_jsonl(out), dets, gt, min_iou=args.min_iou)
+        write_trials(trials, out)
+        done = [t for t in trials if t.get("gt_box") is not None]
+        missed = sum(1 for t in done if t["gt_box"] == MISSED)
+        print(
+            f"Trial template -> {out}\nAuto-annotated {len(done)}/{len(trials)} from ground-truth "
+            f"boxes (IoU >= {args.min_iou}); detector missed the target in {missed}."
+        )
+        return 0
     print(f"Trial template -> {out}\nFill in gt_box with `lvnav shelf annotate` or the viewer.")
+    return 0
+
+
+def cmd_import(args, cfg) -> int:
+    """Convert a public dataset into data/<name>/{catalog,images,gt_boxes.json}."""
+    from . import importers
+
+    if args.source == "grocery":
+        stats = importers.import_grocery_store(
+            args.src, args.out, composites_per_target=args.per_target, seed=args.seed
+        )
+    else:
+        stats = importers.import_grozi(args.src, args.out, subsets=args.subsets, seed=args.seed)
+    print(f"Imported {args.source} -> {args.out}: {stats}")
     return 0
 
 
@@ -195,9 +226,28 @@ def register(subparsers) -> None:
     )
     s.add_argument("--targets", type=Path, default=None, help="JSON {image_stem: item_id}")
     s.add_argument("--default-target", default=None)
+    s.add_argument(
+        "--gt-boxes",
+        type=Path,
+        default=None,
+        help="JSON {image: [x1,y1,x2,y2]} from an importer; fills gt_box by IoU, no human needed",
+    )
+    s.add_argument("--min-iou", type=float, default=0.5)
     s.add_argument("--out", type=Path, default=None)
     common(s)
     s.set_defaults(func=cmd_trials)
+
+    s = sub.add_parser(
+        "import", help="import a public dataset (grocery | grozi) into the study layout"
+    )
+    s.add_argument("source", choices=["grocery", "grozi"])
+    s.add_argument("--src", type=Path, required=True, help="downloaded dataset root")
+    s.add_argument("--out", type=Path, required=True, help="e.g. data/grocery")
+    s.add_argument("--per-target", type=int, default=4, help="grocery: composites per item")
+    s.add_argument("--subsets", default="val", help="grozi: val (84 shelves) | train | all")
+    s.add_argument("--seed", type=int, default=0)
+    common(s)
+    s.set_defaults(func=cmd_import)
 
     s = sub.add_parser("annotate", help="fill in ground-truth boxes in the terminal")
     s.add_argument("--trials", type=Path, default=None)

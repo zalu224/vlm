@@ -10,6 +10,7 @@ Everything runs locally from a set of photographs taken at home. No cloud APIs, 
 | `docs/MATERIALS.md` | What to buy, photograph, and check before running anything |
 | `docs/LASTSHELF.md` | Implementation guide and schedule |
 | `docs/HARDWARE.md` | Memory budget and model choices |
+| `docs/DATA.md` | The three datasets: home shelf, GroZi-3.2k, Grocery Store; survey of public options; import commands |
 
 ## Start here
 
@@ -242,6 +243,7 @@ For study B, `results/shelf/` holds `catalog.json`, `detections.jsonl`, `trials.
 **Active — object retrieval**
 
 - [x] Catalogue, detection, search ablation, correction, report, annotator
+- [x] Two public datasets imported with automatic ground truth: GroZi-3.2k (84 real shelves, 343 products) and Grocery Store (31 same-brand packaged variants, composite shelves) — `docs/DATA.md`
 - [ ] Choose ~20 confusable household objects (`docs/MATERIALS.md` section 2)
 - [ ] Photograph references and ~200 shelf images; `make shelf-check` clean
 - [ ] Annotate trials

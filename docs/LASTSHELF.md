@@ -46,7 +46,7 @@ Working hypothesis: search degrades gracefully, because the geometry comes from 
 
 ## Running it
 
-Materials, object selection and the capture protocol are in `docs/MATERIALS.md`. Once the dataset exists:
+Materials, object selection and the capture protocol are in `docs/MATERIALS.md`. Two public datasets with ground truth already attached are available at any time (`docs/DATA.md`); pass `--results results/<dataset>` and the matching `--catalog` / `--images` to run the same stages on them, with `lvnav shelf trials --gt-boxes` replacing annotation. Once the home dataset exists:
 
 ```bash
 # 0. One-time: local VLM server in a second terminal
