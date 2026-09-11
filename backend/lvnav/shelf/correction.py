@@ -39,6 +39,37 @@ Rules:
 - "unsure" if the photo is too blurry, cropped or small to read the label.
 """
 
+CORRECTION_USER_REFERENCE = """The attached photo has two panels. LEFT: the catalogue photo of the item the person wants. RIGHT: a close-up of the item they are reaching for. Decide whether the RIGHT item is the same product as the LEFT one (same brand, same variety, same packaging), not merely the same kind of product.
+
+Answer with ONLY a JSON object, no other text:
+{{"verdict": "yes" | "no" | "unsure", "identified_as": "<what the RIGHT item appears to be, or empty>", "spoken": "<one short sentence you would say aloud>"}}
+
+Rules:
+- "yes" only if the label, colours and packaging clearly match the LEFT photo.
+- "no" if it is clearly a different product, including a different variety of the same brand.
+- "unsure" if the RIGHT photo is too blurry, cropped or small to compare.
+"""
+
+PAIR_HEIGHT = 384
+
+
+def pair_image(
+    reference_path: Path, crop_img: Image.Image, height: int = PAIR_HEIGHT
+) -> Image.Image:
+    """Reference photo (left) and shelf crop (right) at a common height with a thin gap,
+    so a single-image VLM call can compare them."""
+    ref = Image.open(reference_path).convert("RGB")
+    panels = []
+    for im in (ref, crop_img.convert("RGB")):
+        w = max(int(im.size[0] * height / im.size[1]), 1)
+        panels.append(im.resize((w, height)))
+    gap = 12
+    out = Image.new("RGB", (panels[0].size[0] + gap + panels[1].size[0], height), (255, 255, 255))
+    out.paste(panels[0], (0, 0))
+    out.paste(panels[1], (panels[0].size[0] + gap, 0))
+    return out
+
+
 _JSON_RE = re.compile(r"\{.*\}", re.DOTALL)
 VALID_VERDICTS = {"yes", "no", "unsure"}
 
@@ -77,8 +108,16 @@ def run_correction(
     out_path: Path,
     model_label: str = "vlm",
     limit: int | None = None,
+    mode: str = "name",
 ) -> Path:
-    """Score every positive and hard-negative case with the VLM."""
+    """Score every positive and hard-negative case with the VLM.
+
+    `mode="name"`: the prompt names the requested item (the paper's setting; needs
+    product names). `mode="reference"`: the VLM is shown the catalogue reference photo
+    beside the crop and asked whether they are the same product; works for datasets
+    without names and is the check a system would run when the user picked the item
+    by pointing rather than naming it.
+    """
     rows = load_jsonl(search_path)
     if limit:
         rows = rows[:limit]
@@ -101,8 +140,17 @@ def run_correction(
                 if not crop_path.exists():
                     with Image.open(row["image"]) as im:
                         crop(im.convert("RGB"), box["box"]).save(crop_path, quality=92)
-
-                user = CORRECTION_USER.format(target_name=item.name)
+                if mode == "reference":
+                    pair_path = (
+                        tmp_dir / f"{Path(row['image']).stem}_{box_id}_{item.item_id}_pair.jpg"
+                    )
+                    if not pair_path.exists():
+                        with Image.open(crop_path) as c:
+                            pair_image(item.ref_paths[0], c).save(pair_path, quality=92)
+                    crop_path = pair_path
+                    user = CORRECTION_USER_REFERENCE
+                else:
+                    user = CORRECTION_USER.format(target_name=item.name)
                 resp = backend.generate(CORRECTION_SYSTEM, user, image=crop_path)
                 try:
                     parsed = parse_correction(resp.text)
@@ -116,6 +164,7 @@ def run_correction(
                     json.dumps(
                         {
                             "model": model_label,
+                            "mode": mode,
                             "image": row["image"],
                             "target": row["target"],
                             "target_name": item.name,

@@ -154,6 +154,7 @@ def cmd_correct(args, cfg) -> int:
         out,
         model_label=label,
         limit=args.limit,
+        mode=args.mode,
     )
     print(f"Correction results -> {out}")
     return 0
@@ -281,6 +282,12 @@ def register(subparsers) -> None:
     s.add_argument("--model", default=None, help="override vlm.model for this run")
     s.add_argument("--label", default=None, help="name for this model in the report")
     s.add_argument("--limit", type=int, default=None)
+    s.add_argument(
+        "--mode",
+        choices=["name", "reference"],
+        default="name",
+        help="name: prompt names the item (needs names); reference: compare with the catalogue photo",
+    )
     s.add_argument("--out", type=Path, default=None)
     common(s)
     s.set_defaults(func=cmd_correct)

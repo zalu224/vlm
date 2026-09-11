@@ -312,3 +312,68 @@ def test_template_default_target_fills_the_gap(tmp_path):
     det.write_text(json.dumps({"image": "/x/IMG_1.jpg", "size": [9, 9], "boxes": []}) + "\n")
     out = build_template(det, None, tmp_path / "t.jsonl", "oats", from_filename=True)
     assert load_jsonl(out)[0]["target"] == "oats"
+
+
+def test_correction_reference_mode_builds_pair_and_prompts_without_name(tmp_path):
+    """Reference mode: the VLM sees the catalogue photo and the crop side by side and is
+    asked whether they are the same product, so datasets without product names still
+    get a verification stage."""
+    import json
+
+    from PIL import Image
+
+    from lvnav.shelf.catalog import Catalog, CatalogItem
+    from lvnav.shelf.correction import CORRECTION_USER_REFERENCE, pair_image, run_correction
+    from lvnav.vlm.mock import MockBackend
+
+    ref = tmp_path / "ref01.jpg"
+    Image.new("RGB", (200, 300), (200, 30, 30)).save(ref)
+    shelf = tmp_path / "p0001__grozi_1.jpg"
+    Image.new("RGB", (400, 300), (30, 30, 200)).save(shelf)
+    pair = pair_image(ref, Image.open(shelf).crop((0, 0, 100, 150)))
+    assert pair.size[0] > pair.size[1] * 0.8 and pair.size[1] == 384  # side by side, fixed height
+    assert "asked for" not in CORRECTION_USER_REFERENCE and "LEFT" in CORRECTION_USER_REFERENCE
+
+    dets = tmp_path / "detections.jsonl"
+    dets.write_text(
+        json.dumps(
+            {
+                "image": str(shelf),
+                "size": [400, 300],
+                "boxes": [
+                    {"box_id": 0, "label": "box", "conf": 0.9, "box": [0, 0, 100, 150]},
+                    {"box_id": 1, "label": "box", "conf": 0.8, "box": [200, 0, 300, 150]},
+                ],
+            }
+        )
+        + "\n"
+    )
+    search = tmp_path / "search.jsonl"
+    search.write_text(
+        json.dumps(
+            {
+                "image": str(shelf),
+                "target": "p0001",
+                "target_name": "grocery product",
+                "gt_box": 0,
+                "hard_distractor_box": 1,
+                "variants": {},
+            }
+        )
+        + "\n"
+    )
+    cat = Catalog({"p0001": CatalogItem("p0001", "grocery product", [ref])})
+    out = run_correction(
+        search,
+        dets,
+        cat,
+        MockBackend(),
+        tmp_path / "corr.jsonl",
+        model_label="mock",
+        mode="reference",
+    )
+    rows = [json.loads(l) for l in out.read_text().splitlines()]
+    assert [r["case"] for r in rows] == ["positive", "negative"] and all(
+        r["mode"] == "reference" for r in rows
+    )
+    assert all(Path(r["crop_path"]).name.endswith("_pair.jpg") for r in rows)

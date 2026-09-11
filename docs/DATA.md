@@ -23,6 +23,18 @@ Survey done 2026-09-10, looking for: reference photos per product, cluttered sce
 | SKU-110K | Rejected. Boxes carry no product identity. |
 | GroZi-120 (2007) | Rejected. Original host dead; only account-gated mirrors. |
 
+## How this study differs from the works the data comes from
+
+The two public datasets were built for other questions; using them here does not repeat those studies.
+
+| source work | its question | what this study does with the same images |
+|---|---|---|
+| Ruan et al. 2026 (arXiv 2601.12486), the paper replicated | A wearable, real-time pipeline in a store: detection, spatialised audio guidance, VLM correction, evaluated on their own products and hardware | Still photographs, no guidance stage, no wearable. The finding stage is split into a three-arm ablation so each matching signal is measured, verification uses adversarial hard negatives with a separate false-confirmation rate, and everything is repeated at two model sizes to find which stage breaks first. Adds a **reference-photo verification mode** they do not have: the VLM compares the crop with the catalogue photo rather than a spoken name. |
+| OS2D (Osokin et al., CVPR 2020), source of the GroZi-3.2k copy | One-shot *detection*: train a network on the 596 train shelves to localise any product from one class image | No training at all. Off-the-shelf YOLO-World proposes boxes, CLIP and colour rank them, a VLM verifies. Only the 84 validation shelves are used, and their boxes serve as ground truth for auto-annotation, not as training targets. Detector recall is a reported result, not something tuned away. |
+| Klasson et al. 2019, Grocery Store Dataset | Hierarchical *classification* of a single product per photo, using the iconic image and text description as side information | Photos are tiled into composite shelves so the task becomes finding one requested product among same-category neighbours, then verifying it; the iconic renders are not used as references, real in-store train photos are. The 348 px resolution becomes a deliberate stress test of label reading for the smaller model. |
+
+The two nuances that are new relative to all three: (1) the same pipeline is run on a private home shelf, a public real-shelf set and a public composite set, and the write-up reports where they disagree; (2) verification is measured both by name and by reference photo, which separates "can the model read the label" from "can the model match two pictures".
+
 ## GroZi-3.2k
 
 ```bash
