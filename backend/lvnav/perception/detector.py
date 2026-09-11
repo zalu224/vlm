@@ -16,7 +16,12 @@ class ObstacleDetector:
     """
 
     def __init__(
-        self, model_path: str, vocabulary: list[str], conf: float = 0.3, device: str = "auto"
+        self,
+        model_path: str,
+        vocabulary: list[str],
+        conf: float = 0.3,
+        device: str = "auto",
+        imgsz: int = 640,
     ) -> None:
         from ultralytics import YOLOWorld
 
@@ -25,9 +30,12 @@ class ObstacleDetector:
         self.model.set_classes(vocabulary)
         self.vocabulary = list(vocabulary)
         self.conf = conf
+        self.imgsz = imgsz
 
     def __call__(self, image: Image.Image) -> list[Detection]:
-        results = self.model.predict(image, conf=self.conf, device=self.device, verbose=False)
+        results = self.model.predict(
+            image, conf=self.conf, imgsz=self.imgsz, device=self.device, verbose=False
+        )
         dets: list[Detection] = []
         for r in results:
             if r.boxes is None:

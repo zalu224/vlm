@@ -46,3 +46,5 @@ Record environment problems here with the fix, so they do not recur.
 
 - **`AttributeError: 'BaseModelOutputWithPooling' object has no attribute 'float'` from `lvnav shelf index`** — transformers 5.x changed `CLIPModel.get_image_features` / `get_text_features` to return an output object instead of the bare tensor; the projected (batch, 512) features are its `pooler_output`. Fixed 2026-09-10 in `shelf/embed.py` (`_as_tensor`), which accepts both shapes, so the code runs on transformers 4.x and 5.x.
 \n
+- **Detector recall on dense shelves is set by inference size, not image size** — `ultralytics` predicts at `imgsz=640` unless told otherwise, so a 1600 px shelf photo is shrunk until each product is ~40 px wide. On 40 GroZi-3.2k trials: 640 → 28 % recall, 1280 → 45 %, 1600 → 45 %; running the 3264 px originals at 2048 gave the same 45 %. Lowering `conf` from 0.15 to 0.05 at 1280 gave 68 %. `lvnav shelf detect --imgsz` now defaults to 1280 (2026-09-11); `ObstacleDetector` takes `imgsz`.
+

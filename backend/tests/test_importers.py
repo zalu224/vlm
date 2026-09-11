@@ -156,3 +156,38 @@ def test_import_grozi_val_split_builds_catalog_images_and_gt(tmp_path):
     assert (x1, y1, x2, y2) == (16, 48, 80, 144)
     assert stats == {"items": 2, "images": 2, "shelves": 1}
     assert "GroZi-3.2k" in (out / "SOURCE.md").read_text()
+
+
+def test_fill_gt_contain_rule_accepts_box_inside_target_cell(tmp_path):
+    dets = tmp_path / "d.jsonl"
+    # detector boxed the product (40x40) inside a 100x100 target tile: IoU 0.16, but contained
+    dets.write_text(
+        json.dumps(
+            {
+                "image": "c.jpg",
+                "size": [300, 100],
+                "boxes": [
+                    {"box_id": 0, "label": "carton", "conf": 0.9, "box": [30, 30, 70, 70]},
+                    {"box_id": 1, "label": "carton", "conf": 0.8, "box": [130, 30, 170, 70]},
+                ],
+            }
+        )
+        + "\n"
+    )
+    trials = [{"image": "c.jpg", "target": "x", "gt_box": None, "n_boxes": 2}]
+    gt = {"c.jpg": [0, 0, 100, 100]}
+    assert fill_gt_from_boxes(trials, dets, gt, min_iou=0.5)[0]["gt_box"] == MISSED
+    filled = fill_gt_from_boxes(trials, dets, gt, match="contain")
+    assert filled[0]["gt_box"] == 0 and filled[0]["gt_match"] == "contain"
+    # a sliver (2% of the cell) does not count
+    dets.write_text(
+        json.dumps(
+            {
+                "image": "c.jpg",
+                "size": [300, 100],
+                "boxes": [{"box_id": 0, "label": "carton", "conf": 0.9, "box": [10, 10, 20, 30]}],
+            }
+        )
+        + "\n"
+    )
+    assert fill_gt_from_boxes(trials, dets, gt, match="contain")[0]["gt_box"] == MISSED

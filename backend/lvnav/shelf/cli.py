@@ -36,6 +36,7 @@ def cmd_detect(args, cfg) -> int:
             CONTAINER_VOCABULARY,
             args.conf,
             cfg.perception.device,
+            imgsz=args.imgsz,
         )
     detect_shelves(args.images, detector, out, max_boxes=args.max_boxes)
     print(f"Detections -> {out}")
@@ -61,7 +62,9 @@ def cmd_trials(args, cfg) -> int:
         from .search import load_jsonl
 
         gt = json.loads(Path(args.gt_boxes).read_text())
-        trials = fill_gt_from_boxes(load_jsonl(out), dets, gt, min_iou=args.min_iou)
+        trials = fill_gt_from_boxes(
+            load_jsonl(out), dets, gt, min_iou=args.min_iou, match=args.match
+        )
         write_trials(trials, out)
         done = [t for t in trials if t.get("gt_box") is not None]
         missed = sum(1 for t in done if t["gt_box"] == MISSED)
@@ -213,6 +216,12 @@ def register(subparsers) -> None:
     s = sub.add_parser("detect", help="run open-vocabulary detection over shelf images")
     s.add_argument("--images", type=Path, required=True)
     s.add_argument("--conf", type=float, default=0.15)
+    s.add_argument(
+        "--imgsz",
+        type=int,
+        default=1280,
+        help="detector inference size; 640 (ultralytics default) halves recall on dense shelves",
+    )
     s.add_argument("--max-boxes", type=int, default=30)
     s.add_argument("--out", type=Path, default=None)
     common(s)
@@ -233,6 +242,12 @@ def register(subparsers) -> None:
         help="JSON {image: [x1,y1,x2,y2]} from an importer; fills gt_box by IoU, no human needed",
     )
     s.add_argument("--min-iou", type=float, default=0.5)
+    s.add_argument(
+        "--match",
+        choices=["iou", "contain"],
+        default="iou",
+        help="contain: for composite shelves whose ground truth is the whole tile",
+    )
     s.add_argument("--out", type=Path, default=None)
     common(s)
     s.set_defaults(func=cmd_trials)

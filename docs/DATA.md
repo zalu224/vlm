@@ -47,4 +47,9 @@ What it tests well: verification against genuine same-brand variants, and how fa
 
 ## Auto-annotation
 
-For both public sets the human annotation step is replaced by `lvnav shelf trials --from-filename --gt-boxes data/<dataset>/gt_boxes.json`. It does what the annotator does: picks the detected box with the highest IoU against the known box, or marks the target as missed by the detector when no box reaches IoU 0.5. The matched IoU is stored on every trial (`gt_iou`) so borderline matches can be audited, and detector recall is reported separately exactly as for the home shelf.
+For both public sets the human annotation step is replaced by `lvnav shelf trials --from-filename --gt-boxes data/<dataset>/gt_boxes.json`. It does what the annotator does: picks the detected box that best matches the known box, or marks the target as missed by the detector. Two match rules, chosen per dataset and recorded on every trial (`gt_match`, `gt_iou`):
+
+- `--match iou` (GroZi, tight ground-truth facings): best IoU, threshold 0.5.
+- `--match contain` (Grocery composites, where the ground truth is the whole tile and the detector rightly boxes only the product inside it): a box qualifies when at least 80 % of it lies inside the tile and it covers at least 15 % of the tile; the box covering most of the tile wins. With plain IoU the composites showed 18 % "recall" while the best box was fully inside the tile in nearly every case.
+
+Detector settings that matter on these sets (`docs/HARDWARE.md` has the measurements): inference size 1280 (the ultralytics default of 640 shrinks a shelf until products are 40 px wide and halves recall), and for GroZi confidence 0.05 with up to 60 boxes, which took recall on a 40-trial sample from 45 % to 68 % at the price of ~29 candidates per shelf. The home-shelf defaults stay at conf 0.15.
