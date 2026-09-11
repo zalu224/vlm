@@ -286,7 +286,7 @@ def register(subparsers) -> None:
         "--mode",
         choices=["name", "reference"],
         default="name",
-        help="name: prompt names the item (needs names); reference: compare with the catalogue photo",
+        help="name: prompt names the item; reference: compare with the catalogue photo",
     )
     s.add_argument("--out", type=Path, default=None)
     common(s)

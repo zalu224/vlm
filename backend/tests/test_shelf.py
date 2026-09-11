@@ -372,7 +372,7 @@ def test_correction_reference_mode_builds_pair_and_prompts_without_name(tmp_path
         model_label="mock",
         mode="reference",
     )
-    rows = [json.loads(l) for l in out.read_text().splitlines()]
+    rows = [json.loads(line) for line in out.read_text().splitlines()]
     assert [r["case"] for r in rows] == ["positive", "negative"] and all(
         r["mode"] == "reference" for r in rows
     )
