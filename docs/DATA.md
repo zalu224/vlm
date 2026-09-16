@@ -80,3 +80,15 @@ Detector: YOLO-World, container vocabulary, imgsz 1280; conf 0.15 on Grocery, 0.
 | | | | | + colour | 42.2 % | 79.2 % | 29.7 % |
 
 Reading: detection alone is at chance for the number of candidates, as RQ1 expects; CLIP is the large step; colour adds a further eight points on real shelves and two on composites. The remaining ceiling is the detector (a quarter to a third of targets never get a box), which is why recall is reported first. Correction (the VLM stage) has not been run on these sets yet: `lvnav shelf correct --results results/<dataset> --label qwen7b`, then the 3B, then `shelf report`.
+
+## Verification results, 7B (2026-09-11)
+
+`lvnav shelf correct`, Qwen2.5-VL-7B-Instruct 4-bit. Positives = the ground-truth crop; negatives = the highest-ranked wrong candidate from the embed+colour arm. The 3B runs were not completed (the run script stalled waiting for the 3B download).
+
+| dataset | mode | cases | accuracy | confirms the right item | **false confirmations** | unsure | median latency |
+|---|---|---|---|---|---|---|---|
+| Grocery (composite) | name | 325 | 72.9 % | 78.4 % | **30.1 %** (56/186) | 0.6 % | 2.6 s |
+| Grocery (composite) | reference photo | 325 | 72.3 % | 98.6 % | **47.3 %** (88/186) | 0.0 % | 4.2 s |
+| GroZi-3.2k (val) | reference photo | 373 | 46.4 % | 98.7 % | **89.5 %** (196/219) | 0.5 % | 3.8 s |
+
+Reading: RQ2's prediction holds. Accuracy looks acceptable by name while nearly a third of wrong items are approved, and the model almost never uses "unsure". Showing the reference photo makes the model *more* agreeable, not more discriminating: it confirms almost every true item and half (Grocery) to nine in ten (GroZi) of the wrong ones. On GroZi the negatives are same-category neighbours from real shelves at 1600 px, and the single small reference image (median 308×395 px) gives the model little to compare against. In several name-mode false confirmations the verdict is "yes" while the model's own spoken sentence names a different product; a verdict-versus-identification consistency check would catch those at no cost.
