@@ -18,7 +18,10 @@ DEFAULT_ANSWERS = {
         "No, both chairs have items on them.",
     ],
     "guide": [
-        "Walk forward about three steps; the empty chair is on your right. A box is on the floor to your left."
+        (
+            "Walk forward about three steps; the empty chair is on your right. A "
+            "box is on the floor to your left."
+        )
     ],
 }
 
