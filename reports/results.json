@@ -5,18 +5,380 @@
     "task": "counting",
     "scene": "1 chairs",
     "answer": 1,
-    "n": 64,
-    "accuracy": 0.969,
+    "n": 100,
+    "accuracy": 0.94,
     "parse_fail": 0,
-    "mean": 1.031,
-    "variance": 0.03
+    "mean": 1.04,
+    "variance": 0.058
+   },
+   "count_2": {
+    "task": "counting",
+    "scene": "2 chairs",
+    "answer": 2,
+    "n": 100,
+    "accuracy": 0.97,
+    "parse_fail": 0,
+    "mean": 2.03,
+    "variance": 0.029
+   },
+   "count_3": {
+    "task": "counting",
+    "scene": "3 chairs",
+    "answer": 3,
+    "n": 100,
+    "accuracy": 0.87,
+    "parse_fail": 0,
+    "mean": 3.0,
+    "variance": 0.24
+   },
+   "count_3_2": {
+    "task": "counting",
+    "scene": "3 chairs",
+    "answer": 3,
+    "n": 100,
+    "accuracy": 0.41,
+    "parse_fail": 0,
+    "mean": 3.55,
+    "variance": 0.427
+   },
+   "count_4": {
+    "task": "counting",
+    "scene": "4 chairs",
+    "answer": 4,
+    "n": 100,
+    "accuracy": 0.48,
+    "parse_fail": 0,
+    "mean": 4.53,
+    "variance": 0.449
+   },
+   "count_4_2": {
+    "task": "counting",
+    "scene": "4 chairs",
+    "answer": 4,
+    "n": 100,
+    "accuracy": 0.83,
+    "parse_fail": 0,
+    "mean": 3.99,
+    "variance": 0.29
+   },
+   "count_5": {
+    "task": "counting",
+    "scene": "5 chairs",
+    "answer": 5,
+    "n": 100,
+    "accuracy": 0.49,
+    "parse_fail": 0,
+    "mean": 5.47,
+    "variance": 0.489
+   },
+   "count_6": {
+    "task": "counting",
+    "scene": "6 chairs",
+    "answer": 6,
+    "n": 100,
+    "accuracy": 0.61,
+    "parse_fail": 0,
+    "mean": 6.21,
+    "variance": 0.586
+   },
+   "ext_count_1": {
+    "task": "counting",
+    "scene": "3 chairs",
+    "answer": 3,
+    "n": 20,
+    "accuracy": 0.45,
+    "parse_fail": 0,
+    "mean": 2.55,
+    "variance": 0.347
+   },
+   "ext_count_2": {
+    "task": "counting",
+    "scene": "3 chairs",
+    "answer": 3,
+    "n": 20,
+    "accuracy": 0.25,
+    "parse_fail": 0,
+    "mean": 3.45,
+    "variance": 1.448
+   },
+   "ext_count_3": {
+    "task": "counting",
+    "scene": "4 chairs",
+    "answer": 4,
+    "n": 20,
+    "accuracy": 0.9,
+    "parse_fail": 0,
+    "mean": 3.95,
+    "variance": 0.247
+   },
+   "ext_count_4": {
+    "task": "counting",
+    "scene": "4 chairs",
+    "answer": 4,
+    "n": 20,
+    "accuracy": 0.85,
+    "parse_fail": 0,
+    "mean": 3.75,
+    "variance": 0.388
+   },
+   "ext_count_5": {
+    "task": "counting",
+    "scene": "1 chairs",
+    "answer": 1,
+    "n": 20,
+    "accuracy": 0.15,
+    "parse_fail": 0,
+    "mean": 1.85,
+    "variance": 0.128
+   },
+   "spatial_1": {
+    "task": "spatial",
+    "scene": "case 1 (left nearer)",
+    "answer": "left",
+    "n": 100,
+    "accuracy": 0.73,
+    "parse_fail": 5
+   },
+   "spatial_2": {
+    "task": "spatial",
+    "scene": "case 1 mirrored (right nearer)",
+    "answer": "right",
+    "n": 100,
+    "accuracy": 0.34,
+    "parse_fail": 3
+   },
+   "spatial_3": {
+    "task": "spatial",
+    "scene": "case 2 (right nearer)",
+    "answer": "right",
+    "n": 100,
+    "accuracy": 0.36,
+    "parse_fail": 3
+   },
+   "spatial_4": {
+    "task": "spatial",
+    "scene": "case 2 mirrored (left nearer)",
+    "answer": "left",
+    "n": 100,
+    "accuracy": 0.79,
+    "parse_fail": 6
+   },
+   "spatial_5": {
+    "task": "spatial",
+    "scene": "case 3 (right chair pulled forward)",
+    "answer": "right",
+    "n": 100,
+    "accuracy": 0.47,
+    "parse_fail": 12
+   },
+   "spatial_6": {
+    "task": "spatial",
+    "scene": "case 4 (orange nearer)",
+    "answer": "orange",
+    "n": 100,
+    "accuracy": 0.49,
+    "parse_fail": 23
+   },
+   "spatial_7": {
+    "task": "spatial",
+    "scene": "case 5 (yellow nearer)",
+    "answer": "yellow",
+    "n": 100,
+    "accuracy": 0.84,
+    "parse_fail": 16
+   },
+   "spatial_8": {
+    "task": "spatial",
+    "scene": "case 6 (yellow nearer; filename lists orange first)",
+    "answer": "yellow",
+    "n": 100,
+    "accuracy": 0.6,
+    "parse_fail": 30
+   },
+   "vacant_1": {
+    "task": "commonsense",
+    "scene": "empty white chair right of the table",
+    "answer": "yes",
+    "n": 100,
+    "accuracy": 0.75,
+    "parse_fail": 0
+   },
+   "vacant_2": {
+    "task": "commonsense",
+    "scene": "coat laid on the only chair",
+    "answer": "no",
+    "n": 100,
+    "accuracy": 0.3,
+    "parse_fail": 0
+   },
+   "vacant_3": {
+    "task": "commonsense",
+    "scene": "coat hung on the back of the only chair",
+    "answer": "no",
+    "n": 100,
+    "accuracy": 0.35,
+    "parse_fail": 0
+   },
+   "vacant_4": {
+    "task": "commonsense",
+    "scene": "laptop on the table in front of the blue chair, backpack on the white chair",
+    "answer": "no",
+    "n": 100,
+    "accuracy": 0.21,
+    "parse_fail": 0
+   },
+   "vacant_5": {
+    "task": "commonsense",
+    "scene": "laptop on the table by the white chair, backpack on the blue chair",
+    "answer": "no",
+    "n": 100,
+    "accuracy": 0.36,
+    "parse_fail": 0
+   },
+   "ext_vacant_1": {
+    "task": "commonsense",
+    "scene": "two chairs, both empty",
+    "answer": "yes",
+    "n": 20,
+    "accuracy": 0.8,
+    "parse_fail": 0
+   },
+   "ext_vacant_2": {
+    "task": "commonsense",
+    "scene": "coat on the blue chair; white chair empty",
+    "answer": "yes",
+    "n": 20,
+    "accuracy": 0.75,
+    "parse_fail": 0
+   },
+   "ext_vacant_3": {
+    "task": "commonsense",
+    "scene": "coat on the white chair; blue chair empty",
+    "answer": "yes",
+    "n": 20,
+    "accuracy": 0.8,
+    "parse_fail": 0
+   },
+   "ext_vacant_4": {
+    "task": "commonsense",
+    "scene": "dim light: one empty chair",
+    "answer": "yes",
+    "n": 20,
+    "accuracy": 0.7,
+    "parse_fail": 0
+   },
+   "ext_vacant_5": {
+    "task": "commonsense",
+    "scene": "dim light: coat on the only chair",
+    "answer": "no",
+    "n": 20,
+    "accuracy": 0.35,
+    "parse_fail": 0
+   },
+   "ext_vacant_6": {
+    "task": "commonsense",
+    "scene": "dim light: coat hung on the only chair",
+    "answer": "no",
+    "n": 20,
+    "accuracy": 0.4,
+    "parse_fail": 0
+   },
+   "ext_vacant_7": {
+    "task": "commonsense",
+    "scene": "dim light: person on the blue chair; white chair empty",
+    "answer": "yes",
+    "n": 20,
+    "accuracy": 0.8,
+    "parse_fail": 0
+   },
+   "ext_vacant_8": {
+    "task": "commonsense",
+    "scene": "dim light: two people on the two chairs",
+    "answer": "no",
+    "n": 20,
+    "accuracy": 0.45,
+    "parse_fail": 0
+   },
+   "ext_vacant_9": {
+    "task": "commonsense",
+    "scene": "dim light: person on the white chair; blue chair empty",
+    "answer": "yes",
+    "n": 20,
+    "accuracy": 0.8,
+    "parse_fail": 0
+   },
+   "ext_vacant_10": {
+    "task": "commonsense",
+    "scene": "two empty couches",
+    "answer": "yes",
+    "n": 20,
+    "accuracy": 0.8,
+    "parse_fail": 0
+   },
+   "ext_vacant_11": {
+    "task": "commonsense",
+    "scene": "empty couches and a stool",
+    "answer": "yes",
+    "n": 20,
+    "accuracy": 0.65,
+    "parse_fail": 0
+   },
+   "ext_vacant_12": {
+    "task": "commonsense",
+    "scene": "coat on the stool; couches empty",
+    "answer": "yes",
+    "n": 20,
+    "accuracy": 0.5,
+    "parse_fail": 0
+   },
+   "ext_vacant_13": {
+    "task": "commonsense",
+    "scene": "person on the orange couch; beige couch empty",
+    "answer": "yes",
+    "n": 20,
+    "accuracy": 0.5,
+    "parse_fail": 0
+   },
+   "ext_vacant_14": {
+    "task": "commonsense",
+    "scene": "empty bench in a hallway",
+    "answer": "yes",
+    "n": 20,
+    "accuracy": 0.2,
+    "parse_fail": 0
+   },
+   "ext_vacant_15": {
+    "task": "commonsense",
+    "scene": "empty bench in a hallway",
+    "answer": "yes",
+    "n": 20,
+    "accuracy": 0.8,
+    "parse_fail": 0
+   },
+   "ext_vacant_16": {
+    "task": "commonsense",
+    "scene": "two empty benches",
+    "answer": "yes",
+    "n": 20,
+    "accuracy": 0.8,
+    "parse_fail": 0
    }
   },
   "by_task": {
    "counting": {
-    "n": 64,
-    "accuracy": 0.969,
-    "questions": 1
+    "n": 900,
+    "accuracy": 0.68,
+    "questions": 13
+   },
+   "spatial": {
+    "n": 800,
+    "accuracy": 0.578,
+    "questions": 8
+   },
+   "commonsense": {
+    "n": 820,
+    "accuracy": 0.487,
+    "questions": 21
    }
   }
  },
@@ -154,7 +516,7 @@
    },
    "spatial_1": {
     "task": "spatial",
-    "scene": "case 1",
+    "scene": "case 1 (left nearer)",
     "answer": "left",
     "n": 100,
     "accuracy": 0.98,
@@ -162,7 +524,7 @@
    },
    "spatial_2": {
     "task": "spatial",
-    "scene": "case 1 mirrored",
+    "scene": "case 1 mirrored (right nearer)",
     "answer": "right",
     "n": 100,
     "accuracy": 0.99,
@@ -170,7 +532,7 @@
    },
    "spatial_3": {
     "task": "spatial",
-    "scene": "case 2",
+    "scene": "case 2 (right nearer)",
     "answer": "right",
     "n": 100,
     "accuracy": 0.99,
@@ -178,7 +540,7 @@
    },
    "spatial_4": {
     "task": "spatial",
-    "scene": "case 2 mirrored",
+    "scene": "case 2 mirrored (left nearer)",
     "answer": "left",
     "n": 100,
     "accuracy": 0.97,
@@ -186,7 +548,7 @@
    },
    "spatial_5": {
     "task": "spatial",
-    "scene": "right chair pulled out in front, clearly nearer",
+    "scene": "case 3 (right chair pulled forward)",
     "answer": "right",
     "n": 100,
     "accuracy": 0.67,
@@ -194,7 +556,7 @@
    },
    "spatial_6": {
     "task": "spatial",
-    "scene": "orange chair front-left, yellow behind the table",
+    "scene": "case 4 (orange nearer)",
     "answer": "orange",
     "n": 100,
     "accuracy": 0.99,
@@ -202,7 +564,7 @@
    },
    "spatial_7": {
     "task": "spatial",
-    "scene": "yellow chair front-left, orange behind the table",
+    "scene": "case 5 (yellow nearer)",
     "answer": "yellow",
     "n": 100,
     "accuracy": 0.96,
@@ -210,7 +572,7 @@
    },
    "spatial_8": {
     "task": "spatial",
-    "scene": "VISUAL reading",
+    "scene": "case 6 (yellow nearer; filename lists orange first)",
     "answer": "yellow",
     "n": 100,
     "accuracy": 0.98,
@@ -400,6 +762,37 @@
     "n": 820,
     "accuracy": 0.472,
     "questions": 21
+   }
+  }
+ },
+ "qwen3-vl-2b": {
+  "by_qid": {
+   "count_1": {
+    "task": "counting",
+    "scene": "1 chairs",
+    "answer": 1,
+    "n": 100,
+    "accuracy": 0.97,
+    "parse_fail": 0,
+    "mean": 1.08,
+    "variance": 0.214
+   },
+   "count_2": {
+    "task": "counting",
+    "scene": "2 chairs",
+    "answer": 2,
+    "n": 55,
+    "accuracy": 0.982,
+    "parse_fail": 0,
+    "mean": 2.036,
+    "variance": 0.071
+   }
+  },
+  "by_task": {
+   "counting": {
+    "n": 155,
+    "accuracy": 0.974,
+    "questions": 2
    }
   }
  }

@@ -27,7 +27,7 @@ target-version = "py311"
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "UP", "B"]
-per-file-ignores = { "navbench/prompts.py" = ["E501"], "navbench/judge.py" = ["E501"], "navbench/report.py" = ["E501"], "tests/*" = ["E501"] }
+per-file-ignores = { "navbench/prompts.py" = ["E501"], "navbench/judge.py" = ["E501"], "navbench/judge_local.py" = ["E501"], "navbench/report.py" = ["E501"], "tests/*" = ["E501"] }
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

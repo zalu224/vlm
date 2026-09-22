@@ -114,6 +114,29 @@ def cmd_judge(a) -> int:
     return 0
 
 
+def cmd_judge_export(a) -> int:
+    """Write per-case rating tasks for a judge with no API key (a Claude session, or a person)."""
+    from .judge_local import export_tasks
+
+    out = export_tasks(Path(a.runs), load_questions(a.questions), Path(a.data), Path(a.tasks))
+    cases = sorted(out.glob("nav_*.json"))
+    n = sum(len(json.loads(c.read_text())["outputs"]) for c in cases)
+    print(f"{n} unrated outputs across {len(cases)} cases -> {out}")
+    print(f"Rate each case, write <case>.jsonl into {a.ratings}, then: nav judge-import")
+    return 0
+
+
+def cmd_judge_import(a) -> int:
+    from .judge_local import import_ratings
+
+    out = import_ratings(
+        Path(a.tasks), Path(a.ratings), Path(a.runs) / "judged.jsonl", judge_model=a.judge_model
+    )
+    n = sum(1 for line in out.read_text().splitlines() if line.strip())
+    print(f"{n} judged outputs -> {out}")
+    return 0
+
+
 def cmd_sheet(a) -> int:
     from .spotcheck import write_sheet
 
@@ -185,6 +208,19 @@ def main(argv: list[str] | None = None) -> int:
     s.add_argument("--limit", type=int, default=None)
     common(s)
     s.set_defaults(func=cmd_judge)
+
+    s = sub.add_parser("judge-export", help="per-case rating tasks (no API key; rated in-session)")
+    s.add_argument("--tasks", type=Path, default=Path("runs/judge_tasks"))
+    s.add_argument("--ratings", type=Path, default=Path("runs/judge_ratings"))
+    common(s)
+    s.set_defaults(func=cmd_judge_export)
+
+    s = sub.add_parser("judge-import", help="merge rating files into runs/judged.jsonl")
+    s.add_argument("--tasks", type=Path, default=Path("runs/judge_tasks"))
+    s.add_argument("--ratings", type=Path, default=Path("runs/judge_ratings"))
+    s.add_argument("--judge-model", default="claude-opus-5-in-session")
+    common(s)
+    s.set_defaults(func=cmd_judge_import)
 
     s = sub.add_parser("sheet", help="blinded human spot-check sheet from judged.jsonl")
     s.add_argument("--n", type=int, default=40)

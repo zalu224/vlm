@@ -18,4 +18,7 @@ models:
   claude-opus-5:   {backend: anthropic, served: claude-opus-5, status: cloud, env: ANTHROPIC_API_KEY, group: ours}
   gemini-1.5-pro:  {backend: gemini, served: gemini-1.5-pro, status: cloud, env: GEMINI_API_KEY, group: paper,
                     note: "if retired, the nearest available Gemini model is used and named in the report"}
-judge: {backend: anthropic, served: claude-fable-5-1, env: ANTHROPIC_API_KEY}
+# Navigation outputs are rated in-session by the Claude Code model (no API key): see
+# `nav judge-export` / `nav judge-import`. The API judge below is the alternative when a key exists.
+judge: {mode: in-session, label: claude-opus-5-in-session,
+        api_fallback: {backend: anthropic, served: claude-fable-5-1, env: ANTHROPIC_API_KEY}}

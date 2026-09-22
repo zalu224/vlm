@@ -34,12 +34,16 @@ The user asked: "{prompt}"
 The model answered:
 \"\"\"{output}\"\"\"
 
-Answer the three annotator questions from the study, each with yes or no and a one-sentence reason:
-1. destination: Did the model accurately identify and guide the user to the correct destination (a genuinely vacant seat)?
-2. route: Did the model correctly provide an optimal route (directions and distances that would actually get the user there)?
-3. obstacles: Did the model correctly detect obstacles and warn the user to watch out for them? (If the ground truth lists no obstacles, answer yes when the model invents none.)
+{criteria}
 
 Return only a JSON object: {{"destination": "yes|no", "route": "yes|no", "obstacles": "yes|no", "reasons": {{"destination": "...", "route": "...", "obstacles": "..."}}}}"""
+
+# The three annotator questions, worded once so the API judge and the in-session judge
+# (navbench/judge_local.py) rate against identical criteria.
+CRITERIA_BLOCK = """Answer the three annotator questions from the study, each with yes or no and a one-sentence reason:
+1. destination: Did the model accurately identify and guide the user to the correct destination (a genuinely vacant seat)?
+2. route: Did the model correctly provide an optimal route (directions and distances that would actually get the user there)?
+3. obstacles: Did the model correctly detect obstacles and warn the user to watch out for them? (If the ground truth lists no obstacles, answer yes when the model invents none.)"""
 
 _JSON = re.compile(r"\{.*\}", re.DOTALL)
 
@@ -86,7 +90,9 @@ def judge_rows(
                 continue
             q = questions[r["qid"]]
             b64, mt = encode_jpeg(Path(data_root) / "images" / f"{r['image']}.jpg", image_max_side)
-            user = JUDGE_USER.format(gold=q["gold"], prompt=r["prompt"], output=r["output"])
+            user = JUDGE_USER.format(
+                gold=q["gold"], prompt=r["prompt"], output=r["output"], criteria=CRITERIA_BLOCK
+            )
             resp = client.messages.create(
                 model=model,
                 max_tokens=2000,
