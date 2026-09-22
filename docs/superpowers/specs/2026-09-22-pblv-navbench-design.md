@@ -1,6 +1,6 @@
 # pBLV navigation benchmark — design
 
-**Date:** 2026-09-22 · **Status:** approved in conversation (repo rebuilt around it; paper's models plus ours; 100 repeats; Claude Fable 5.1 as judge)
+**Date:** 2026-09-22 · **Status:** approved in conversation (repo rebuilt around it; paper's models plus ours; 100 repeats). Judge revised 2026-09-22: rated in-session by Claude Opus 5, no API key (§6).
 
 ## 1. Goal
 
@@ -66,7 +66,29 @@ Cloud backends are implemented against the official SDKs and unit-tested with mo
 
 ## 6. Judge
 
-Claude Fable 5.1 (`claude-fable-5-1`) reads the image, the case's gold (which seat is vacant, obstacles and where, the sensible route) and the model output, and returns `{destination, route, obstacles}` each yes/no with a one-line reason, following the paper's three annotator questions verbatim. Thinking is left on (the model's default); `output_config.format` structured output for the JSON. A blinded human sheet of 40 outputs and κ between Aaron and the judge bound its reliability, mirroring the paper's κ. `nav judge` needs `ANTHROPIC_API_KEY`.
+The paper used two human annotators. We use Claude Opus 5 as the annotator, running **in the Claude Code session
+that drives the benchmark**, so no `ANTHROPIC_API_KEY` is needed. Opus 5 is the vision-capable model available on
+the subscription, and the rating is a vision task: the rater must look at the photograph to know which seat is
+actually vacant and what is on the floor.
+
+**Blinding.** The paper's annotators did not know which model wrote which output, and neither does ours.
+`nav judge-export` groups the outputs by *case*, not by model: one file per navigation case holding the photograph,
+that case's gold (which seat is vacant, the obstacles and where, the sensible route) and every model's outputs for
+it, each identified only by `rating_id = sha1(model|qid|repeat)[:12]`. The model name lives only in `index.json`,
+which the rater never opens. Grouping by case also means the photograph is examined once and all of its outputs are
+judged against that one reading, which is how a human annotator would work.
+
+**Criteria.** The paper's three annotator questions verbatim, each yes/no with a one-sentence reason, defined once
+in `navbench/judge.py` as `CRITERIA_BLOCK` and shared by both judging paths: destination (was the user guided to a
+genuinely vacant seat), route (would the directions actually get them there), obstacles (were real obstacles
+warned about, and no imaginary ones invented).
+
+`nav judge-import` merges the verdict files into `runs/judged.jsonl` in exactly the schema the API judge produces,
+so `nav report`, `nav sheet` and `nav agreement` are identical either way. The API path (`nav judge`, Claude Fable
+5.1) remains implemented and tested as the alternative when a key exists.
+
+**Bounding the judge.** A blinded sheet of 40 outputs (`nav sheet`) is rated by Aaron; `nav agreement` reports
+Cohen's κ between his ratings and the judge's, against the paper's κ = 0.83 between its two human annotators.
 
 ## 7. Compute
 
@@ -78,4 +100,4 @@ Fundamental tasks: 21 questions × 100 repeats = 2,100 calls per model; navigati
 
 ## 9. Differences from the paper, stated up front
 
-Local 4-bit models instead of the paper's open models in full precision; one sampling setting for all models; LLM judge instead of two human annotators (bounded by a human spot-check); LLaVA-OneVision and the retired cloud snapshots not reproducible; extension tiers are ours.
+Local 4-bit models instead of the paper's open models in full precision; one sampling setting for all models; one LLM annotator (Claude Opus 5, blinded) instead of the paper's two human annotators, bounded by a human spot-check; LLaVA-OneVision and the retired cloud snapshots not reproducible; extension tiers are ours.

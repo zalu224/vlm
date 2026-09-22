@@ -138,6 +138,7 @@ def write_report(runs_root: Path, questions: dict, out: Path) -> Path:
     )
     judged = Path(runs_root) / "judged.jsonl"
     nav: dict[str, dict] = {}
+    judges: set[str] = set()
     if judged.exists():
         by: dict[str, list] = defaultdict(list)
         for line in judged.read_text().splitlines():
@@ -154,8 +155,10 @@ def write_report(runs_root: Path, questions: dict, out: Path) -> Path:
                 for c in ("destination", "route", "obstacles")
             }
             nav[m]["n"] = len(rs)
+            judges.update(r.get("judge_model", "?") for r in rs)
+    who = ", ".join(sorted(judges)) if judges else "no judge run yet"
     L += [
-        "## Navigation, three criteria (LLM judge; paper: two human annotators)",
+        f"## Navigation, three criteria (judge: {who}; paper: two human annotators)",
         "",
         "| model | outputs | destination | route | obstacles |",
         "|---|---|---|---|---|",

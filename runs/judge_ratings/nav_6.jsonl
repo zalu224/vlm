@@ -1,0 +1,90 @@
+{"rating_id": "009000e1f48a", "destination": "yes", "route": "no", "obstacles": "yes", "reason": "Names the vacant white chair and warns about the ball, but 'turn around' sends the user away from it."}
+{"rating_id": "051f1aa043f2", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Correct chair, but routes the user to face the wall socket on the left and never mentions the ball."}
+{"rating_id": "05b06bf507e5", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "Correct vacant chair and a workable forward walk, but no mention of the ball on the floor."}
+{"rating_id": "08105a794ba2", "destination": "yes", "route": "no", "obstacles": "yes", "reason": "Flags the soccer ball, but 'face right and move forward a bit' misstates a 3 m ahead-right approach."}
+{"rating_id": "09ab8bf1d1a1", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "Forward move to the empty chair is fine, but the obstacle warning is generic and misses the ball."}
+{"rating_id": "13f82dfa8779", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Correct chair, but 'turn left' points away from it and the ball is unmentioned."}
+{"rating_id": "17f02e5c32c1", "destination": "yes", "route": "yes", "obstacles": "yes", "reason": "Rambling, but places the vacant chair right of the table and right of the ball on the floor."}
+{"rating_id": "1960a5121fee", "destination": "no", "route": "no", "obstacles": "no", "reason": "Sends the user past the chair to the left side of the table where no seat exists, and ignores the ball."}
+{"rating_id": "1a2abaf95cb5", "destination": "yes", "route": "no", "obstacles": "yes", "reason": "Mentions the ball to avoid, but gives no bearing or distance, only 'walk towards the desk'."}
+{"rating_id": "20a73bec102c", "destination": "yes", "route": "no", "obstacles": "no", "reason": "No travel directions, and it calls the ball 'not in the way' while inventing a slippery-floor hazard."}
+{"rating_id": "2278b6bf0506", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "Straight ahead to the table and chair is correct, but no warning about the ball."}
+{"rating_id": "29dfd0705979", "destination": "no", "route": "no", "obstacles": "yes", "reason": "Warns about the football, but says the chair is both left and right and gives no usable route."}
+{"rating_id": "2a33c9b85d2a", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Names the chair but gives no direction and wrongly declares the path free of obstacles."}
+{"rating_id": "2d15a4b755ce", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "Straight ahead with the chair on the right is right, but it misses the ball and invents stairs."}
+{"rating_id": "2fe3f6b09a65", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "Walk forward to the chair right of the table is workable, but it claims the floor is clear of objects."}
+{"rating_id": "35636feb15a6", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Identifies the vacant chair but gives no route, no ball warning, and tells the user to lie down."}
+{"rating_id": "37e74347a0aa", "destination": "yes", "route": "no", "obstacles": "no", "reason": "One vague line with no bearing and only a generic obstacle mention, never the ball."}
+{"rating_id": "3b18a13b3da8", "destination": "yes", "route": "no", "obstacles": "yes", "reason": "Warns about the ball, but 'turn left' after going forward misses the chair on the table's right."}
+{"rating_id": "3dbca31b1136", "destination": "yes", "route": "no", "obstacles": "no", "reason": "No direction given, and the ball is mentioned only as something to pick up, not a hazard."}
+{"rating_id": "3e351fc0c59f", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Correct chair, but 'in the corner to your right' gives no route and the ball is ignored."}
+{"rating_id": "3e366b896a24", "destination": "yes", "route": "no", "obstacles": "yes", "reason": "Flags the ball, but places the seat behind the table and tells the user to step over the ball."}
+{"rating_id": "3ec4d688b6dd", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "Forward then right to the chair beside the table works, but there is no ball warning."}
+{"rating_id": "3ec9e3e4afac", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Identifies the chair but the directions are vague and circular, and the ball is unmentioned."}
+{"rating_id": "44c634acd56a", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Wrongly places the user beside the table and the chair in front of it, and denies any obstacle."}
+{"rating_id": "4833a48448b9", "destination": "yes", "route": "no", "obstacles": "no", "reason": "'Turn clockwise and walk slightly forward' understates a 3 m approach and the path is called clear."}
+{"rating_id": "4a7dcbc4bb2a", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Forward to the table is right but then turns left, away from the chair, and denies obstacles."}
+{"rating_id": "4f428db7ffd4", "destination": "yes", "route": "no", "obstacles": "no", "reason": "A 90-degree right turn misses the chair 3 m ahead-right, and the ball is denied."}
+{"rating_id": "551a4d007519", "destination": "no", "route": "no", "obstacles": "no", "reason": "Garbled output about a button and cabinet slot; addresses nothing in the scene."}
+{"rating_id": "5568b3a40285", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Correctly identifies the vacant chair but supplies no route and no obstacle warning."}
+{"rating_id": "55baea8df9d9", "destination": "yes", "route": "no", "obstacles": "no", "reason": "No bearing or distance, and it falsely states there are no obstacles on the path."}
+{"rating_id": "55ccf2dc0239", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "Forward and a little right to the chair is accurate, but it denies any object on the floor."}
+{"rating_id": "55d1dc03f86b", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Says the chair is directly to the user's right when it is about 3 m ahead-right, and omits the ball."}
+{"rating_id": "56d6705adf16", "destination": "yes", "route": "no", "obstacles": "no", "reason": "A bare right turn is the wrong heading, and no obstacle is mentioned."}
+{"rating_id": "5920f050f529", "destination": "yes", "route": "no", "obstacles": "no", "reason": "The 45-degree turn from a wrong facing premise would overshoot, and the ball is never mentioned."}
+{"rating_id": "595d524fadfb", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Identifies the chair but defers giving directions and wrongly says nothing is in the way."}
+{"rating_id": "643c2e92df5b", "destination": "yes", "route": "no", "obstacles": "yes", "reason": "Warns to keep clear of the ball, but puts the table on the right and the chair in front of it."}
+{"rating_id": "6b2c47572c8d", "destination": "yes", "route": "no", "obstacles": "no", "reason": "No direction given and the ball on the floor is denied."}
+{"rating_id": "6b4425f774d4", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Contradicts itself placing the chair right of the table yet in front of the left whiteboard, and skips the ball."}
+{"rating_id": "6d4085e25e1d", "destination": "yes", "route": "no", "obstacles": "no", "reason": "'On your right side' misdescribes a chair 3 m ahead-right, with no distance and no ball warning."}
+{"rating_id": "6de44d21333c", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Correctly calls the chair the only vacant seat, but turning left is the wrong way and the ball is ignored."}
+{"rating_id": "734d3f5bc07a", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "Facing the chair and moving forward roughly three steps is workable, but no obstacle is reported."}
+{"rating_id": "73861e37b140", "destination": "yes", "route": "no", "obstacles": "no", "reason": "An unspecified clockwise turn and 'a bit forward' will not reach a chair 3 m away, and the ball is missed."}
+{"rating_id": "782539834117", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Names the chair but gives no bearing or distance and no obstacle warning."}
+{"rating_id": "7a748a4898c7", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Describes the chair's position but gives the user no route, and declares the floor clear."}
+{"rating_id": "7be52897ebed", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Two steps badly understates about 3 m, and it explicitly denies any hazard on the floor."}
+{"rating_id": "7e9d7f17fec0", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Garbled; 'turn back' and 'end of the string' are unusable, and it says the route has no obstacles despite the ball."}
+{"rating_id": "8190e82d4e66", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "Forward to the white chair is a usable bearing, but it wrongly says there are no obstructions."}
+{"rating_id": "8716bae1ad79", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Correct vacant chair but only a facing instruction, no travel or distance, and no ball warning."}
+{"rating_id": "90c277d5a6e7", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Gives no bearing, understates the distance, and states there are no obstacles in the way."}
+{"rating_id": "92a7063ae77e", "destination": "yes", "route": "no", "obstacles": "yes", "reason": "Mentions stepping over the ball, but 'take a step forward' badly understates the 3 m approach."}
+{"rating_id": "96491aa3988d", "destination": "no", "route": "no", "obstacles": "no", "reason": "Says the seat is fully occupied, contradicting its own claim, turns right, and misses the ball."}
+{"rating_id": "983ba4e23eb5", "destination": "yes", "route": "no", "obstacles": "no", "reason": "'Forward to the left' heads away from a chair that is ahead-right, and the ball is unmentioned."}
+{"rating_id": "9a49548607df", "destination": "yes", "route": "yes", "obstacles": "yes", "reason": "Directs the user forward to the chair right of the table and tells them to be cautious of the ball."}
+{"rating_id": "9c112ab9fa9f", "destination": "no", "route": "no", "obstacles": "no", "reason": "Denies there is any empty seat, gives a nonsensical route, and mislocates the ball with no warning."}
+{"rating_id": "9cfed852d9f6", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "Forward then right to the chair beside the table is correct, but the ball is not mentioned."}
+{"rating_id": "a3d1203cf4b0", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Correct chair, but 'just walk to it' is no route at all and no obstacle is reported."}
+{"rating_id": "a4fb705f9a03", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "Walking to the table and taking the chair on its right matches the scene, but the ball is missed."}
+{"rating_id": "a59662d9782c", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Claims the chair is immediately right and in front of the table, and denies the ball."}
+{"rating_id": "a8ac29118553", "destination": "yes", "route": "no", "obstacles": "no", "reason": "A bare right turn is the wrong heading and the ball is explicitly denied."}
+{"rating_id": "aa2ab304c245", "destination": "yes", "route": "no", "obstacles": "yes", "reason": "Warns about the volleyball, but 'take a step' towards a chair about 3 m away is far too short."}
+{"rating_id": "abdb6a3e442c", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Correct chair location relative to the table, but turning left is wrong and the ball is missed."}
+{"rating_id": "acd7d20bc88a", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Contradictory 'to your left and to the right of the table', and no mention of the ball."}
+{"rating_id": "ace982f1241f", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "Going straight to the white chair is a usable bearing, but it wrongly says the path has no obstacle."}
+{"rating_id": "ad16a90669f1", "destination": "yes", "route": "no", "obstacles": "no", "reason": "'About a foot's distance' and a few feet to the right misstate a 3 m approach, and the ball is ignored."}
+{"rating_id": "ad1c0778a00d", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "Straight ahead then slightly right reaches the chair, but it falsely says there are no obstacles."}
+{"rating_id": "b00d2aefee4e", "destination": "yes", "route": "yes", "obstacles": "yes", "reason": "Forward and slightly right to the vacant chair with a clear warning about the volleyball underfoot."}
+{"rating_id": "b06cf70a2b13", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Contradicts itself putting the chair right of the table and then directly in front of it, and misses the ball."}
+{"rating_id": "b63b16858599", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "Forward and towards the right is broadly right, but it wrongly says the ball is not in the way."}
+{"rating_id": "b7fb084de9b7", "destination": "yes", "route": "no", "obstacles": "yes", "reason": "Correctly warns about the ball closest to the user, but the route is confused and the socket is misplaced behind them."}
+{"rating_id": "b831c32f0d3b", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "Chair right of the table reached by walking to it is fine, but it invents stairs and omits the ball."}
+{"rating_id": "b92f19a6e607", "destination": "no", "route": "no", "obstacles": "no", "reason": "Tells the user to turn their back on the table then walk to it, names no seat, and invents floor-tile hazards."}
+{"rating_id": "c065f1b60656", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Turning left and walking three feet will not reach a chair about 3 m ahead-right, and the ball is missed."}
+{"rating_id": "c263c5403427", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Long but gives no route from the user's position and states nothing blocks the path despite the ball."}
+{"rating_id": "c489623ee7ff", "destination": "yes", "route": "no", "obstacles": "yes", "reason": "Correctly warns to avoid the ball, but offers no bearing or distance to the chair."}
+{"rating_id": "c588fd8ae799", "destination": "yes", "route": "no", "obstacles": "yes", "reason": "Warns clearly about the volleyball, but gives no bearing and invents a second seat in front of the chair."}
+{"rating_id": "ca4fac41e2fc", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Says the chair is to the left and to the right of the table, and never mentions the ball."}
+{"rating_id": "cc0e2a5b0844", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Turning left points away from the chair and the ball on the floor is denied."}
+{"rating_id": "ce5b606931de", "destination": "yes", "route": "yes", "obstacles": "yes", "reason": "Directs the user towards the table and chair while steering around the ball directly ahead."}
+{"rating_id": "d395476efaa8", "destination": "yes", "route": "no", "obstacles": "yes", "reason": "Tells the user to avoid the ball, but gives no bearing or distance to the chair."}
+{"rating_id": "dedc217344c4", "destination": "no", "route": "no", "obstacles": "yes", "reason": "Notes the ball lies between user and seat, but the arm-waving instructions and a doorway are nonsense."}
+{"rating_id": "df28e385658a", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "Proceeding straight ahead to the chair right of the table works, but it denies the ball in the path."}
+{"rating_id": "e287bb89c2b0", "destination": "no", "route": "no", "obstacles": "no", "reason": "Garbled and truncated, pivots off a wall socket on the wrong side, and mentions no obstacle."}
+{"rating_id": "e2bafccfd8c0", "destination": "yes", "route": "no", "obstacles": "yes", "reason": "Warns about the ball, but 'move forward to the left, away from the table' heads away from the chair."}
+{"rating_id": "e5d114149a92", "destination": "yes", "route": "yes", "obstacles": "yes", "reason": "Forward with a slight step right to clear the volleyball reaches the vacant chair correctly."}
+{"rating_id": "e935e9f923fd", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "Facing the table and going to its right finds the chair, but no obstacle is reported."}
+{"rating_id": "ea25b38de9fb", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Correctly places the vacant chair but gives only a facing, no travel or distance, and misses the ball."}
+{"rating_id": "ec3792641cde", "destination": "yes", "route": "no", "obstacles": "no", "reason": "No bearing or distance, and it falsely claims nothing obstructs the path."}
+{"rating_id": "fa8e35edebbc", "destination": "yes", "route": "no", "obstacles": "no", "reason": "'Turn around' and face the whiteboard points away from the chair, and the ball is unmentioned."}
+{"rating_id": "fb951fcaeeee", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "Forward to the chair right of the table is usable, but it misses the ball and invents a whiteboard hazard."}
+{"rating_id": "ff90fcc8b39c", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Turning left after a short walk misses a chair that is ahead-right, and no obstacle is given."}

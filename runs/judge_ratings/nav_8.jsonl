@@ -1,0 +1,90 @@
+{"rating_id": "00721c43b12e", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Correct chair but 'turn left, 2 steps' points the wrong way and far too short, and the boxes are never mentioned."}
+{"rating_id": "04367b2838fe", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "Right-of-table approach is workable, but the cardboard boxes on the floor are not mentioned."}
+{"rating_id": "0a2873f380ef", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Chair identified, but 'turn left' is the wrong side and it falsely claims no obstacles."}
+{"rating_id": "0c137145a715", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "Face-right-and-forward is correct, but it asserts nothing blocks the way despite the boxes."}
+{"rating_id": "0f4d31c91545", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "Correct destination and heading, but calls the path unobstructed when boxes lie ahead."}
+{"rating_id": "1335431b57d4", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "Straight-ahead to the table works, but it tells the user not to worry about obstacles."}
+{"rating_id": "136b58e553d2", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "Forward-then-right is right, but it wrongly states there is nothing on the floor."}
+{"rating_id": "1605f93fa9ab", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Names the chair but gives no heading or distance and denies the boxes exist."}
+{"rating_id": "178967d793d5", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "Guides along the right side of the table correctly, yet never warns about the floor boxes."}
+{"rating_id": "1a231bbe20ee", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "Forward then slightly right is correct, but it calls the path obstacle-free."}
+{"rating_id": "1af76bb18c50", "destination": "yes", "route": "yes", "obstacles": "yes", "reason": "Forward-and-slightly-right is correct and it flags the box on the floor near the chair."}
+{"rating_id": "1b32d4b61e6d", "destination": "yes", "route": "no", "obstacles": "no", "reason": "'Turn left' is the wrong side and the floor boxes are ignored."}
+{"rating_id": "1d65bcca305b", "destination": "no", "route": "no", "obstacles": "no", "reason": "Incoherent reference to a red end cap and elevator that are not in the scene."}
+{"rating_id": "20bbeeddd104", "destination": "yes", "route": "no", "obstacles": "yes", "reason": "Warns about the cardboard box, but 'turn around' sends the user away from the chair."}
+{"rating_id": "21aaa4b4f3a7", "destination": "yes", "route": "no", "obstacles": "yes", "reason": "Box correctly flagged, but turning around and going left is the opposite of the real route."}
+{"rating_id": "258374314e8c", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "Face right and walk to the chair is correct, but it claims everything is clear of items."}
+{"rating_id": "26924e724b0e", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Places the seat behind the table and tells the user to face the right-hand wall, which misdirects; no box warning."}
+{"rating_id": "290aa7b19722", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "Degenerate repetition but correctly places the vacant chair right of the table; boxes unmentioned."}
+{"rating_id": "2e549785206d", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "Right-hand approach is usable, but it explicitly denies any obstacle on the path."}
+{"rating_id": "2f5bab53ca1d", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "Forward and slightly right is correct, yet it states there are no obstacles."}
+{"rating_id": "30553632d470", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Identifies the chair but gives no direction or distance and no obstacle warning."}
+{"rating_id": "30e5fd69a744", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "Turn right toward the table reaches the chair, but the boxes are not mentioned."}
+{"rating_id": "30f4c38c812d", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "Straight ahead a few steps with the chair on the right is correct; no obstacle warning."}
+{"rating_id": "34fe1cc975d5", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Puts the chair behind the table rather than beside it and claims no obstacles."}
+{"rating_id": "39a89ec6e7bb", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "Move forward then right is correct, but the floor boxes are ignored."}
+{"rating_id": "3bf4eae86713", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "Straight ahead to the table and chair works; no mention of the cardboard boxes."}
+{"rating_id": "3cfb87d2b374", "destination": "no", "route": "no", "obstacles": "no", "reason": "Sends the user walking past the chair to some other clear area and denies any obstruction."}
+{"rating_id": "41807c6a2568", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Locates the seat behind the table, which is wrong, and gives no obstacle warning."}
+{"rating_id": "41d8f7737538", "destination": "yes", "route": "no", "obstacles": "no", "reason": "'Turning left' is the wrong side and the boxes are not mentioned."}
+{"rating_id": "4492953b5539", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Directs the user straight at the boxes rather than around them and gives no real route."}
+{"rating_id": "4903f312529a", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Turn left and 3 feet is both the wrong side and far too short, and it denies obstacles."}
+{"rating_id": "4ddc4346d4ce", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Garbled 'theScanner' reference and a forward-left heading that misses the chair; no box warning."}
+{"rating_id": "562de53f403e", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Rambling and self-contradictory on distance, and it repeatedly says the floor is clear despite the box."}
+{"rating_id": "572575c64b88", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Tells the user to face and walk along the right-hand wall, which does not lead to the chair; no obstacle warning."}
+{"rating_id": "591e1d244343", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Puts the seat to the left of the box and steers the user into the obstacle instead of warning about it."}
+{"rating_id": "5cab1f4c2c08", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "Right-of-table route is correct, but it dismisses the box as not blocking the path and invents a slippery-floor concern."}
+{"rating_id": "5de992664e67", "destination": "yes", "route": "no", "obstacles": "no", "reason": "No heading or distance given and it falsely claims no obstacles."}
+{"rating_id": "62d07d81431c", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "Confused wording but the right-of-table and forward heading is correct; it denies any obstacle."}
+{"rating_id": "674a366d4e78", "destination": "no", "route": "no", "obstacles": "no", "reason": "Claims the chair is already occupied by a plate, rambles contradictorily, and denies any floor items."}
+{"rating_id": "68616bd561cf", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Only states the chair is on the right with no route or distance, and no obstacle warning."}
+{"rating_id": "691282c8593a", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "Turn right and approach the table and chair is correct, but it claims no obstacles."}
+{"rating_id": "6b47ff1e6eec", "destination": "yes", "route": "yes", "obstacles": "yes", "reason": "Turn right to the chair beside the table is correct and it warns about the cardboard box in the path."}
+{"rating_id": "6fde238b8994", "destination": "yes", "route": "no", "obstacles": "no", "reason": "No directions at all, and it implies a box sits on a chair rather than warning about the floor boxes."}
+{"rating_id": "7019e03d230a", "destination": "yes", "route": "no", "obstacles": "yes", "reason": "Correctly warns about the cardboard box, but 5 feet and 'across from the table' understate and misplace the chair."}
+{"rating_id": "7345341fbdc4", "destination": "yes", "route": "no", "obstacles": "yes", "reason": "Mentions stepping over the cardboard box, but gives no heading and contradicts itself on the floor being clear."}
+{"rating_id": "74287c044fa6", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "Forward then right to the chair is usable, but it says no obstacle is near."}
+{"rating_id": "74bfadf0853b", "destination": "yes", "route": "yes", "obstacles": "yes", "reason": "Slight right then forward is correct and it warns to steer clear of the package on the floor."}
+{"rating_id": "7a0c9ffd7bf3", "destination": "yes", "route": "yes", "obstacles": "yes", "reason": "Face and walk to the table is correct and it tells the user to avoid the box."}
+{"rating_id": "7e071873e5ad", "destination": "yes", "route": "no", "obstacles": "yes", "reason": "Warns to step around the boxes, but gives no heading or distance to the chair."}
+{"rating_id": "8454c9934952", "destination": "yes", "route": "no", "obstacles": "no", "reason": "No route directions, and it detects the package only to dismiss it and call the floor clear."}
+{"rating_id": "8b42e0395ea1", "destination": "no", "route": "no", "obstacles": "yes", "reason": "Wrongly claims there is no vacant seat, though it does warn about the box on the floor."}
+{"rating_id": "8bf3ab23f3a7", "destination": "yes", "route": "no", "obstacles": "yes", "reason": "Warns about the cardboard box, but places the seat on the left side of the table when it is on the right."}
+{"rating_id": "909252dfed56", "destination": "yes", "route": "yes", "obstacles": "yes", "reason": "Right-of-table heading is correct and it notes the boxes on the floor and urges care."}
+{"rating_id": "93eb42f3a3c7", "destination": "yes", "route": "yes", "obstacles": "yes", "reason": "Straight to the chair with a clear warning to move around the open cardboard box."}
+{"rating_id": "9642b9e93854", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Tells the user to turn left to face the chair when it sits right of the table; no box warning."}
+{"rating_id": "97c5d081123f", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "Heavily repetitive but the right-of-table route is correct; it notes a box yet asserts no obstacles and never warns."}
+{"rating_id": "9a233d5009bf", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Falsely assumes the user is already beside the table and gives no route or obstacle warning."}
+{"rating_id": "9cbeb7c68834", "destination": "yes", "route": "no", "obstacles": "yes", "reason": "Warns about the cardboard box, but 'turn left' is the wrong side."}
+{"rating_id": "a10554767ff6", "destination": "yes", "route": "yes", "obstacles": "yes", "reason": "Correctly places the chair right of the table and warns to go past the cardboard box."}
+{"rating_id": "a19adb9dfaa6", "destination": "no", "route": "no", "obstacles": "yes", "reason": "Contradictory 'left and right' placement with no vacancy confirmed, though the box is flagged."}
+{"rating_id": "a432320f1ea4", "destination": "yes", "route": "no", "obstacles": "no", "reason": "'Turn around' sends the user away from the chair and no obstacle is mentioned."}
+{"rating_id": "a4de6f0d8932", "destination": "yes", "route": "no", "obstacles": "yes", "reason": "Box warning is present, but turning around faces the wrong way entirely."}
+{"rating_id": "a792929732ff", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Describes the chair but gives no route, and claims there are no visible obstacles."}
+{"rating_id": "ab360280c343", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "Right-hand-side route and a few steps forward is correct, but it denies any obstacle."}
+{"rating_id": "abab1c1f8df4", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "Move forward to the white chair is the right heading, but it claims no obstructions."}
+{"rating_id": "ae7231e137a0", "destination": "yes", "route": "no", "obstacles": "no", "reason": "'Turn left' is the wrong side, and the generic caution about items and doors misses the actual boxes."}
+{"rating_id": "b1ec1af4b151", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "Walking toward the table reaches the chair, but no obstacle is mentioned."}
+{"rating_id": "b25d538955a9", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Rambling and self-contradictory about where the user stands and how far the chair is; no box warning."}
+{"rating_id": "bd93ad859466", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Garbled directions with an invented metal railing and wall-socket landmark."}
+{"rating_id": "bdd8cfe8ba1f", "destination": "yes", "route": "no", "obstacles": "yes", "reason": "Good warning about the large box, but 1.3 m badly understates the roughly 3 m distance."}
+{"rating_id": "be7c7ddef508", "destination": "yes", "route": "no", "obstacles": "yes", "reason": "Flags the box in the way, but the garbled forward-left heading does not lead to the chair."}
+{"rating_id": "bfd8fa2016cd", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "Turn right to the white chair is correct, but it states there are no obstacles."}
+{"rating_id": "c14fe37b0132", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "Turning clockwise and stepping forward reaches the chair; the boxes are not mentioned."}
+{"rating_id": "c66a39e9b846", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Says the chair is on the left when it is on the right, and warns only about the table and chair, not the boxes."}
+{"rating_id": "cdc96020b5e8", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Correctly places the chair right of the table but gives no route or obstacle warning."}
+{"rating_id": "cde480808992", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Right-hand direction is fine but 1.2 m is far short of the real distance, and it claims no obstacles."}
+{"rating_id": "d1956b534115", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "Forward to the chair aligned with the table is workable, but it invents a second chair as an obstacle."}
+{"rating_id": "d9811a9d4f4a", "destination": "yes", "route": "no", "obstacles": "no", "reason": "No directions or distances, and no obstacle warning."}
+{"rating_id": "e2425f533e84", "destination": "no", "route": "no", "obstacles": "no", "reason": "Claims no vacant seat is visible and gives contradictory placement with no obstacle warning."}
+{"rating_id": "e4f104aad2d9", "destination": "yes", "route": "no", "obstacles": "yes", "reason": "Warns the box is an obstacle not to approach, but the directions are garbled and unusable."}
+{"rating_id": "e810c59bf47b", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "Right-hand approach is correct, but it repeatedly insists there are no obstacles and never names the boxes."}
+{"rating_id": "ec64a808d7d9", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "Three steps straight ahead past the table is roughly right, but the boxes are not mentioned."}
+{"rating_id": "efb9b488dcc8", "destination": "yes", "route": "no", "obstacles": "no", "reason": "'Turn and approach' gives no usable heading, and it claims there are no obstacles nearby."}
+{"rating_id": "f0d77b5d3a71", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Calls it a stool and places it to the left, and says the path has no obstacle."}
+{"rating_id": "f5efc9e08f8a", "destination": "yes", "route": "yes", "obstacles": "yes", "reason": "Clockwise turn and forward step is correct and it warns about the cardboard box in the way."}
+{"rating_id": "f741b754b584", "destination": "yes", "route": "no", "obstacles": "yes", "reason": "Box is correctly flagged, but it puts the chair left of the table and says not to move from here."}
+{"rating_id": "f7cfa80c1f76", "destination": "yes", "route": "no", "obstacles": "yes", "reason": "Tells the user to go around the cardboard box, but gives no heading or distance."}
+{"rating_id": "f8f430bf0954", "destination": "no", "route": "no", "obstacles": "yes", "reason": "Warns about the box but never identifies or locates the vacant chair."}
+{"rating_id": "fc409c5707e9", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "Forward with the chair on the right is correct, but it insists there are no objects nearby."}
+{"rating_id": "fd82d80fb637", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Facing and turning to the right-hand wall contradicts the actual ahead-right route; no box warning."}

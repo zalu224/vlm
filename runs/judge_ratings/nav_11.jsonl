@@ -1,0 +1,90 @@
+{"rating_id": "00008e804bda", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "Reaches the white chair by walking forward then right, but misses the low plant table and warns only about the floor tiles."}
+{"rating_id": "00fd3fcfa62f", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "Correct chair and roughly correct side, but explicitly denies any obstacle while the plant table sits in the path."}
+{"rating_id": "024e22386cc8", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "Correct vacant chair and a workable forward-past-the-table route, no mention of the low table with the plant."}
+{"rating_id": "04540f5e4d2e", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Names the right chair but degenerates into contradictory repetition and never warns about the plant table."}
+{"rating_id": "07436ee1ccc0", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Names the white chair but sends the user to sit at the round table, walking straight into the obstacle unwarned."}
+{"rating_id": "0a8192c42a0d", "destination": "yes", "route": "no", "obstacles": "no", "reason": "A vacant chair exists, but turning left is the wrong way and it claims the path is clear."}
+{"rating_id": "0fa89102c647", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Forward-left is the wrong side of the room and it denies the plant table in the path."}
+{"rating_id": "157e0eb337d8", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Right chair identified, but 'head straight to the right' with no forward travel would not reach a seat 3.5 m ahead, and no obstacle is given."}
+{"rating_id": "1b3419737115", "destination": "yes", "route": "yes", "obstacles": "yes", "reason": "Correct chair, forward travel matching the gold route, and it warns about the plant on the round table."}
+{"rating_id": "1b5734547cae", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "Turning clockwise and moving forward points the right way, but it asserts a clear path over the low plant table."}
+{"rating_id": "1ccd43cd67c5", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Locates the white chair correctly but gives no route and no obstacle warning."}
+{"rating_id": "21b2333fab10", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Right seat, but no directions at all and no mention of the plant table."}
+{"rating_id": "2542d7705868", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Correct chair, but 'a few steps to the right' is lateral and far too short, and it claims nothing is in the way."}
+{"rating_id": "26a0ea807004", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "Turn-right-then-forward points at the vacant chair, but no obstacle is mentioned."}
+{"rating_id": "28a7b5fc8a8b", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Correct chair buried in repetitive contradictory directions that say to go over the table, and it denies obstacles."}
+{"rating_id": "2c351aaf8e3e", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "Accurately describes the white metal-legged chair and a left-then-right path around the obstacle, yet says there are none."}
+{"rating_id": "3688bdb678dd", "destination": "no", "route": "no", "obstacles": "no", "reason": "Says the seat is next to the white chair rather than being it, heads into the plant table, and gives only a generic hazard line."}
+{"rating_id": "38b478b42543", "destination": "yes", "route": "no", "obstacles": "no", "reason": "A vacant chair exists, but turning left faces away from it and no obstacle is given."}
+{"rating_id": "399648c6788e", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Right chair, but 1.2 m is far short of 3.5 m and the route is incoherent; the plant is named only as scenery."}
+{"rating_id": "3a374460f389", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Vaguely points at the seat by the plant, gives no usable route, and invents a tile-stepping hazard."}
+{"rating_id": "3d6a1e903c8a", "destination": "no", "route": "no", "obstacles": "no", "reason": "Tells the user to sit on the round side table, one step away, and to cross any furniture encountered."}
+{"rating_id": "420199e834ae", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Correct chair, but the route loops contradictorily and it states there is no obstruction."}
+{"rating_id": "423eaafb8597", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "Correct chair and a forward-then-slightly-right route matching the gold, but no obstacle warning."}
+{"rating_id": "4392744f989a", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Right chair, but walking rightwards across the room would not reach it and no obstacle is flagged."}
+{"rating_id": "4654ff02a635", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Correct chair, but instructing the user to go over the round table is unusable guidance despite spotting the plant."}
+{"rating_id": "4715b633aa67", "destination": "no", "route": "no", "obstacles": "no", "reason": "Directs the user to the round side table and never identifies a seat or an obstacle."}
+{"rating_id": "4755863ed790", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "Correct chair and roughly the right forward-right heading, but no mention of the low table with the plant."}
+{"rating_id": "47b22f546319", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Names the white chair but then places the seat in front of the round table, contradicting itself; no warning given."}
+{"rating_id": "4ca41d7a75aa", "destination": "no", "route": "no", "obstacles": "no", "reason": "Invents a seat 'next to the white chair' at the far end of the table and declares no obstacles."}
+{"rating_id": "4da5d3df5ae2", "destination": "yes", "route": "yes", "obstacles": "yes", "reason": "Correct chair, forward-then-right route, and a clear warning to step around the round table in the path."}
+{"rating_id": "5167b0fd527c", "destination": "yes", "route": "no", "obstacles": "yes", "reason": "Correct chair and a genuine warning about the plant, but 1 metre badly understates the 3.5 m distance."}
+{"rating_id": "5416ce9e12b1", "destination": "yes", "route": "no", "obstacles": "yes", "reason": "Warns about the plant pot correctly, but turning left sends the user away from the chair."}
+{"rating_id": "54b6d875b83a", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Turning left is the wrong side and the path is declared obstacle-free when it is not."}
+{"rating_id": "56e9fa4e6a97", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "Correct chair and a workable forward approach, but it asserts a clear path over the plant table."}
+{"rating_id": "58acfab0fd16", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "Right chair and a plausible right-and-past-the-table route; the plant is mentioned as scenery, not a hazard."}
+{"rating_id": "59ee300fbf05", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "Forward then slightly right matches the gold route to the correct chair, but no obstacle is flagged."}
+{"rating_id": "5cea5ec724e3", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Correct chair described in detail but with no direction or distance, and no obstacle warning."}
+{"rating_id": "5e1758016d5d", "destination": "no", "route": "no", "obstacles": "no", "reason": "Calls the small round plant table the empty seat and says the path is free of obstacles."}
+{"rating_id": "64e59bf47859", "destination": "yes", "route": "no", "obstacles": "no", "reason": "A vacant chair exists, but 'walk towards it' gives a blind user nothing and ignores the table in between."}
+{"rating_id": "656e0ee6af5f", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Places the chair left, right of the table and straight ahead at once, and gives no obstacle warning."}
+{"rating_id": "66d98a06d3d6", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "Good landmark route to the correct chair and it spots the plant, but it invents a white table against the wall."}
+{"rating_id": "6cbe17778297", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Correct chair, but it claims the user is already standing in front of it and gives no obstacle warning."}
+{"rating_id": "6d388eb5c704", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Turning left is wrong when the plant table and chair are ahead-right, and the table is never flagged as a hazard."}
+{"rating_id": "6f2dc4ef7573", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "Landmark route to the chair right of the plant table is workable, but it declares the path obstacle-free."}
+{"rating_id": "6f617683724e", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Locates the correct chair but offers no direction or distance and claims nothing is in the way."}
+{"rating_id": "78a4c34b0837", "destination": "yes", "route": "no", "obstacles": "yes", "reason": "Correctly tells the user to go around the plant on the round table, but 'turn back' points away from the chair."}
+{"rating_id": "7ba20bd21ca0", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Turning left and 3 feet are both wrong for a chair 3.5 m ahead-right, and the plant is only scenery."}
+{"rating_id": "7c67270a5afd", "destination": "yes", "route": "no", "obstacles": "no", "reason": "A vacant chair exists, but 'move forward to the chair' is no route and it invents standing water signs."}
+{"rating_id": "806f252f4333", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Correct chair, but moving to the right side of the room misses it and it invents other chairs and tables."}
+{"rating_id": "867b5c2d8be0", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Right heading and chair, but instructing the user to step over the centre table is unsafe rather than a warning."}
+{"rating_id": "883684c28a44", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Turning around faces away from the chair, and it names the plant table only to say it is clear."}
+{"rating_id": "8a8f0ec56273", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Moving left towards the corner leads away from the vacant chair, and no obstacle is mentioned."}
+{"rating_id": "8c56f5fe29b9", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Correct chair, but it says to turn right at the coffee table and then that the chair is to the left; no warning."}
+{"rating_id": "8cad389ae544", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Correct chair but 1.5 steps grossly understates 3.5 m and it denies the plant table in the path."}
+{"rating_id": "8ff6198c6513", "destination": "no", "route": "no", "obstacles": "no", "reason": "Invents a black chair with a metallic armrest and claims the path is clear."}
+{"rating_id": "903534a5c932", "destination": "yes", "route": "no", "obstacles": "yes", "reason": "Genuinely warns about the potted plant, but '1 metre to the right' is the wrong direction and distance."}
+{"rating_id": "92dbe929a31f", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Correct chair described but no route from the user's position, and it twice states there are no obstacles."}
+{"rating_id": "95fadf8d4059", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Turning slightly left is the wrong side and it claims nothing is in the way."}
+{"rating_id": "9860f47f983e", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Turning around faces away, and it invents a black wall, a board and black ground instead of the plant table."}
+{"rating_id": "98aef2f34b2f", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Correct chair lost in self-contradictory looping directions, with an invented table leg and a denial of obstacles."}
+{"rating_id": "9cb0c3108f6f", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Turning left is the wrong way to the chair and no obstacle is given."}
+{"rating_id": "a137ac06629a", "destination": "yes", "route": "no", "obstacles": "yes", "reason": "Rambling and routeless, but it does caution about the low table in front of the chair."}
+{"rating_id": "a28f33d83f94", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Right general chair, but 'occupying the same space' and 'follow the direction' give no usable route or warning."}
+{"rating_id": "a86f9c53fa02", "destination": "yes", "route": "no", "obstacles": "no", "reason": "2 feet is far short of 3.5 m and no obstacle is mentioned."}
+{"rating_id": "a8b78bbcda27", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "Turn right and move to the white chair roughly works, but the plant table goes unmentioned."}
+{"rating_id": "ad432a828fcf", "destination": "no", "route": "no", "obstacles": "no", "reason": "Never identifies the vacant chair as the destination and gives no route or obstacle warning."}
+{"rating_id": "af85695fcfef", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "Correct chair and a workable forward-along-the-table route, but it says nothing blocks the way."}
+{"rating_id": "b6b644b5f3f1", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "Going past the table to the chair by the plant works, but the plant table is a landmark rather than a warning."}
+{"rating_id": "b78abe783285", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "Forward then chair on the right matches the gold route, but no obstacle is flagged."}
+{"rating_id": "bcadf08163ce", "destination": "no", "route": "no", "obstacles": "no", "reason": "Sends the user left to a corner with no chair and gives only a generic caution."}
+{"rating_id": "c101c711697b", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "Forward then chair on the right matches the gold route, but no obstacle is flagged."}
+{"rating_id": "c4259a27a4eb", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "Landmark route via the round table then right to the chair is workable, but the table is never called a hazard."}
+{"rating_id": "d19ac7d5f242", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Correct chair, but turning left is the wrong side and no obstacle is warned about."}
+{"rating_id": "d1a1f1ab73d7", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "Correct chair to the right of the table and a forward approach, but it repeatedly denies any obstacle."}
+{"rating_id": "d52215be4fe8", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Spots the table and plant but tells the user to step over them, which is unsafe and unusable."}
+{"rating_id": "d70b0a3dbbe9", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Correct chair, but 'face the wall to your right' and 1 metre are wrong, and the plant table is called vacant rather than a hazard."}
+{"rating_id": "dfda07a80493", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Correct chair buried in repetitive contradictions about front and behind, with no obstacle warning."}
+{"rating_id": "e1cc77f2ab90", "destination": "no", "route": "no", "obstacles": "no", "reason": "Guides to table edges rather than the seat and invents a tripping hazard in the tiled floor."}
+{"rating_id": "e8e6112e3149", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Correct chair but the spatial account is self-contradictory, no real route, and it claims the floor is clear."}
+{"rating_id": "ea391cfe9eec", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Names the chair by the small table but gives no route and asserts no obstacle."}
+{"rating_id": "ea6f696183e7", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Detects the table and plant but instructs the user to step over them, and 2 steps is far too short."}
+{"rating_id": "ecbbd064270e", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "Keeping left, reaching the plant table then turning right to the chair matches the gold route, but the table is not flagged as a hazard."}
+{"rating_id": "ef10f636812e", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "Forward and slightly right past the table reaches the chair, but no obstacle warning is given."}
+{"rating_id": "ef9df5232613", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Eventually names the right chair amid invented extra seats, with no route and no obstacle warning."}
+{"rating_id": "f40493bfacb7", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Correct chair, but the output loops on a wrong 'chair in front of the small table' claim and warns of nothing."}
+{"rating_id": "f89595607a81", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "Forward and to the right reaches the correct chair, but it states there are no obstacles in the path."}
+{"rating_id": "f9ab49e945c4", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "Landmark route to the chair right of the plant table works, but the table is never given as a hazard."}
+{"rating_id": "f9cc5fcada3f", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Two steps and 3 feet badly understate 3.5 m and the path is wrongly called clear."}
+{"rating_id": "fa4a5fc93005", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "Turn right to the far end of the table reaches the vacant chair, but 'ensure no plants block your path' hedges rather than warns about the plant that is there."}
+{"rating_id": "fab92421c583", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Correct chair, but turning left is the wrong side and no obstacle is mentioned."}

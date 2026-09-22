@@ -21,7 +21,7 @@ Earlier work in this repository (the walking-guidance ablation and the shelf ret
 | commonsense | 5 office scenes: empty chair, coat on chair, coat hung on chair, laptop + backpack, rearranged | "Are there any vacant seats in this image? …" (full definition in `navbench/prompts.py`) | yes/no | 100 |
 | navigation | 13 obstacle cases × 3 queries | system prompt with the paper's six components; user asks to be guided to a vacant seat | free text, rated on destination, route, obstacles | 10 |
 
-Accuracy, mean and variance over the repeats; navigation rated by Claude Fable 5.1 with a human spot-check for judge–human agreement. An `ext` tier adds scenes the paper did not use: the office in dim light, couches, hallway benches, extra chair counts.
+Accuracy, mean and variance over the repeats; navigation rated by Claude Opus 5 in the Claude Code session that runs the benchmark, blind to which model produced each output, with a human spot-check for judge–human agreement. An `ext` tier adds scenes the paper did not use: the office in dim light, couches, hallway benches, extra chair counts.
 
 ## Run it
 
@@ -34,10 +34,17 @@ make ingest                                  # EXIF-correct, downscale, manifest
 make serve MODEL=mlx-community/Qwen2.5-VL-7B-Instruct-4bit   # second terminal
 .venv/bin/nav run --model qwen2.5-vl-7b --task all            # 100 repeats, 10 for navigation, resumable
 .venv/bin/nav score                                            # reports/results.json
-export ANTHROPIC_API_KEY=...                                   # judge and Claude models
-.venv/bin/nav judge                                            # runs/judged.jsonl
-.venv/bin/nav report                                           # docs/RESULTS.md
+
+.venv/bin/nav judge-export                   # runs/judge_tasks/nav_N.json, one file per case
+#   rate each case in the Claude Code session -> runs/judge_ratings/nav_N.jsonl
+.venv/bin/nav judge-import                   # runs/judged.jsonl
+.venv/bin/nav report                         # docs/RESULTS.md
 ```
+
+Judging needs no API key. `nav judge-export` writes one rating task per navigation case — the photograph, the
+ground truth and every model's outputs for that case with the model names withheld — and `nav judge-import` merges
+the verdicts back. `nav judge` is the alternative path when `ANTHROPIC_API_KEY` is set; both write the same
+`runs/judged.jsonl`, so `nav report`, `nav sheet` and `nav agreement` do not care which was used.
 
 Cloud models (`gpt-4o`, `claude-opus-5`, `gemini-1.5-pro`, …) run the same way once their key is exported; `nav run` names the missing variable and stops otherwise. `--model mock` exercises everything with no models, which is what CI does.
 
@@ -45,7 +52,7 @@ Cloud models (`gpt-4o`, `claude-opus-5`, `gemini-1.5-pro`, …) run the same way
 
 ```
 navbench/   data.py (ingest) · questions.py + prompts.py · backends/ (mlx, openai, anthropic, gemini, mock)
-            runner.py (nav run, resumable) · parse.py · score.py · judge.py · report.py · cli.py
+            runner.py (nav run, resumable) · parse.py · score.py · judge.py + judge_local.py · report.py · cli.py
 questions/  questions.jsonl (committed)        configs/models.yaml
 data/       pblv_nav_src (clone), pblv_nav (ingested)   runs/<model>/<task>.jsonl   reports/
 tests/      every module on mocks and fake clients; CI validates the question file

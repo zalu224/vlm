@@ -18,7 +18,7 @@ Newest entries at the bottom. Decisions carry a **Decision:** line; things only 
 - **Sampling:** temperature 1.0, top-p 1.0 for every model, images at 1024 px, stated as a difference from the paper's "default decoding".
 
 ### Needs Aaron
-- [ ] `export ANTHROPIC_API_KEY=...` (judge and Claude runs), `OPENAI_API_KEY`, `GEMINI_API_KEY` for the paper's cloud models. Keys are read from the environment only; nothing is written to the repo.
+- [ ] `OPENAI_API_KEY`, `GEMINI_API_KEY`, `ANTHROPIC_API_KEY` if we want the paper's *cloud models* run here. Keys are read from the environment only; nothing is written to the repo. **The judge no longer needs a key** (see 2026-09-22, in-session judging).
 - [ ] After the judge runs: rate the blinded spot-check sheet (40 outputs) so judge–human agreement can be reported next to the paper's κ = 0.83.
 
 ## 2026-09-22 — first full model: Qwen2.5-VL-7B (5 h 15 min for all tasks)
@@ -47,3 +47,35 @@ Newest entries at the bottom. Decisions carry a **Decision:** line; things only 
 - Counting degrades on the harder layouts (3 chairs 41 %, 6 chairs 61 %) while 1 and 2 stay above 94 %.
 - Common sense is flat between sizes (49 % vs 47 %): both models say "yes" to an occupied chair; size does not fix the definition problem.
 - Parse failures: 98 of 2,520 for the 3B (mostly answers with no number or no yes/no), 38 for the 7B, all counted as wrong.
+
+## 2026-09-22 — judging moved in-session, no API key
+
+- **Decision (Aaron):** "don't need for anthropic key just use our subscription for output judging with opus model, or choose the best model for the vision task." This supersedes the earlier choice of Claude Fable 5.1 over the API.
+- Judging now runs as Claude Opus 5 inside the Claude Code session. Opus 5 is the vision-capable model on the subscription, and rating genuinely is a vision task: the rater has to look at the photograph to know which seat is free and what is on the floor. The three annotator questions are unchanged.
+- Two new subcommands. `nav judge-export` writes one rating task per navigation **case** — the photograph, that case's gold, and every model's outputs for it — and `nav judge-import` merges the verdicts into `runs/judged.jsonl` in exactly the schema the API judge produced. `nav report`, `nav sheet` and `nav agreement` are untouched.
+- **Blinding is kept.** Outputs are grouped by case, never by model, and each carries only `rating_id = sha1(model|qid|repeat)[:12]`. The model names live in `index.json`, which the rater does not open. This matches the paper's annotators, who did not know the source of an output. Grouping by case also means each photograph is read once and all of its outputs are judged against that single reading.
+- The three annotator questions were factored into one constant (`CRITERIA_BLOCK` in `judge.py`) so both judging paths ask exactly the same thing. The API path stays implemented and tested as the alternative when a key exists.
+- Exported 1,170 outputs across the 13 cases (3 models finished × 390 each). Rated by 13 parallel raters, one per case, each viewing its own photograph.
+
+## 2026-09-22 — navigation judged: 1,170 outputs, three local models
+
+All 13 cases rated, 90 outputs each (3 models × 3 queries × 10 executions). Every rating file validated against its task file: 1,170 verdicts, ids matching exactly, no malformed values.
+
+| model | destination | route | obstacles | all three |
+|---|---|---|---|---|
+| Qwen2.5-VL-7B | 90 % | 48 % | 30 % | 17 % |
+| Qwen3-VL-2B | 90 % | 37 % | 15 % | 7 % |
+| Qwen2.5-VL-3B | 66 % | 17 % | 25 % | 5 % |
+| GPT-4o (paper) | 81 % | 92 % | 84 % | – |
+| Claude-3.5-Sonnet (paper) | 85 % | 87 % | 82 % | – |
+| Gemini-1.5-Pro (paper) | 30 % | 13 % | 64 % | – |
+
+- **The gap between local and cloud models is not in finding the seat, it is in describing how to reach it.** Our 7B beats the paper's GPT-4o on destination (90 % vs 81 %) and loses badly on route (48 % vs 92 %) and obstacles (30 % vs 84 %). Picking the vacant chair out of a photograph is the part small models already do; turning it into directions a person could follow without sight is the part they do not.
+- Obstacles is the worst criterion for every local model. The typical failure is a route described as if the floor were clear: the wet-floor sign, the boxes or the paper are simply not mentioned. This is the criterion that matters most for safety, and it is the one that collapses.
+- Per-case spread is wide. The tissue case reaches 87 % / 53 % / 32 %; the backpack-on-chair case (nav_1) falls to 32 % / 14 % / 5 %, because the models direct the user to the occupied chair. Case nav_9 (chair and bag) splits destination at 53 %.
+- Qwen3-VL-2B is the clearest case of a model that sees well and guides badly: joint-best on destination (90 %) at a fifth of the 7B's size, but last on obstacles (15 %).
+- One output contains stray Chinese tokens mid-sentence ("Watch out for the 万事瞩目 macdonald"), a 7B decoding failure that the judge marked down on route and obstacles rather than destination.
+- `reports/spotcheck.csv` written: 40 blinded outputs for Aaron, with the key held separately in `reports/spotcheck_key.csv`.
+
+### Needs Aaron
+- [ ] Fill the `destination`, `route`, `obstacles` columns in `reports/spotcheck.csv` (yes/no), then `nav agreement` reports Cohen's κ against the judge, beside the paper's κ = 0.83.

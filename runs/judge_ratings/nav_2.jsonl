@@ -1,0 +1,90 @@
+{"rating_id": "028d94383398", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Right chair named but the stated distances are muddled and it claims a clear path when the box is ahead."}
+{"rating_id": "04297652ec09", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Correct chair, but 1.2 m plus 1.2 m falls far short of the ~4 m and no box warning."}
+{"rating_id": "0688136b4696", "destination": "no", "route": "no", "obstacles": "yes", "reason": "Invents a second chair in front of the black chair so the destination is ambiguous, and gives no route."}
+{"rating_id": "088db7c32a91", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Finds the chair but the directions are self-contradictory and it asserts there are no obstacles."}
+{"rating_id": "0d4416720871", "destination": "no", "route": "no", "obstacles": "yes", "reason": "Tells the user to turn around and sit on a desk, though it does flag the carton."}
+{"rating_id": "0eed3d2b12a6", "destination": "no", "route": "no", "obstacles": "no", "reason": "Splits the seat from the black chair and places it in front of the table; no obstacle warning."}
+{"rating_id": "128a4048973c", "destination": "yes", "route": "no", "obstacles": "yes", "reason": "Seat described as behind the table with no rightward turn, though the box is mentioned."}
+{"rating_id": "1497263766c4", "destination": "yes", "route": "no", "obstacles": "yes", "reason": "Chair and box are right, but 'turn around' points the user away from both."}
+{"rating_id": "1b2d46428e65", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Identifies a seat right of the table but the stepping-back-to-the-wall route is nonsense and ignores the box."}
+{"rating_id": "1c7565d5c30b", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "Bearing right toward the table reaches the vacant chair, but the box is never mentioned."}
+{"rating_id": "1e407edd0646", "destination": "yes", "route": "no", "obstacles": "yes", "reason": "Warns about the banana box, but three steps and 'just past the table' stops well short of the ~4 m chair."}
+{"rating_id": "1f755bda56df", "destination": "yes", "route": "yes", "obstacles": "yes", "reason": "Forward to the right end of the table with the carton flagged; matches the gold route."}
+{"rating_id": "3e3332749154", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Correct chair but states the path is clear and gives no directions, despite later naming the box."}
+{"rating_id": "4398cae08e79", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Chair correct; 'turn clockwise' is not a usable direction and no obstacle is given."}
+{"rating_id": "43f70d2563d5", "destination": "yes", "route": "no", "obstacles": "yes", "reason": "Box warning is right, but turning left sends the user away from the chair."}
+{"rating_id": "45aad52bf11a", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Rambling and contradictory directions, and it declares the floor clear."}
+{"rating_id": "45fadfb4123d", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "Ahead-and-right is correct, but it calls the path clear rather than warning about the box."}
+{"rating_id": "46a833b194ac", "destination": "no", "route": "no", "obstacles": "no", "reason": "Falsely claims no empty seat exists and gives no route or warning."}
+{"rating_id": "48f5c65204e6", "destination": "no", "route": "no", "obstacles": "no", "reason": "Invents a black desk, never identifies the chair, turns the user around, and claims no obstacles."}
+{"rating_id": "494214843680", "destination": "yes", "route": "yes", "obstacles": "yes", "reason": "Straight ahead to the chair right of the table with an explicit warning to avoid the box."}
+{"rating_id": "4b1a5c1586ea", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Correct chair, but turning left is the wrong way and the box is missed."}
+{"rating_id": "55d9f0c70216", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Names the chair right of the table but also puts it to the left; no route or obstacle."}
+{"rating_id": "5671db0561ed", "destination": "no", "route": "no", "obstacles": "no", "reason": "Garbled cane sentence that identifies nothing."}
+{"rating_id": "58a624529bd9", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "Correct chair and direction, but no mention of the box on the floor."}
+{"rating_id": "58df13ee64ef", "destination": "no", "route": "no", "obstacles": "no", "reason": "Invents a row of chairs to follow and never settles on the vacant seat."}
+{"rating_id": "59d76f93ba85", "destination": "yes", "route": "yes", "obstacles": "yes", "reason": "Straight ahead to the black chair by the table with a step-around warning for the banana box."}
+{"rating_id": "5a452dd00ce9", "destination": "yes", "route": "no", "obstacles": "yes", "reason": "Box warning is correct but 'move towards the black chair' is not a route."}
+{"rating_id": "60e9ded4dfea", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Correct chair buried in degenerate looping text with wrong distances and a claim of no obstacles."}
+{"rating_id": "6345b822a4a1", "destination": "no", "route": "no", "obstacles": "yes", "reason": "Sends the user to a chair under the table, which does not exist, though the box is flagged."}
+{"rating_id": "685029e4cdce", "destination": "yes", "route": "yes", "obstacles": "yes", "reason": "Chair right of the desk reached by moving forward, with the floor box called out."}
+{"rating_id": "6e8e227d8760", "destination": "yes", "route": "yes", "obstacles": "yes", "reason": "Forward then right to the chair with an accurate warning about the box in the path."}
+{"rating_id": "6f4974c1316d", "destination": "yes", "route": "yes", "obstacles": "yes", "reason": "Bears right to the table, names the unoccupied chair, and warns about tripping on the box."}
+{"rating_id": "70c609509252", "destination": "no", "route": "no", "obstacles": "no", "reason": "Puts the chair to the left, invents a scanner, and gives no obstacle warning."}
+{"rating_id": "71f1f894c76b", "destination": "no", "route": "no", "obstacles": "no", "reason": "Claims the desk is occupied and places an empty chair to the left; contradictory throughout."}
+{"rating_id": "7399790f74ca", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "Correct chair reached by walking forward to the table's right, but no box warning."}
+{"rating_id": "74179c5ec038", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "Forward then right to the chair right of the table; the box is never mentioned."}
+{"rating_id": "766013f7c383", "destination": "yes", "route": "no", "obstacles": "yes", "reason": "Notes the cardboard box but the 1 m distance and 'go towards the right' misstate the ~4 m approach."}
+{"rating_id": "783fcace62c6", "destination": "yes", "route": "no", "obstacles": "yes", "reason": "Chair and box are right, but 'turn around' faces the user away from the scene."}
+{"rating_id": "787d37a08fbd", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "Move forward to the chair beside the table is workable, but no obstacle is given."}
+{"rating_id": "7886ecfe5995", "destination": "yes", "route": "no", "obstacles": "no", "reason": "No actual directions and only a vague mention of bags rather than the box ahead."}
+{"rating_id": "7b4f9851b94f", "destination": "no", "route": "no", "obstacles": "yes", "reason": "Directs the user to a seat under the table, which is not where the chair is."}
+{"rating_id": "7d2d1e7afbff", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "Straight ahead to the table with the chair beside it, but the box is missed."}
+{"rating_id": "858644a4c702", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "Forward and slightly right is accurate, but it wrongly says the box will not block the path."}
+{"rating_id": "8684d65f561a", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Correct chair lost in looping repetition, with no usable route and no box warning."}
+{"rating_id": "8fe3281b7558", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "Slight right then forward reaches the empty chair, but no obstacle is mentioned."}
+{"rating_id": "92385b8e09f7", "destination": "no", "route": "yes", "obstacles": "no", "reason": "Direction is fine but it places the chair behind a desk in the centre of the room, not at the table's right end."}
+{"rating_id": "943a2c762bba", "destination": "yes", "route": "yes", "obstacles": "yes", "reason": "Routes around the box then right to the seat at the end of the table, matching the gold route."}
+{"rating_id": "951d6abe882d", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Mentions the box then says the path has no obstacles, and gives no usable directions."}
+{"rating_id": "95fd94f79af8", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "Right-hand approach to the chair is fine, but it invents a black trash can next to it."}
+{"rating_id": "9a2c96e2a7ba", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "Forward then right to the chair near the wall, but the box is not mentioned."}
+{"rating_id": "9b7d0e0a09d0", "destination": "no", "route": "no", "obstacles": "no", "reason": "Denies that any empty seat exists."}
+{"rating_id": "a3de80f9e4a4", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Correct chair, but 1 metre and a bare 'turn right' will not reach a chair ~4 m ahead, and no box warning."}
+{"rating_id": "a4c3e39b6d68", "destination": "no", "route": "no", "obstacles": "no", "reason": "Invents a chair tucked under the table and gives no obstacle warning."}
+{"rating_id": "a5393d58e6af", "destination": "no", "route": "no", "obstacles": "yes", "reason": "Places the seat behind and to the left of the user after turning around, though it does warn about the box."}
+{"rating_id": "a6f53a81a118", "destination": "yes", "route": "no", "obstacles": "no", "reason": "No viewpoint directions, and it says the box will stay out of the way when it is in the path."}
+{"rating_id": "a7c3f0b8dfcc", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "Slight right then forward is correct, but it warns about the table and chair and misses the box."}
+{"rating_id": "a7d195054a30", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Correct chair, but turning left is the wrong side and the box is ignored."}
+{"rating_id": "aa6e56050250", "destination": "yes", "route": "no", "obstacles": "yes", "reason": "Warns about the box but says the chair is to the left and then to the right of the box."}
+{"rating_id": "b190e1e73c7b", "destination": "no", "route": "no", "obstacles": "no", "reason": "Vague 'empty seats at the end of the office' with no identification, route, or warning."}
+{"rating_id": "b36b085a3745", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Correct chair but the 1 m distance is wrong and it repeatedly says the floor is clear."}
+{"rating_id": "ba5b41134aa5", "destination": "no", "route": "no", "obstacles": "no", "reason": "Generic cane advice that identifies no seat, route, or obstacle."}
+{"rating_id": "bab299708f5a", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Correct chair, but '2 metres to the right' understates the distance and no box is mentioned."}
+{"rating_id": "c02560501bee", "destination": "no", "route": "no", "obstacles": "no", "reason": "Turns the user around and places the seat behind and to the left; no obstacle."}
+{"rating_id": "c4942491bde1", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Three steps falls short of the ~4 m chair and it claims there is no obstacle."}
+{"rating_id": "ca4480f87382", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Correct chair, but the route contradicts itself and it invents a white plastic chair and a door."}
+{"rating_id": "ccb59b09918a", "destination": "no", "route": "no", "obstacles": "no", "reason": "Sends the user to a chair under the table and to the left; no obstacle warning."}
+{"rating_id": "ce641161bd91", "destination": "yes", "route": "yes", "obstacles": "yes", "reason": "Chair right of the table, with the box correctly named as blocking the direct path and a step-around instruction."}
+{"rating_id": "cfdb69f0dcc1", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "Correct chair and approach, but it asserts there are no obstacles on the way."}
+{"rating_id": "d141dca538fb", "destination": "yes", "route": "no", "obstacles": "yes", "reason": "Carton is flagged, but 'pass behind the table' is impossible with the table against the wall."}
+{"rating_id": "d31f418ff670", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "Forward then right to the chair at the right end of the table, but no mention of the box."}
+{"rating_id": "d411466654c2", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Correct chair, but four feet is nowhere near the ~4 m and it says nothing is around it."}
+{"rating_id": "d485007583fb", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "Forward then slightly right to the seat right of the table, but the box is missed."}
+{"rating_id": "d6aa21ad94e4", "destination": "no", "route": "no", "obstacles": "yes", "reason": "Box is flagged, but it places a black stool behind the table and turns the user left."}
+{"rating_id": "d92418ff81a1", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "Correct chair and bearing, but it says nothing is in the way."}
+{"rating_id": "dde0dc06cd30", "destination": "yes", "route": "no", "obstacles": "yes", "reason": "Box warning is right, but 'move towards the black chair' gives no direction or distance."}
+{"rating_id": "e0737555a40f", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Correct side, but it tells the user to move towards the box rather than around it."}
+{"rating_id": "e3aca504e47c", "destination": "yes", "route": "yes", "obstacles": "yes", "reason": "Chair at the end of the table, walk forward past the box to the table's right side."}
+{"rating_id": "e548fb3ed907", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "Correct chair and rightward approach, but it states the floor is clear of obstacles."}
+{"rating_id": "eb09ca700ea8", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "Walking straight to the chair right of the table works, but no box warning."}
+{"rating_id": "eb790cf5ae4f", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "Correct chair and approach, but it claims the box does not obstruct the path."}
+{"rating_id": "ee2ace8ee289", "destination": "yes", "route": "yes", "obstacles": "yes", "reason": "Straight then right to the chair against the wall, with the box in front called out."}
+{"rating_id": "eeb17f774116", "destination": "yes", "route": "yes", "obstacles": "yes", "reason": "Forward to the desk, chair on its right, and the floor box flagged to avoid."}
+{"rating_id": "ef5263febfbc", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "Right then forward reaches the vacant chair, but the box on the floor is never mentioned."}
+{"rating_id": "f034d1216f3e", "destination": "yes", "route": "no", "obstacles": "yes", "reason": "Box warning is correct, but turning left points away from the chair."}
+{"rating_id": "f51e2b730f34", "destination": "yes", "route": "yes", "obstacles": "yes", "reason": "Moves to the table then the chair beside it and warns about the banana box on the floor."}
+{"rating_id": "f62ae02d0e38", "destination": "yes", "route": "yes", "obstacles": "yes", "reason": "Goes around the box and right to the vacant chair, matching the gold route."}
+{"rating_id": "f6fc8dacbdcf", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Correct chair, but the route contradicts itself and it ends by saying it sees few obstacles."}
+{"rating_id": "f7255388e151", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Correct chair, but the directions wander and it reports nothing in the way."}
+{"rating_id": "f87c99abe255", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Degenerate text that names the chair but gives no route and contradicts itself about the box."}
+{"rating_id": "ff4de345c943", "destination": "no", "route": "no", "obstacles": "no", "reason": "Invents a white chair with a black seat, gives vague directions, and claims no obstacle."}

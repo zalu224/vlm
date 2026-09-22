@@ -1,0 +1,90 @@
+{"rating_id": "0027c1907bc8", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Names the right chair but gives no heading or distance and falsely calls the floor clear."}
+{"rating_id": "052661c4f3b7", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Turn-clockwise plus 'in front of the table' misplaces the approach, and the floor item is invented as cardboard."}
+{"rating_id": "055be0b01d51", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "Forward-and-right reaches the chair, but it claims no obstacles while paper lies ahead."}
+{"rating_id": "0636e858d922", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Destination named but the route is incoherent and no obstacle is mentioned."}
+{"rating_id": "073bee8311a5", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Correct chair, but 'to your right' alone omits the roughly 4 m forward walk and there is no paper warning."}
+{"rating_id": "077c08c5a28c", "destination": "yes", "route": "no", "obstacles": "yes", "reason": "Warns of floor objects but gives no actual directions or distance."}
+{"rating_id": "0b0a9ac2f8e5", "destination": "yes", "route": "no", "obstacles": "yes", "reason": "Papers correctly flagged, but 'walk past the blackboard' would send the user into the wall."}
+{"rating_id": "0d3f536d881c", "destination": "no", "route": "no", "obstacles": "no", "reason": "Places the seat left of the table after walking under it, and ignores the paper."}
+{"rating_id": "1277a07e6490", "destination": "yes", "route": "no", "obstacles": "no", "reason": "'Turn around' contradicts the chair being in front, and no obstacle is mentioned."}
+{"rating_id": "1332bc6ba12b", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "Forward then right is a workable route, but the paper on the floor is never mentioned."}
+{"rating_id": "193e76adbf92", "destination": "yes", "route": "no", "obstacles": "yes", "reason": "Papers are flagged, but 'turn around' points the user away from the chair."}
+{"rating_id": "1aab0881f53b", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Chair named, directions garbled, no obstacle warning."}
+{"rating_id": "1c943a2544d3", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Turning left along the wall misses the chair, and a wet floor sign is invented."}
+{"rating_id": "1f1b1be0bf80", "destination": "yes", "route": "yes", "obstacles": "yes", "reason": "Correct chair right of the table with the floor papers flagged; forward-and-right works despite the odd 'single step'."}
+{"rating_id": "233d2e358d27", "destination": "yes", "route": "no", "obstacles": "no", "reason": "No usable directions, and it warns of a cable while missing the paper ahead."}
+{"rating_id": "23d031c81482", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Accurate chair location but no movement instructions and it denies the paper obstacle."}
+{"rating_id": "27a7bc820099", "destination": "no", "route": "no", "obstacles": "no", "reason": "Garbled fragment naming a chair on the floor; nothing usable."}
+{"rating_id": "2a71a287e68d", "destination": "yes", "route": "no", "obstacles": "yes", "reason": "Correctly warns of the paper between user and chair, but 'turn left' is the wrong side."}
+{"rating_id": "2d42b9aa2abd", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "Right and forward reaches the chair, but the paper on the floor is not mentioned."}
+{"rating_id": "2d6f84598369", "destination": "yes", "route": "yes", "obstacles": "yes", "reason": "Right-of-centre approach to the black chair by the table with the paper pile flagged."}
+{"rating_id": "2e32bf64138a", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Right side is correct but 1.5 m badly understates the distance and the obstacle text is garbled."}
+{"rating_id": "3250e401eee1", "destination": "yes", "route": "no", "obstacles": "no", "reason": "'Forward to the left' contradicts the chair being on the right, and no paper warning."}
+{"rating_id": "3510ea35b72d", "destination": "yes", "route": "no", "obstacles": "no", "reason": "'Turn around' faces the user away from the table, and the paper is ignored."}
+{"rating_id": "35fc65a0bbe4", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Correct chair but turning left is the wrong side, and no obstacle is mentioned."}
+{"rating_id": "37dfe85c061a", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "Forward to the board then chair right of the table works, but only generic clutter talk, not the paper."}
+{"rating_id": "38dae444b062", "destination": "yes", "route": "no", "obstacles": "yes", "reason": "Paper correctly flagged, but the route text is incoherent."}
+{"rating_id": "39b1c7492677", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "Slightly right then forward is right, but it never mentions the paper on the floor."}
+{"rating_id": "3a30f9c39fc4", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Degenerate repetition that locates the chair but gives no route and no obstacle."}
+{"rating_id": "3a5a451d1793", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Stops at the desk without reaching the chair, and the papers are a misplaced landmark rather than a warning."}
+{"rating_id": "3b0251ca565b", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "Turn right and approach works, but it explicitly denies obstacles that exist."}
+{"rating_id": "3b3def818f16", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "Correct right-and-forward approach, but falsely says the path is clear."}
+{"rating_id": "3bb80382d7ad", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Identifies the vacant chair but offers no directions or obstacle warning."}
+{"rating_id": "3c9249f77877", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "Good chair identification and a workable right-of-table route, but claims no obstacles."}
+{"rating_id": "3f8007f32f6e", "destination": "no", "route": "no", "obstacles": "no", "reason": "Rambling and self-contradictory about which seat exists and whether it can be reached."}
+{"rating_id": "4abb6b5adf97", "destination": "yes", "route": "no", "obstacles": "no", "reason": "'Turn around' is the wrong heading and the obstacle is left unnamed mid-sentence."}
+{"rating_id": "4e141a8904e3", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Names the chair only; no route and no obstacle warning."}
+{"rating_id": "550e5f65b8aa", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Correct chair but no heading or distance, and it wrongly declares the path clear."}
+{"rating_id": "5bf09123a03c", "destination": "no", "route": "no", "obstacles": "yes", "reason": "Sheets on the floor are flagged, but the seat is placed to the left where there is none."}
+{"rating_id": "62045a53f4d6", "destination": "no", "route": "no", "obstacles": "no", "reason": "Sends the user left about 6 feet when the chair is right and roughly 4 m ahead."}
+{"rating_id": "64a653d3b449", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "Proceeding to the right side of the table reaches the chair, but the floor is wrongly called clear."}
+{"rating_id": "682984f795b7", "destination": "yes", "route": "no", "obstacles": "no", "reason": "'Move slightly forward' badly understates the walk and no obstacle is reported."}
+{"rating_id": "6e187337c711", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Three steps straight ahead stops short at the papers rather than reaching the chair."}
+{"rating_id": "6ed4eabc169f", "destination": "yes", "route": "no", "obstacles": "no", "reason": "'Walk forward a bit' with the seat placed behind the table will not get the user there, and no paper warning."}
+{"rating_id": "765a15ab34fb", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Turning left and placing the chair in front of the table would miss it, and the paper is ignored."}
+{"rating_id": "78f2c1d95382", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "Forward past the table to the chair on the right is workable, but the floor paper is never mentioned."}
+{"rating_id": "7eb952cc0ef9", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Correct chair, but 'a few steps forward' to get closer does not reach it and it denies the paper."}
+{"rating_id": "7ecfa29944e7", "destination": "yes", "route": "yes", "obstacles": "yes", "reason": "Right chair, workable right-of-table route, and the floor papers are flagged to avoid."}
+{"rating_id": "83f435c6607c", "destination": "yes", "route": "no", "obstacles": "yes", "reason": "Papers warned about, but 'turn around' points the user away from the chair."}
+{"rating_id": "85aae0f60876", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Chair identified but no heading or distance and no obstacle warning."}
+{"rating_id": "8779e85bd755", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Walking slightly left is the wrong side, and the paper is not mentioned."}
+{"rating_id": "888e0fc625ce", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Straight ahead to the wall omits the rightward offset, and no obstacle is given."}
+{"rating_id": "8e4a64c1a355", "destination": "yes", "route": "no", "obstacles": "yes", "reason": "Papers in front are correctly flagged, but 'go directly to it' supplies no heading or distance."}
+{"rating_id": "8f590312eb7a", "destination": "no", "route": "no", "obstacles": "no", "reason": "Garbled fragment inventing a cabinet; no destination, route or obstacle."}
+{"rating_id": "9194c7419b1e", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "Forward along the table then right reaches the chair, but it asserts no obstacles."}
+{"rating_id": "95746058b231", "destination": "yes", "route": "no", "obstacles": "yes", "reason": "Accurately spots the two sheets of paper, but three steps straight ahead will not reach the chair."}
+{"rating_id": "969ab2b0d1e0", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "A few steps toward the right lands near the chair, but the paper is not mentioned."}
+{"rating_id": "98a8d86c1032", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Walking toward the board without the rightward turn stops short, and no obstacle is warned."}
+{"rating_id": "9e00331fb06e", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "Good route slightly right and straight, but it spots the paper and then tells the user to ignore it."}
+{"rating_id": "a5a7f00c4cca", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "Turn right and walk forward works, but the paper on the floor is never mentioned."}
+{"rating_id": "a622badf5e99", "destination": "yes", "route": "no", "obstacles": "no", "reason": "'Turn around' faces the user away from the table, and no obstacle is reported."}
+{"rating_id": "ab92d0fd0760", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Directions are self-contradictory about what ends up behind what, and no paper warning."}
+{"rating_id": "ad012573624b", "destination": "yes", "route": "yes", "obstacles": "yes", "reason": "Forward to the desk then the chair on its right, with the floor paper correctly flagged."}
+{"rating_id": "ae3dd355cda3", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "Turn right and approach reaches the chair, but the paper is not mentioned."}
+{"rating_id": "ae53ba8c8ddf", "destination": "yes", "route": "no", "obstacles": "yes", "reason": "Paper in the centre is flagged, but straight ahead alone omits the rightward offset."}
+{"rating_id": "affab6cb54ce", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Places the chair in front of the table and gives no rightward heading, with no obstacle warning."}
+{"rating_id": "b66b5f2e2885", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Forward-left is the wrong side and it invents a tablecloth and dried food on the floor."}
+{"rating_id": "b7eb4a77ffd2", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Places the chair behind the table with garbled instructions and no obstacle warning."}
+{"rating_id": "bb20155923e8", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Long and contradictory, putting the chalkboard behind the user and the seat both behind and in front of the table, and denying obstacles."}
+{"rating_id": "bd0c972f4261", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Puts the seat directly behind the table, which would not reach it, and no obstacle is mentioned."}
+{"rating_id": "c3f11c203353", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Locates the chair but gives no route and invents a window while missing the paper."}
+{"rating_id": "c5e13e1513fb", "destination": "yes", "route": "no", "obstacles": "yes", "reason": "White sheets on the floor are flagged, but walking toward the blackboard alone will not reach the chair."}
+{"rating_id": "c6115d7d25b0", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Degenerate looping text; the paper is placed on the wrong side of the table and dismissed, and no route emerges."}
+{"rating_id": "c8a4d8bca416", "destination": "yes", "route": "yes", "obstacles": "yes", "reason": "Forward and slightly right to the chair, with the white sheets on the floor flagged."}
+{"rating_id": "d06fc47fa74c", "destination": "yes", "route": "no", "obstacles": "yes", "reason": "Crumpled papers correctly warned about, but no heading or distance is given."}
+{"rating_id": "d546a8b59f51", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "Straight then right reaches the chair beside the table, but the paper is not mentioned."}
+{"rating_id": "d93666934d06", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "Forward then right across to the chair works, but no obstacle is reported."}
+{"rating_id": "d9a85f39ba73", "destination": "yes", "route": "no", "obstacles": "no", "reason": "A few steps forward understates the distance and omits the rightward offset, with no obstacle warning."}
+{"rating_id": "da070de2709e", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Turning left is the wrong side, and the paper on the floor is ignored."}
+{"rating_id": "db337ff9c683", "destination": "no", "route": "no", "obstacles": "no", "reason": "Guides only to the desk without identifying the vacant chair, with a confused heading and a false all-clear."}
+{"rating_id": "e57c96f5b6c9", "destination": "yes", "route": "no", "obstacles": "no", "reason": "'Look to your right, follow the chair' gives no distance or walking direction, and no obstacle is mentioned."}
+{"rating_id": "e737d67fa441", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Correct chair but turning left points the wrong way, and no obstacle warning."}
+{"rating_id": "e8ed9dcd9fa1", "destination": "no", "route": "no", "obstacles": "no", "reason": "Puts the chair under the table and invents a wet floor sign."}
+{"rating_id": "ec6b23269ce6", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "Turning right then forward reaches the chair, but no paper warning is given."}
+{"rating_id": "ec9f243698fc", "destination": "no", "route": "no", "obstacles": "no", "reason": "Says the chair is simultaneously left, right of the table and straight ahead, with no obstacle warning."}
+{"rating_id": "ef5f9e16cdb3", "destination": "yes", "route": "no", "obstacles": "yes", "reason": "Papers are flagged, but 'walk over the white table' is not a usable route."}
+{"rating_id": "ef61f8aebffc", "destination": "no", "route": "no", "obstacles": "no", "reason": "Sends the user forward and left to a seat it calls used; no obstacle mentioned."}
+{"rating_id": "f2c1dc57cde2", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Turning left toward a chair placed behind the table misses it, and it claims no obstacles."}
+{"rating_id": "f3988aadc6b0", "destination": "yes", "route": "no", "obstacles": "yes", "reason": "Accurately reports two sheets of paper right of the desk, but gives no route beyond walking toward the blackboard."}
+{"rating_id": "f8baa5ce6e5c", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Contradicts itself about seeing the chair, suggests a jump at 1 m, and dismisses the papers as irrelevant."}
+{"rating_id": "f9f505fca592", "destination": "yes", "route": "yes", "obstacles": "yes", "reason": "Forward then right to the chair right of the table, with the sheet of paper on the floor flagged."}

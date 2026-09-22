@@ -8,6 +8,11 @@ data/*
 !data/samples/
 runs/*
 !runs/.gitkeep
+# The navigation annotations are the irreproducible part of the study (a rater looked at each
+# photograph once) and judged.jsonl carries the rated outputs with them. Raw per-model run files
+# stay out: they are large and regenerable by re-running the models.
+!runs/judge_ratings/
+!runs/judged.jsonl
 reports/figures/
 logs/
 *.mp4

@@ -1,0 +1,90 @@
+{"rating_id": "0795e4f4816c", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "Correct black chair right of the table and a usable approach, but no mention of the wet-floor sign."}
+{"rating_id": "0af051e68ec0", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Names the right chair but 'to your left' and 'straight ahead' contradict each other, and no sign warning."}
+{"rating_id": "0d17229546b1", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Right chair, but 'turn back from the blackboard' faces the user away, and the wet-floor sign is denied."}
+{"rating_id": "0f514eddec2d", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "Correct vacant chair and a workable forward-right route, but the sign is only described as scenery with no caution."}
+{"rating_id": "11e571e6beb6", "destination": "yes", "route": "no", "obstacles": "yes", "reason": "Correct chair and a proper sign warning, but 'move towards the black chair' gives no bearing or distance."}
+{"rating_id": "12611586dc0d", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "Forward to the table and the adjacent chair works, but the sign is misused as a direction marker rather than a hazard."}
+{"rating_id": "13bc4825e359", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Right chair, but 1.2 m forward then 1.2 m right falls far short of the ~4 m table, and no sign warning."}
+{"rating_id": "1d58460c7c65", "destination": "yes", "route": "yes", "obstacles": "yes", "reason": "Correct chair right of the table, straight-ahead-right route, and an explicit warning to avoid the wet-floor sign."}
+{"rating_id": "1f7d857ce722", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Right chair, but 6 feet straight ahead misses the ~4 m ahead-right target and it falsely claims a clear path."}
+{"rating_id": "2558db165326", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "Correct unoccupied chair right of the table with a forward approach, but the wet-floor sign is never mentioned."}
+{"rating_id": "28fd12dee297", "destination": "yes", "route": "yes", "obstacles": "yes", "reason": "Correct chair, forward-then-right route to the table edge, and a clear warning about the wet-floor sign."}
+{"rating_id": "299b6f8d2453", "destination": "yes", "route": "no", "obstacles": "yes", "reason": "Warns about the sign but 'move towards the black chair' supplies no direction or distance."}
+{"rating_id": "2b2f8eab7310", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Routes the user onto the sign then left away from the chair, and then claims there are no obstacles."}
+{"rating_id": "2b7252580a8c", "destination": "yes", "route": "no", "obstacles": "yes", "reason": "Flags the sign in the path, but 'turn left' sends the user away from the ahead-right chair."}
+{"rating_id": "2cf7286086ef", "destination": "no", "route": "no", "obstacles": "yes", "reason": "Warns about the sign but offers a desk rather than the chair, and 'turn around' faces the user backwards."}
+{"rating_id": "30cc5dab78e9", "destination": "yes", "route": "no", "obstacles": "no", "reason": "'Turn around' is backwards and it invents crayons while ignoring the wet-floor sign."}
+{"rating_id": "31203aee3660", "destination": "no", "route": "no", "obstacles": "no", "reason": "Invents a seating area away from any table under the blackboard; the only chair is at the table, and no sign warning."}
+{"rating_id": "376dea4ae247", "destination": "yes", "route": "yes", "obstacles": "yes", "reason": "Correct chair by the table, with an instruction to walk around the wet-floor sign in front of it."}
+{"rating_id": "3a54f1bcbd8c", "destination": "no", "route": "no", "obstacles": "no", "reason": "Hallucinates a red end cap and yellow cabinet; no real seat, route, or obstacle."}
+{"rating_id": "3b614432d183", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Identifies the chair but the directions loop and contradict, and it calls the sign not in the path and says to go over it."}
+{"rating_id": "43f73302ac6d", "destination": "yes", "route": "yes", "obstacles": "yes", "reason": "Correct chair right of the table, direct approach, and an explicit slip warning about the wet-floor sign."}
+{"rating_id": "48cfe678285f", "destination": "yes", "route": "yes", "obstacles": "yes", "reason": "Correct chair, forward past the sign to reach it, and a caution about the wet floor."}
+{"rating_id": "4c9aab667535", "destination": "yes", "route": "yes", "obstacles": "yes", "reason": "Straight ahead past the wet-floor sign then right to the chair matches the real layout."}
+{"rating_id": "4e77aef3e665", "destination": "yes", "route": "yes", "obstacles": "yes", "reason": "Slight right turn and forward reaches the chair, with a warning to pass the wet-floor sign carefully."}
+{"rating_id": "586042a9b83b", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Sends the user forward-left when the chair is ahead-right, and never mentions the sign."}
+{"rating_id": "5a549e8939f9", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Correct chair but 1.5 m is far short of the ~4 m distance, and the wet-floor sign is omitted."}
+{"rating_id": "5af9ee8aada9", "destination": "yes", "route": "no", "obstacles": "no", "reason": "'Turn left and walk 3 feet' points away from the ahead-right chair, and no sign warning."}
+{"rating_id": "5dc92b81ec64", "destination": "yes", "route": "no", "obstacles": "yes", "reason": "Warns about the wet-floor sign, but 'turn around' faces the user away from the chair."}
+{"rating_id": "5e433b8dc633", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Degenerate looping text: the chair is named but the position claims contradict and the sign gets no warning."}
+{"rating_id": "617b8a12a0d4", "destination": "yes", "route": "no", "obstacles": "yes", "reason": "Warns not to step on the sign, but 'turn left' points away from the ahead-right chair."}
+{"rating_id": "624a20298c9e", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "Forward to the right of the table and the chair at its end is correct, but the wet-floor sign is unmentioned."}
+{"rating_id": "644b9cb7e85b", "destination": "yes", "route": "yes", "obstacles": "yes", "reason": "Toward the right side of the room to the seat, with a slip warning about the wet-floor sign."}
+{"rating_id": "6ad7146738ea", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Describes the correct chair but gives no directions and only mentions the sign as scenery."}
+{"rating_id": "6b38d5fc03df", "destination": "yes", "route": "yes", "obstacles": "yes", "reason": "Straight ahead to the chair near the table with an instruction to step around the yellow caution sign."}
+{"rating_id": "6c01e7ce670c", "destination": "no", "route": "no", "obstacles": "no", "reason": "Never identifies the chair, gives only 'look for an empty seat area', and tells the user to step over the wet-floor sign."}
+{"rating_id": "6ca6e0720cf6", "destination": "yes", "route": "no", "obstacles": "no", "reason": "'Forward to the left' is the wrong side for the ahead-right chair, and no sign warning."}
+{"rating_id": "6eb18320b761", "destination": "yes", "route": "no", "obstacles": "yes", "reason": "Warns about the sign, but telling the user to turn right after reaching the chair to find the seat is contradictory."}
+{"rating_id": "6f6c69ccaad3", "destination": "yes", "route": "yes", "obstacles": "yes", "reason": "Straight then right reaches the chair, with a warning to avoid the wet-floor sign."}
+{"rating_id": "713d1418bdbb", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "Correct chair and a forward-then-right route, but the wet-floor sign is never mentioned."}
+{"rating_id": "7157c3e84eea", "destination": "yes", "route": "no", "obstacles": "yes", "reason": "Correctly places the sign left of the chair and warns, but 'turn around' faces the user backwards."}
+{"rating_id": "77c4380e1913", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "Correct chair right of the table, but it falsely states there are no obstacles in the way."}
+{"rating_id": "7a4cacb5a17c", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Only reorients the user with no forward travel to the ~4 m chair, and no sign warning."}
+{"rating_id": "7e6154af3ff2", "destination": "yes", "route": "yes", "obstacles": "yes", "reason": "Correct chair right of the table and the only output to warn about the wet paper under the sign."}
+{"rating_id": "870a7c0ef77d", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "Gets the chair and heading right, but telling the user to step over the sign walks them into the wet area."}
+{"rating_id": "8ed08abe1803", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "Turning right toward the black chair is roughly correct, but the wet-floor sign is ignored."}
+{"rating_id": "91a1df952170", "destination": "no", "route": "no", "obstacles": "no", "reason": "Denies any vacant seat when a vacant black chair is plainly present."}
+{"rating_id": "9239080c0349", "destination": "yes", "route": "yes", "obstacles": "yes", "reason": "Correct ahead-right bearing to the chair with an explicit instruction to steer clear of the wet-floor sign."}
+{"rating_id": "96bc9cea00a3", "destination": "no", "route": "no", "obstacles": "yes", "reason": "Warns about the caution sign but never identifies the chair and turns the user left, away from it."}
+{"rating_id": "9a7293405969", "destination": "yes", "route": "yes", "obstacles": "yes", "reason": "Straight to the table edge with the seat on the right matches the layout, and the wet-floor sign is flagged."}
+{"rating_id": "9aefaf488e01", "destination": "no", "route": "no", "obstacles": "no", "reason": "Places the seat behind the chalkboard, which is impossible, and instructs stepping on the wet-floor sign."}
+{"rating_id": "a71b05711881", "destination": "yes", "route": "no", "obstacles": "yes", "reason": "Warns about the sign, but 'turn left' and '3 feet' are both wrong for a chair ~4 m ahead-right."}
+{"rating_id": "aa52165d9f1e", "destination": "yes", "route": "no", "obstacles": "yes", "reason": "Routes past the wet-floor sign but then turns left, while the chair lies to the right of the sign."}
+{"rating_id": "ab033ee2e35d", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "Turning right to the chair beside the table works, but it treats the sign as a marker on the wrong side with no warning."}
+{"rating_id": "ac02b5b9aaec", "destination": "yes", "route": "no", "obstacles": "yes", "reason": "Good slip warning about the sign, but 'walk towards the black chair' gives no direction or distance."}
+{"rating_id": "ae11f93097a7", "destination": "yes", "route": "no", "obstacles": "no", "reason": "1 m forward is far short, the text contradicts itself, and it dismisses the sign as not preventing walking."}
+{"rating_id": "ae9aa8f6e877", "destination": "no", "route": "no", "obstacles": "yes", "reason": "Warns about the wet floor but invents a cabinet, names no chair, and turns the user left."}
+{"rating_id": "aea96db5fe32", "destination": "yes", "route": "yes", "obstacles": "yes", "reason": "Correct unoccupied chair toward the right of the table and a caution about the wet-floor sign in the foreground."}
+{"rating_id": "af8bbacac686", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Claims the user stands at the chalkboard, gives a nonsensical 45-50 cm distance, and omits the sign."}
+{"rating_id": "afae01b12732", "destination": "no", "route": "no", "obstacles": "no", "reason": "Denies any empty seat when a vacant black chair is clearly visible."}
+{"rating_id": "b043ca6a458c", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Misplaces the user beside the table, claims the chair is near no furniture, and never mentions the sign."}
+{"rating_id": "b694bec87255", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "Heading toward the chair by the table is workable, but it falsely claims no obstacle on the path."}
+{"rating_id": "b69e69e63e12", "destination": "no", "route": "no", "obstacles": "yes", "reason": "Warns about the wet-floor sign but only says to find a seating area, never identifying the chair or a usable route."}
+{"rating_id": "bb21dafb3489", "destination": "yes", "route": "no", "obstacles": "yes", "reason": "Warns about the caution sign, but 'turn around' points the user away from the chair."}
+{"rating_id": "bb324164d545", "destination": "yes", "route": "yes", "obstacles": "yes", "reason": "Correct vacant chair toward the right of the room with a warning to avoid the slippery area by the sign."}
+{"rating_id": "bb83cec3e8ca", "destination": "yes", "route": "yes", "obstacles": "yes", "reason": "Forward to the desk with the chair on its right side, plus a warning to avoid the wet-floor sign."}
+{"rating_id": "c10a541cbb18", "destination": "yes", "route": "no", "obstacles": "yes", "reason": "Warns about the sign in front of the chair, but 'turn left' is the wrong way to an ahead-right chair."}
+{"rating_id": "c39a677d8483", "destination": "yes", "route": "no", "obstacles": "yes", "reason": "Warns about the sign, but 'turn around' faces the user away from the desk and chair."}
+{"rating_id": "c470facf08a7", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "Correct chair on the right, but it wrongly asserts the seat is near no obstacles."}
+{"rating_id": "c9453a4141dc", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Describes the chair's position but gives no travel instructions and no mention of the sign."}
+{"rating_id": "cc87b198d5ae", "destination": "yes", "route": "yes", "obstacles": "yes", "reason": "Forward then right to the chair, with an instruction to walk around the wet-floor sign."}
+{"rating_id": "d040d5cd87c5", "destination": "yes", "route": "no", "obstacles": "yes", "reason": "Warns about the sign, but 'a few steps toward the right' alone will not cover the ~4 m ahead-right distance."}
+{"rating_id": "d33f705315e9", "destination": "yes", "route": "yes", "obstacles": "yes", "reason": "Correct chair beside the table, a direct forward approach, and an explicit warning about the caution sign."}
+{"rating_id": "d3e5534398f1", "destination": "yes", "route": "yes", "obstacles": "yes", "reason": "Correct chair right of the table, route along the table edge to it, and a slip warning about the sign."}
+{"rating_id": "da6c45427b26", "destination": "no", "route": "no", "obstacles": "yes", "reason": "Warns about the sign but never identifies the chair or gives any usable directions."}
+{"rating_id": "ddcd9d3f943f", "destination": "yes", "route": "yes", "obstacles": "yes", "reason": "Forward and slightly right reaches the chair, with an instruction to avoid the wet floor and its sign."}
+{"rating_id": "de3167e8bbbd", "destination": "yes", "route": "yes", "obstacles": "yes", "reason": "Proceeding toward the desk with the chair on the right is correct, and the wet-floor sign is flagged."}
+{"rating_id": "def1e98b7a15", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Rambling and self-contradictory on which side the table is, and it declares the floor safe with no obstacle."}
+{"rating_id": "df8dcf2395ba", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "Forward to the chair at the end of the table is right, but it falsely claims no obstacle on the path."}
+{"rating_id": "e2a3bd191b92", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Degenerate looping directions, invents a door behind the chair, and states there is no obstacle."}
+{"rating_id": "e4cfac65cadd", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "Slight right turn and forward to the chair by the table works, but the wet-floor sign is ignored."}
+{"rating_id": "e76f2d298fde", "destination": "no", "route": "no", "obstacles": "no", "reason": "Invents a doorway to go through and turns the user back; no real destination, route, or obstacle."}
+{"rating_id": "ea0de3045c1c", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Degenerate first-person rambling with contradictory distances, and it calls the floor dry and clean."}
+{"rating_id": "edd82122b34a", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Invents a second desk and further chairs, so the directions would not land the user at the real chair, and no sign warning."}
+{"rating_id": "efa86208370a", "destination": "yes", "route": "yes", "obstacles": "yes", "reason": "Straight then right to the corner chair is correct, with a warning to avoid the caution sign."}
+{"rating_id": "f1c6f60a0b5e", "destination": "yes", "route": "no", "obstacles": "no", "reason": "'Turn around' faces the user away, and it claims nothing is in line of sight."}
+{"rating_id": "f240fd8b77cc", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Sends the user forward-left instead of right and tells them to step over the wet-floor sign."}
+{"rating_id": "f6ff431270e6", "destination": "no", "route": "no", "obstacles": "no", "reason": "Falsely reports the chair as occupied and no vacant seat, then tells the user to sit anyway."}
+{"rating_id": "f92752d0f23d", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "Correct chair on the right-hand side of the desk, but it wrongly claims the floor is dry and obstacle-free."}
+{"rating_id": "f949f1063dd8", "destination": "yes", "route": "no", "obstacles": "yes", "reason": "Warns clearly about the sign, but the route flips between right and left and rambles without a coherent path."}
+{"rating_id": "fcc4c009d063", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "Forward to the table then right to the chair at its right side is correct, but the wet-floor sign is unmentioned."}

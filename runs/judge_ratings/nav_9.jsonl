@@ -1,0 +1,90 @@
+{"rating_id": "02b0fd97eaac", "destination": "no", "route": "no", "obstacles": "no", "reason": "Calls the backpack chair vacant and gives a 1 m distance to a seat about 3 m away."}
+{"rating_id": "0384ff4571dc", "destination": "no", "route": "no", "obstacles": "no", "reason": "No identification of which chair is free, and 'go left then right' would not reach it or mention the backpack."}
+{"rating_id": "1070d6a11298", "destination": "yes", "route": "no", "obstacles": "yes", "reason": "Correctly picks the chair without the backpack and warns about it, but gives no direction or distance."}
+{"rating_id": "11741e8a2ed0", "destination": "no", "route": "no", "obstacles": "no", "reason": "Garbled placement ('under white chairs'), no usable route, and claims no obstructions."}
+{"rating_id": "134406cb9a05", "destination": "no", "route": "no", "obstacles": "no", "reason": "Puts the free seat on the left side and says the path is clear, missing the near backpack chair."}
+{"rating_id": "182e1fcff480", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Identifies the chair without the backpack but gives no route and no obstacle warning."}
+{"rating_id": "1d87a8712937", "destination": "yes", "route": "yes", "obstacles": "yes", "reason": "Right turn to the remaining chair is correct and it warns about the backpack."}
+{"rating_id": "2398c8cde5aa", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Right of the table is the correct seat, but the directions are circular and no obstacle is mentioned."}
+{"rating_id": "28eeb558c1be", "destination": "no", "route": "no", "obstacles": "yes", "reason": "Tells the user to move a backpack off the target seat, so it sends them to a seat it calls occupied, though it does warn about the left chair."}
+{"rating_id": "2ab4bf35c428", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "Forward then right reaches the vacant chair, but no warning about the near chair and backpack."}
+{"rating_id": "2af8cb5e2f77", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "Straight then right to the chair at the right of the table is correct, but the backpack is only a landmark, not a warning."}
+{"rating_id": "2f4531778578", "destination": "no", "route": "no", "obstacles": "no", "reason": "Says the recommended seat has a blue backpack on it yet is clear, misstates the distance, and denies any hazard."}
+{"rating_id": "2f6bb7cdc376", "destination": "no", "route": "no", "obstacles": "no", "reason": "Claims both chairs are unoccupied, rambles and truncates, and gives contradictory distances."}
+{"rating_id": "30ca1b748849", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "Correct seat right of the table with a usable heading, but no mention of the backpack chair."}
+{"rating_id": "33cf508bb8d5", "destination": "yes", "route": "yes", "obstacles": "yes", "reason": "Forward and slightly right to the seat past the blue-bag chair, with the bag flagged."}
+{"rating_id": "34db3efe7d81", "destination": "no", "route": "no", "obstacles": "no", "reason": "Wrongly claims there is no vacant seat at all."}
+{"rating_id": "36c1575e008e", "destination": "yes", "route": "yes", "obstacles": "yes", "reason": "Forward then right to the chair right of the table, with a warning about the backpack on the other chair."}
+{"rating_id": "3855a8d6e8d4", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Ends on the right-hand chair but the reasoning contradicts itself, the 1.85 m distance is short, and it concludes there is no obstacle."}
+{"rating_id": "3c338b71dd7f", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "Straight then slightly right to the chair on the right is correct, but no obstacle is mentioned."}
+{"rating_id": "3eedb95ffcd0", "destination": "no", "route": "no", "obstacles": "no", "reason": "Circular 'face the empty chair' gives no identification or route and denies any obstacle."}
+{"rating_id": "4251a7e2e9d9", "destination": "yes", "route": "no", "obstacles": "yes", "reason": "Sends the user to the chair other than the backpack one and warns about the backpack, but gives no direction."}
+{"rating_id": "444c7a3623eb", "destination": "no", "route": "no", "obstacles": "no", "reason": "Turn left is wrong and the first chair seen is the occupied one; no obstacle warning."}
+{"rating_id": "472851cb44df", "destination": "yes", "route": "yes", "obstacles": "yes", "reason": "Turn right to the remaining chair with a warning about the backpack."}
+{"rating_id": "483fb13ae65d", "destination": "no", "route": "no", "obstacles": "yes", "reason": "Sends the user to the left chair, which is the one with the bag, though it does flag the bag."}
+{"rating_id": "48705802ac2e", "destination": "no", "route": "no", "obstacles": "no", "reason": "No seat identified, no route, and it asserts the path is free of items."}
+{"rating_id": "49bcc5752632", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "Correct seat at the right end of the table, but it invents a metal pole and step ladder that are not in the photograph."}
+{"rating_id": "4b9de63e4f1a", "destination": "no", "route": "no", "obstacles": "no", "reason": "'Turn back' is wrong and it sends the user to the chair with the backpack on it."}
+{"rating_id": "4dba958a0086", "destination": "yes", "route": "yes", "obstacles": "yes", "reason": "Turn right, past the table to the next chair, with the backpack flagged."}
+{"rating_id": "50231aade92a", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Names the empty chair beside the table but the route is 'continue to the end of the room' with only a generic obstacle caution."}
+{"rating_id": "507a09247a19", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "Straight to the table then right reaches the free chair, but the backpack is never mentioned."}
+{"rating_id": "50873c27a67b", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Picks the chair with no items but gives no directions and invents a slippery uneven floor."}
+{"rating_id": "57609a2fc937", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "Forward and to the right is correct, but it denies that any chair has items on it."}
+{"rating_id": "5a8be2f101c2", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Locates the free chair right of the backpack chair, but 'move forward to the left, away from the table' would not get there and no warning is given."}
+{"rating_id": "60925f70b75f", "destination": "no", "route": "no", "obstacles": "no", "reason": "Degenerate repetition that places the backpack on the seat it recommends while calling the path clear."}
+{"rating_id": "6097c8158d7f", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "The chair furthest from the backpack is the right one and slightly right then forward works, but there is no warning."}
+{"rating_id": "63911558648a", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Correctly picks the chair without a bag but sends the user left and out of frame, with no warning."}
+{"rating_id": "63ba22126c6e", "destination": "no", "route": "no", "obstacles": "no", "reason": "Claims both chairs are free and recommends the left one, which holds the backpack."}
+{"rating_id": "68e386ba12ae", "destination": "no", "route": "no", "obstacles": "no", "reason": "Wrongly says no seat is available."}
+{"rating_id": "6dc62c588c3d", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "Clockwise and slightly forward reaches the empty chair, but no obstacle is mentioned."}
+{"rating_id": "72f3ffc2ff3d", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Names the empty chair at the table but gives no directions and claims there are no obstacles."}
+{"rating_id": "7469c50944cf", "destination": "yes", "route": "yes", "obstacles": "yes", "reason": "Correct chair right of the table, a workable heading, and a clear warning about the foreground backpack."}
+{"rating_id": "76d7303e097f", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "Forward with the chair on the right is correct, but the backpack is never mentioned."}
+{"rating_id": "7937fef167c3", "destination": "no", "route": "no", "obstacles": "no", "reason": "Garbled, sends the user to the chair with the backpack and says there are no obstacles."}
+{"rating_id": "7a8a86056cfa", "destination": "no", "route": "no", "obstacles": "no", "reason": "Says both chairs are available and to take the closest, which is the occupied one."}
+{"rating_id": "7b7e8bc9e674", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Correct chair right of the table but only 'look at it' with no route and no obstacle warning."}
+{"rating_id": "7c5a0316b60b", "destination": "no", "route": "no", "obstacles": "no", "reason": "Contradictory facing instructions, no identification of which chair is free, and no warning."}
+{"rating_id": "7cfad642fa2f", "destination": "yes", "route": "yes", "obstacles": "yes", "reason": "Straight then right to the corner chair, with the backpack and table flagged."}
+{"rating_id": "7e6d967d95c1", "destination": "no", "route": "no", "obstacles": "yes", "reason": "Sends the user to a chair it says has a backpack on it and the final position is unclear, though the backpack warning is real."}
+{"rating_id": "809d6a45a0f4", "destination": "yes", "route": "yes", "obstacles": "yes", "reason": "Correct chair on the right next to the table, with the other chair identified as taken because of the backpack."}
+{"rating_id": "82834080a63c", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "Forward then slightly right to the chair by the table is correct, but the backpack is only a landmark."}
+{"rating_id": "8ced730db39f", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Right seat at the end of the table is correct, but 'face the wall and walk directly to the right' sidesteps rather than approaching, and there is no warning."}
+{"rating_id": "8d0a1e9bc4a5", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "Correct seat right of the table with a usable route, but no obstacle warning."}
+{"rating_id": "93ee1a256b09", "destination": "no", "route": "no", "obstacles": "no", "reason": "Nonsensical instruction to move the chairs and head to the left wall, inventing cloths as hazards."}
+{"rating_id": "994bd9876dfe", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Correctly picks the chair without the backpack but sends the user forward-left, the wrong side."}
+{"rating_id": "9ababc0a33ac", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Right seat identified as the one without bags, but turning left is the wrong direction and no warning is given."}
+{"rating_id": "9ad3cb3b9d6f", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Identifies the other chair as empty but walking straight forward runs into the near chair, and it claims no obstacles."}
+{"rating_id": "9ea726ccdef4", "destination": "no", "route": "no", "obstacles": "no", "reason": "Calls the near chair closest to the user vacant, misses the backpack, and invents a floor switch."}
+{"rating_id": "9ef734de7449", "destination": "no", "route": "no", "obstacles": "no", "reason": "Says a backpack is on the recommended chair yet calls it vacant and clear, and gives 1 m for a 3 m walk."}
+{"rating_id": "9f9afab118b8", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Picks the chair free of items but places it behind the table with no workable route or warning."}
+{"rating_id": "a137845605af", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Correct chair without the backpack, but 'stand in front of the table and approach' gives no usable direction and no warning."}
+{"rating_id": "a2a8d8995990", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Names the vacant chair next to the table but sends the user left instead of right, with no warning."}
+{"rating_id": "a97a7b45d567", "destination": "yes", "route": "yes", "obstacles": "yes", "reason": "Forward and slightly right past the backpack chair to the next seat, with the backpack flagged."}
+{"rating_id": "b1e9b36b2bd7", "destination": "no", "route": "no", "obstacles": "no", "reason": "No identification of which chair is empty, turn left is wrong, and no obstacle is mentioned."}
+{"rating_id": "b7adc3ee6a92", "destination": "no", "route": "no", "obstacles": "no", "reason": "Tells the user to sit on the chair holding the backpack."}
+{"rating_id": "b87f204be00a", "destination": "yes", "route": "yes", "obstacles": "yes", "reason": "Turn right to the remaining white chair with a warning about the backpack."}
+{"rating_id": "c05a6c88a638", "destination": "no", "route": "no", "obstacles": "no", "reason": "Vague 'next to the desk', no route, and it puts the backpack on the table."}
+{"rating_id": "c8a48b3a4d9d", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "Rambling but lands on the chair to the right of the table with a usable heading; no obstacle warning."}
+{"rating_id": "ccc77125539a", "destination": "no", "route": "no", "obstacles": "no", "reason": "Puts the empty chair on the left side of the table and sends the user left; no warning."}
+{"rating_id": "cdc646922e1b", "destination": "no", "route": "no", "obstacles": "yes", "reason": "Directs the user to the chair it says the backpack is on, making the instruction self-contradictory, though the bag warning is genuine."}
+{"rating_id": "d24e9c21ab44", "destination": "yes", "route": "no", "obstacles": "yes", "reason": "Correct seat right of the table and a good backpack warning, but 'face the table and walk a little forward' heads into the near chair."}
+{"rating_id": "d317714537e8", "destination": "yes", "route": "yes", "obstacles": "yes", "reason": "Forward and slightly right reaches the free chair, with the backpack on the near chair flagged."}
+{"rating_id": "d677e56439c2", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "Rambling and truncated but the target and the walk to the right of the table are right; it then states there are no obstacles."}
+{"rating_id": "d9390d873077", "destination": "yes", "route": "yes", "obstacles": "yes", "reason": "Move right, avoid the backpack chair, end at the empty chair - correct on all three."}
+{"rating_id": "da8770f7fc3a", "destination": "no", "route": "no", "obstacles": "no", "reason": "Hallucinated name tags, windows and a door; no usable seat, route or warning."}
+{"rating_id": "db1c8a823523", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Correctly picks the chair with no backpack but sends the user left, and only mentions the backpack as a landmark."}
+{"rating_id": "dbed09f295b9", "destination": "no", "route": "no", "obstacles": "no", "reason": "Turns the user left to the chair with the backpack and calls that seat vacant."}
+{"rating_id": "dc7856b1a523", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Right seat by the wall is correct, but 'turn left' then 'slightly to your right' is contradictory and it claims no obstacles."}
+{"rating_id": "dfaa4d719bac", "destination": "no", "route": "no", "obstacles": "no", "reason": "Self-contradictory - a backpack on the seat yet the seat is vacant and the path clear - and truncated."}
+{"rating_id": "e1cf13951ad0", "destination": "no", "route": "no", "obstacles": "no", "reason": "Invents a red floor mark, does not distinguish the two chairs, and ignores the backpack."}
+{"rating_id": "ebcf8835ec46", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "Face right and 2 m forward is close enough to reach the vacant chair, but it says there are no obstacles."}
+{"rating_id": "f12b673da71c", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "Forward then right to the chair at the right of the table is correct, but the backpack chair is never mentioned."}
+{"rating_id": "f3464711cad9", "destination": "no", "route": "no", "obstacles": "no", "reason": "Places the seat in the centre behind the table, which is the backpack chair, and two steps is far too short."}
+{"rating_id": "f5bfcc0bbe35", "destination": "no", "route": "yes", "obstacles": "yes", "reason": "The walk right and straight to the chair by the table works and the backpack is flagged, but it states the backpack is on the recommended seat."}
+{"rating_id": "f8fa34998540", "destination": "no", "route": "no", "obstacles": "no", "reason": "Two steps to the left chair leads to the one holding the backpack, with no warning."}
+{"rating_id": "f901d712fe5c", "destination": "yes", "route": "no", "obstacles": "no", "reason": "Right side of the table is the correct seat, but turning left and walking behind the table is impossible and it claims no obstacles."}
+{"rating_id": "fa16b222a063", "destination": "no", "route": "no", "obstacles": "yes", "reason": "Says the backpack is on the recommended chair and tells the user to approach from behind it, a contradictory route, though the bag warning is real."}
+{"rating_id": "fbedc0ec46ac", "destination": "yes", "route": "yes", "obstacles": "yes", "reason": "Straight then right to the chair ahead with the backpack flagged."}
+{"rating_id": "fdeef0babdef", "destination": "yes", "route": "yes", "obstacles": "no", "reason": "Turn right to the chair without a backpack at the end of the table is correct, but the backpack is only used as a label."}
+{"rating_id": "fe8d9c0eaa76", "destination": "no", "route": "yes", "obstacles": "no", "reason": "The forward-and-right heading is right, but it calls the chair in front of the table unoccupied, which is the backpack chair, and warns of nothing."}
+{"rating_id": "fffbb459cc83", "destination": "yes", "route": "yes", "obstacles": "yes", "reason": "Avoid the backpack and go forward to the chair with no items - correct seat, workable route, obstacle flagged."}
