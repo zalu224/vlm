@@ -19,3 +19,14 @@ faults it hit, so the log in `docs/PROGRESS.md` matches a script in the reposito
 `run_remaining_models.sh` fixes both: weights are fetched to completion before the server starts,
 with a 30 min window for the load, and InternVL3-2B runs on the in-process `mlx-direct` backend
 with no server at all.
+
+## A trap worth knowing: `hf download` does not resume
+
+Each attempt writes a **new** `<etag>.<random>.incomplete` and starts from zero. An interrupted
+download therefore leaves a multi-gigabyte orphan that nothing will ever pick up, and the next
+attempt needs the model's full size again. Three interrupted attempts at LLaVA's 4.26 GB left
+5.4 GB of dead partials and took the disk down to 1.9 GB free.
+
+`run_remaining_models.sh` clears stale partials before fetching and again if the fetch fails, so
+the space required is the size of the model rather than a multiple of it. The copy that actually
+produced the InternVL3 run predates this guard; it was added after the behaviour was observed.

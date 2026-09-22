@@ -93,3 +93,15 @@ The same weights generate correctly when loaded and called on one thread, which 
 - **Watch the disk.** 4.8 GB free with 2.8 GB of LLaVA weights still to fetch. It fits, with roughly 2 GB to spare, but there is no room for a second 7B model after this.
 - `nav report` now prints an **incomplete-runs** line naming any model with fewer answers than the protocol calls for, with the shortfall per task. Without it a model part-way through its run shows an accuracy indistinguishable from a finished one; InternVL3-2B at 16 of 800 counting answers was displayed as a flat percentage.
 - Qwen3-VL-2B's extension tier did complete; its common-sense figure is 41 %, not the 36 % reported from a partial file earlier today.
+
+## 2026-09-22 — the disk nearly stopped the run, and why
+
+Free space fell from 16 GB to 1.9 GB while nothing large was being written. The cause is worth recording, because it will bite any rerun on this machine.
+
+**`hf download` does not resume.** Every attempt writes a *new* `<etag>.<random>.incomplete` and starts from zero. An interrupted download leaves a multi-gigabyte orphan that nothing ever picks up. LLaVA's single 4.26 GB weight file had been attempted three times — the original chain's download killed by its own cleanup, one I started, one I ran to test resume behaviour — leaving 5.4 GB of dead partials for a 4.26 GB file. Verified directly: starting a fresh `hf download` with a 3.89 GB partial already present created a third file at 0 bytes rather than continuing.
+
+Recovered 3.8 GB by clearing the uv package cache (regenerable build artifacts; all 27 tests pass afterwards) and 5.4 GB by deleting the orphaned partials, back to 7.9 GB free. `scripts/run_remaining_models.sh` now clears stale partials before fetching and again on failure, so the space needed is the size of the model rather than a multiple of it.
+
+- The machine is also deep in swap (17 GB of 19 GB) with Chrome and the model resident together. Background helper tasks were killed twice under memory pressure; the benchmark chain itself, started with `nohup`, survived both times and kept running at about 5 s per call.
+- **Nothing was lost.** The InternVL3-2B run continued throughout and no collected answers were affected.
+- Disk is the binding constraint for what remains: LLaVA's 4.26 GB is the last download, and there is no room for a second 7 B model after it.
