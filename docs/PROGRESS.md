@@ -105,3 +105,13 @@ Recovered 3.8 GB by clearing the uv package cache (regenerable build artifacts; 
 - The machine is also deep in swap (17 GB of 19 GB) with Chrome and the model resident together. Background helper tasks were killed twice under memory pressure; the benchmark chain itself, started with `nohup`, survived both times and kept running at about 5 s per call.
 - **Nothing was lost.** The InternVL3-2B run continued throughout and no collected answers were affected.
 - Disk is the binding constraint for what remains: LLaVA's 4.26 GB is the last download, and there is no room for a second 7 B model after it.
+
+## 2026-09-22 — bug found in judge-export before it could do harm
+
+Running `nav judge-export` again, to check it would pick up only the new models' outputs, revealed two faults. The selection logic was right — it skipped all 1,170 already-judged outputs — but everything around it was wrong.
+
+- **Judged case files survived the export.** `runs/judge_tasks/nav_*.json` were written once and never removed, so the thirteen files a rater sees still held 1,170 outputs that were already in `judged.jsonl`. Left alone, the next rating pass would have re-rated all of them. Export now deletes stale case files and writes only outstanding work.
+- **The command's count was measured off disk, not off what it exported.** It globbed the directory and summed it, so it announced "1170 unrated outputs" when the true number was zero. It now says plainly when there is nothing to rate.
+- **`index.json` was overwritten with an empty map**, losing the rating_id → model mapping for the rated outputs. It is merged across batches now. The damaged file was rebuilt from `judged.jsonl`, which carries model, qid and repeat, and `rating_id` is a deterministic hash of exactly those three: all 1,170 entries restored and verified against the rating files.
+
+A regression test covers the whole cycle: export, rate, import, export again, then assert no case file remains and the index still knows every rated output's model.

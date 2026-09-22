@@ -62,6 +62,11 @@ def export_tasks(
                 k: r[k] for k in ("model", "task", "qid", "repeat", "image", "prompt", "output")
             }
 
+    # Case files for work that is already judged must not survive: a rater opening the directory
+    # would re-rate outputs that are in judged.jsonl. Remove them, then write the current batch.
+    for stale in out_dir.glob("nav_*.json"):
+        stale.unlink()
+
     for case, outputs in sorted(by_case.items()):
         qid = next(
             i["qid"]
@@ -86,7 +91,17 @@ def export_tasks(
                 indent=1,
             )
         )
-    (out_dir / "index.json").write_text(json.dumps(index, indent=1))
+    # index.json maps rating_id -> model for every batch ever exported, so a rating can be traced
+    # back after the fact. Merge rather than overwrite: a later batch must not erase earlier work.
+    index_path = out_dir / "index.json"
+    merged: dict[str, dict] = {}
+    if index_path.exists():
+        try:
+            merged = json.loads(index_path.read_text())
+        except json.JSONDecodeError:
+            merged = {}
+    merged.update(index)
+    index_path.write_text(json.dumps(merged, indent=1))
     return out_dir
 
 

@@ -103,3 +103,59 @@ def test_import_writes_judged_schema_and_is_incremental(tmp_path):
     judged = import_ratings(tasks, ratings, runs / "judged.jsonl", judge_model="opus-5-in-session")
     rows2 = [json.loads(line) for line in judged.read_text().splitlines()]
     assert len(rows2) == 8 and rows2[:5] == rows
+
+
+def test_export_removes_case_files_for_work_already_judged(tmp_path):
+    """Regression: judged case files used to survive an export, so a rater opening the directory
+    would re-rate outputs already in judged.jsonl, and index.json was overwritten with an empty
+    map. Export must leave only unrated work behind, and must not lose earlier index entries."""
+    import json
+
+    from navbench.judge_local import export_tasks, import_ratings, rating_id
+
+    runs, data = tmp_path / "runs", tmp_path / "data"
+    (runs / "m1").mkdir(parents=True)
+    (data / "images" / "campus").mkdir(parents=True)
+    (data / "images" / "campus" / "scene.jpg").write_bytes(b"x")
+    questions = {
+        "nav_1_q1": {
+            "task": "navigation",
+            "tier": "paper",
+            "image": "campus/scene",
+            "gold": "the far chair is vacant",
+            "case": 1,
+        }
+    }
+    rows = [
+        {"model": "m1", "task": "navigation", "qid": "nav_1_q1", "repeat": i,
+         "prompt": "help", "output": f"go left {i}", "image": "campus/scene"}
+        for i in range(3)
+    ]
+    (runs / "m1" / "navigation.jsonl").write_text(
+        "".join(json.dumps(r) + "\n" for r in rows)
+    )
+    tasks = tmp_path / "tasks"
+    export_tasks(runs, questions, data, tasks)
+    assert (tasks / "nav_1.json").exists()
+    assert len(json.loads((tasks / "index.json").read_text())) == 3
+
+    # Rate every output, import, then export again.
+    ratings = tmp_path / "ratings"
+    ratings.mkdir()
+    (ratings / "nav_1.jsonl").write_text(
+        "".join(
+            json.dumps(
+                {"rating_id": rating_id("m1", "nav_1_q1", i), "destination": "yes",
+                 "route": "no", "obstacles": "yes", "reason": "r"}
+            )
+            + "\n"
+            for i in range(3)
+        )
+    )
+    import_ratings(tasks, ratings, runs / "judged.jsonl", judge_model="test")
+    export_tasks(runs, questions, data, tasks)
+
+    # Nothing is left to rate, so no case file may remain.
+    assert sorted(tasks.glob("nav_*.json")) == []
+    # ...but the index still knows which model produced each rated output.
+    assert len(json.loads((tasks / "index.json").read_text())) == 3

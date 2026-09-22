@@ -121,6 +121,9 @@ def cmd_judge_export(a) -> int:
     out = export_tasks(Path(a.runs), load_questions(a.questions), Path(a.data), Path(a.tasks))
     cases = sorted(out.glob("nav_*.json"))
     n = sum(len(json.loads(c.read_text())["outputs"]) for c in cases)
+    if not cases:
+        print(f"nothing to rate: every navigation output is already in {a.runs}/judged.jsonl")
+        return 0
     print(f"{n} unrated outputs across {len(cases)} cases -> {out}")
     print(f"Rate each case, write <case>.jsonl into {a.ratings}, then: nav judge-import")
     return 0
