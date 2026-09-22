@@ -79,3 +79,17 @@ All 13 cases rated, 90 outputs each (3 models × 3 queries × 10 executions). Ev
 
 ### Needs Aaron
 - [ ] Fill the `destination`, `route`, `obstacles` columns in `reports/spotcheck.csv` (yes/no), then `nav agreement` reports Cohen's κ against the judge, beside the paper's κ = 0.83.
+
+## 2026-09-22 — the chain's last two models both failed; both now fixed
+
+The overnight chain reported "ALL DONE" having produced nothing for either remaining model. Two unrelated faults, neither of which the script noticed as fatal.
+
+**InternVL3-2B: the MLX server cannot serve it at all.** Every request returned 500 with `RuntimeError: There is no Stream(gpu, 2) in current thread.`, raised from `mx.async_eval` on the prompt cache in `mlx_vlm/generate/ar.py`. The server generates inside `asyncio.to_thread`, so the cache ends up holding a GPU stream belonging to another thread. The Qwen models survive this; InternVL3 does not, on the first call. `--max-num-seqs 1` does not help, so it is not continuous batching.
+
+The same weights generate correctly when loaded and called on one thread, which is the fix: a new `mlx-direct` backend (`navbench/backends/mlx_direct.py`) loads the model in-process and generates without any HTTP server. Same constructor arguments and same `Reply` as the server backend, so the runner is untouched; `configs/models.yaml` selects it for `internvl3-2b` alone, with the reason recorded next to the entry. Verified end to end: 6.0 s per call, plausible answers. One real difference from the server path is that `image_max_side` is not applied — mlx_vlm resizes with the model's own processor — and that is stated rather than hidden.
+
+**LLaVA-v1.6-Mistral-7B: the readiness window was shorter than the download.** The server was still fetching 4.26 GB of weights when the 600 s readiness loop gave up; the chain then declared "server failed to start", and its final `pkill` killed the download mid-file. `logs/run_remaining_models.sh` fetches the weights to completion first (`hf download`, a no-op once cached) and only then starts the server, with a 30 min window for the load itself.
+
+- **Watch the disk.** 4.8 GB free with 2.8 GB of LLaVA weights still to fetch. It fits, with roughly 2 GB to spare, but there is no room for a second 7B model after this.
+- `nav report` now prints an **incomplete-runs** line naming any model with fewer answers than the protocol calls for, with the shortfall per task. Without it a model part-way through its run shows an accuracy indistinguishable from a finished one; InternVL3-2B at 16 of 800 counting answers was displayed as a flat percentage.
+- Qwen3-VL-2B's extension tier did complete; its common-sense figure is 41 %, not the 36 % reported from a partial file earlier today.

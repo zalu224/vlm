@@ -1,4 +1,95 @@
 {
+ "internvl3-2b": {
+  "by_qid": {
+   "count_1": {
+    "task": "counting",
+    "scene": "1 chairs",
+    "answer": 1,
+    "n": 4,
+    "accuracy": 1.0,
+    "parse_fail": 0,
+    "mean": 1.0,
+    "variance": 0
+   },
+   "count_2": {
+    "task": "counting",
+    "scene": "2 chairs",
+    "answer": 2,
+    "n": 1,
+    "accuracy": 1.0,
+    "parse_fail": 0,
+    "mean": 2.0,
+    "variance": 0.0
+   },
+   "count_3": {
+    "task": "counting",
+    "scene": "3 chairs",
+    "answer": 3,
+    "n": 1,
+    "accuracy": 1.0,
+    "parse_fail": 0,
+    "mean": 3.0,
+    "variance": 0.0
+   },
+   "count_3_2": {
+    "task": "counting",
+    "scene": "3 chairs",
+    "answer": 3,
+    "n": 1,
+    "accuracy": 0.0,
+    "parse_fail": 0,
+    "mean": 5.0,
+    "variance": 0.0
+   },
+   "count_4": {
+    "task": "counting",
+    "scene": "4 chairs",
+    "answer": 4,
+    "n": 1,
+    "accuracy": 0.0,
+    "parse_fail": 0,
+    "mean": 6.0,
+    "variance": 0.0
+   },
+   "count_4_2": {
+    "task": "counting",
+    "scene": "4 chairs",
+    "answer": 4,
+    "n": 1,
+    "accuracy": 1.0,
+    "parse_fail": 0,
+    "mean": 4.0,
+    "variance": 0.0
+   },
+   "count_5": {
+    "task": "counting",
+    "scene": "5 chairs",
+    "answer": 5,
+    "n": 1,
+    "accuracy": 0.0,
+    "parse_fail": 0,
+    "mean": 6.0,
+    "variance": 0.0
+   },
+   "count_6": {
+    "task": "counting",
+    "scene": "6 chairs",
+    "answer": 6,
+    "n": 1,
+    "accuracy": 0.0,
+    "parse_fail": 0,
+    "mean": 8.0,
+    "variance": 0.0
+   }
+  },
+  "by_task": {
+   "counting": {
+    "n": 11,
+    "accuracy": 0.636,
+    "questions": 8
+   }
+  }
+ },
  "qwen2.5-vl-3b": {
   "by_qid": {
    "count_1": {
@@ -1061,8 +1152,72 @@
     "task": "commonsense",
     "scene": "dim light: two people on the two chairs",
     "answer": "no",
-    "n": 8,
+    "n": 20,
     "accuracy": 0.0,
+    "parse_fail": 0
+   },
+   "ext_vacant_9": {
+    "task": "commonsense",
+    "scene": "dim light: person on the white chair; blue chair empty",
+    "answer": "yes",
+    "n": 20,
+    "accuracy": 1.0,
+    "parse_fail": 0
+   },
+   "ext_vacant_10": {
+    "task": "commonsense",
+    "scene": "two empty couches",
+    "answer": "yes",
+    "n": 20,
+    "accuracy": 0.4,
+    "parse_fail": 0
+   },
+   "ext_vacant_11": {
+    "task": "commonsense",
+    "scene": "empty couches and a stool",
+    "answer": "yes",
+    "n": 20,
+    "accuracy": 0.9,
+    "parse_fail": 0
+   },
+   "ext_vacant_12": {
+    "task": "commonsense",
+    "scene": "coat on the stool; couches empty",
+    "answer": "yes",
+    "n": 20,
+    "accuracy": 0.75,
+    "parse_fail": 0
+   },
+   "ext_vacant_13": {
+    "task": "commonsense",
+    "scene": "person on the orange couch; beige couch empty",
+    "answer": "yes",
+    "n": 20,
+    "accuracy": 0.6,
+    "parse_fail": 0
+   },
+   "ext_vacant_14": {
+    "task": "commonsense",
+    "scene": "empty bench in a hallway",
+    "answer": "yes",
+    "n": 20,
+    "accuracy": 1.0,
+    "parse_fail": 0
+   },
+   "ext_vacant_15": {
+    "task": "commonsense",
+    "scene": "empty bench in a hallway",
+    "answer": "yes",
+    "n": 20,
+    "accuracy": 1.0,
+    "parse_fail": 0
+   },
+   "ext_vacant_16": {
+    "task": "commonsense",
+    "scene": "two empty benches",
+    "answer": "yes",
+    "n": 20,
+    "accuracy": 1.0,
     "parse_fail": 0
    }
   },
@@ -1078,9 +1233,9 @@
     "questions": 8
    },
    "commonsense": {
-    "n": 648,
-    "accuracy": 0.316,
-    "questions": 13
+    "n": 820,
+    "accuracy": 0.412,
+    "questions": 21
    }
   }
  }

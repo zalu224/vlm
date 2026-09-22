@@ -6,7 +6,10 @@ models:
   qwen2.5-vl-7b:   {backend: mlx, served: mlx-community/Qwen2.5-VL-7B-Instruct-4bit, status: local, group: ours}
   qwen2.5-vl-3b:   {backend: mlx, served: mlx-community/Qwen2.5-VL-3B-Instruct-4bit, status: local, group: ours}
   qwen3-vl-2b:     {backend: mlx, served: mlx-community/Qwen3-VL-2B-Instruct-4bit, status: local, group: ours}
-  internvl3-2b:    {backend: mlx, served: mlx-community/InternVL3-2B-4bit, status: local, group: ours}
+  # mlx_vlm.server cannot serve this one: every request dies with "There is no Stream(gpu, 2) in
+  # current thread" from the prompt cache, because the server generates on a pool thread. The same
+  # weights are fine loaded in-process, so this model uses the mlx-direct backend.
+  internvl3-2b:    {backend: mlx-direct, served: mlx-community/InternVL3-2B-4bit, status: local, group: ours}
   llava-1.6-mistral-7b: {backend: mlx, served: mlx-community/llava-v1.6-mistral-7b-4bit, status: local, group: paper}
   llava-onevision-qwen2-7b: {backend: none, served: llava-hf/llava-onevision-qwen2-7b-ov-hf, status: unavailable, group: paper,
                              note: "no 4-bit MLX build; bf16 (16 GB) does not fit this machine"}

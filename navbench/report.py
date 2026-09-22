@@ -9,6 +9,9 @@ from pathlib import Path
 
 from .score import score_all
 
+# The paper's protocol: 100 queries per scene-prompt pair on the three fundamental tasks.
+REPEATS = 100
+
 # Numbers reported by Li et al. 2026 (arXiv 2603.15624), as recovered from the paper text.
 PAPER = {
     "overall": {  # task -> {model: accuracy}
@@ -104,6 +107,38 @@ def _md(table: dict, ours: list[str], paper: dict | None, first: str) -> list[st
     return lines
 
 
+def _incomplete_note(rows_by_model, questions, ours) -> list[str]:
+    """Flag any model that has fewer answers than the protocol calls for.
+
+    A model part-way through its run would otherwise show an accuracy that reads exactly like a
+    finished one. `REPEATS` is the paper's protocol: 100 queries per scene-prompt pair.
+    """
+    scenes: dict[str, int] = defaultdict(int)
+    for q in questions.values():
+        if q.get("tier", "paper") == "paper" and q["task"] in ("counting", "spatial", "commonsense"):
+            scenes[q["task"]] += 1
+    expected = {t: n * REPEATS for t, n in scenes.items()}
+    short = []
+    for m in ours:
+        got: dict[str, int] = defaultdict(int)
+        for r in rows_by_model[m]:
+            q = questions[r["qid"]]
+            if q.get("tier", "paper") == "paper":
+                got[q["task"]] += 1
+        missing = [
+            f"{t} {got.get(t, 0)}/{e}" for t, e in sorted(expected.items()) if got.get(t, 0) < e
+        ]
+        if missing:
+            short.append(f"**{m}** ({', '.join(missing)})")
+    if not short:
+        return []
+    return [
+        "> Incomplete runs, percentages below are over the answers collected so far, "
+        "not the full protocol: " + "; ".join(short) + ".",
+        "",
+    ]
+
+
 def write_report(runs_root: Path, questions: dict, out: Path) -> Path:
     rows_by_model = _load_runs(runs_root, questions)
     ours = sorted(rows_by_model)
@@ -121,6 +156,7 @@ def write_report(runs_root: Path, questions: dict, out: Path) -> Path:
         for t in ("counting", "spatial", "commonsense")
     }
     L += _md(overall, ours, PAPER["overall"], "task") + [""]
+    L += _incomplete_note(rows_by_model, questions, ours)
     L += (
         ["## Counting, by number of chairs", ""]
         + _md(count_table(rows_by_model, questions), ours, PAPER["per_count"], "chairs")

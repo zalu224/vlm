@@ -87,3 +87,24 @@ def test_write_report_includes_paper_numbers(tmp_path):
     assert (
         "GPT-4o" in text and "| 3 |" in text and "case 1 mirrored" in text and "empty chair" in text
     )
+
+
+def test_report_flags_a_model_that_has_not_finished_its_run(tmp_path):
+    """A part-finished model must not show an accuracy that reads like a completed one."""
+    runs = tmp_path / "runs" / "m"
+    runs.mkdir(parents=True)
+    for task in ("counting", "spatial", "commonsense"):
+        rows = [
+            r
+            for r in _rows()
+            if r["qid"].startswith(
+                {"counting": "count", "spatial": "spatial", "commonsense": "vacant"}[task]
+            )
+        ]
+        (runs / f"{task}.jsonl").write_text(
+            "".join(json.dumps({**r, "model": "m", "task": task}) + "\n" for r in rows)
+        )
+    text = write_report(tmp_path / "runs", _q(), tmp_path / "RESULTS.md").read_text()
+    # The fixture has a handful of rows per task, far short of 100 repeats per scene.
+    assert "Incomplete runs" in text and "**m**" in text
+    assert "counting" in text.split("Incomplete runs")[1].split("\n")[0]

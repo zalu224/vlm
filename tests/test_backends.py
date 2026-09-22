@@ -68,3 +68,58 @@ def test_mlx_backend_builds_openai_style_payload(monkeypatch, tmp_path):
         "data:image/jpeg;base64,"
     )
     assert content[1]["text"] == "Count"
+
+
+def test_mlx_direct_backend_loads_once_and_returns_reply(monkeypatch, tmp_path):
+    """The in-process backend exists because mlx_vlm.server cannot serve InternVL3 (its prompt
+    cache holds a GPU stream from another thread). Faked here: no weights are loaded in tests."""
+    import sys
+    import types
+
+    calls = {"load": 0, "generate": []}
+
+    class FakeResult:
+        text = "  There are 3 chairs.  "
+        prompt_tokens = 11
+        generation_tokens = 7
+
+    fake = types.ModuleType("mlx_vlm")
+
+    def fake_load(model_id):
+        calls["load"] += 1
+        return ("MODEL", "PROCESSOR")
+
+    def fake_generate(model, processor, prompt, **kw):
+        calls["generate"].append((model, processor, prompt, kw))
+        return FakeResult()
+
+    fake.load = fake_load
+    fake.generate = fake_generate
+    prompt_utils = types.ModuleType("mlx_vlm.prompt_utils")
+    prompt_utils.apply_chat_template = lambda proc, cfg, text, num_images=0: f"<{num_images}>{text}"
+    monkeypatch.setitem(sys.modules, "mlx_vlm", fake)
+    monkeypatch.setitem(sys.modules, "mlx_vlm.prompt_utils", prompt_utils)
+
+    from navbench.backends.registry import build_backend
+
+    b = build_backend(
+        {"backend": "mlx-direct", "served": "mlx-community/InternVL3-2B-4bit"},
+        sampling={"temperature": 1.0, "top_p": 1.0, "max_tokens": 400},
+    )
+    assert b.name == "mlx-direct" and b.health() is True
+
+    img = tmp_path / "a.jpg"
+    img.write_bytes(b"not-really-a-jpeg")
+    r1 = b.generate("SYS", "Count the chairs.", img)
+    r2 = b.generate(None, "Count the chairs.", None)
+
+    # Loaded once across both calls, not once per request.
+    assert calls["load"] == 1
+    assert r1.text == "There are 3 chairs." and r1.prompt_tokens == 11
+    # System prompt is folded into the text, and the image is passed as a list of paths.
+    p1, kw1 = calls["generate"][0][2], calls["generate"][0][3]
+    assert p1 == "<1>SYS\n\nCount the chairs." and kw1["image"] == [str(img)]
+    # No image -> no images passed and no image placeholder.
+    p2, kw2 = calls["generate"][1][2], calls["generate"][1][3]
+    assert p2 == "<0>Count the chairs." and kw2["image"] is None
+    assert r2.latency_s >= 0

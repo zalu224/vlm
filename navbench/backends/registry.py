@@ -29,6 +29,10 @@ def build_backend(entry: dict, sampling: dict, server: dict | None = None):
         return MlxServerBackend(
             (server or {}).get("base_url", "http://localhost:8080/v1"), entry["served"], **common
         )
+    if kind == "mlx-direct":
+        from .mlx_direct import MlxDirectBackend
+
+        return MlxDirectBackend(entry["served"], **common)
     if kind == "openai":
         from .openai_backend import OpenAIBackend
 
