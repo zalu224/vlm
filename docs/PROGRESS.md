@@ -34,3 +34,16 @@ Newest entries at the bottom. Decisions carry a **Decision:** line; things only 
 - Common sense: the empty chair is called vacant 98 % of the time, but a coat laid on the chair still gets "yes" 81 % of the time, a coat hung on it 92 %, and the laptop-plus-backpack scenes about 75 %. The model answers the object question, not the definition: exactly the failure the paper reports for open models, at a higher level.
 - Parse failures: 0 of 2,520. Median latency 5.7 s (counting), 6.9 s (spatial), 6.7 s (common sense), 8.1 s (navigation, 390 outputs awaiting the judge).
 - The chain moved on to Qwen2.5-VL-3B at 08:40.
+
+## 2026-09-22 — Qwen2.5-VL-3B (3 h 05 min)
+
+| task | 3B | 7B |
+|---|---|---|
+| counting | 68 % | 78 % |
+| spatial | 58 % | 94 % |
+| common-sense vacant seat | 49 % | 47 % |
+
+- **The paper's side-bias finding reproduces at 3B.** Case 1 (left chair nearer) 73 %, its mirror (right nearer) 34 %; case 2 (right nearer) 36 %, its mirror (left nearer) 79 %. The 3B answers "left" most of the time whatever the picture; the 7B is within two points across each mirrored pair. This is the reason the paper flipped cases 1 and 2, and the mirrored pairs are what exposes it.
+- Counting degrades on the harder layouts (3 chairs 41 %, 6 chairs 61 %) while 1 and 2 stay above 94 %.
+- Common sense is flat between sizes (49 % vs 47 %): both models say "yes" to an occupied chair; size does not fix the definition problem.
+- Parse failures: 98 of 2,520 for the 3B (mostly answers with no number or no yes/no), 38 for the 7B, all counted as wrong.
