@@ -20,3 +20,17 @@ Newest entries at the bottom. Decisions carry a **Decision:** line; things only 
 ### Needs Aaron
 - [ ] `export ANTHROPIC_API_KEY=...` (judge and Claude runs), `OPENAI_API_KEY`, `GEMINI_API_KEY` for the paper's cloud models. Keys are read from the environment only; nothing is written to the repo.
 - [ ] After the judge runs: rate the blinded spot-check sheet (40 outputs) so judge–human agreement can be reported next to the paper's κ = 0.83.
+
+## 2026-09-22 — first full model: Qwen2.5-VL-7B (5 h 15 min for all tasks)
+
+| task | ours (7B, 4-bit, T=1.0) | GPT-4o (paper) | LLaVA-1.6-Mistral-7B (paper) |
+|---|---|---|---|
+| counting (8 scenes × 100) | 78 % | 94 % | 44 % |
+| spatial (8 cases × 100) | 94 % | 100 % | 62 % |
+| common-sense vacant seat (5 × 100) | 47 % | 80 % | 22 % |
+
+- Counting fails on one scene: the five-chair layout is read as six on 82 % of repeats; 1, 2 → 100 %, 3 → 82 %, 4 → 86 %, 6 → 86 %. The paper's Claude-3.5 and Gemini collapse on the 3-chair scene (0 % and 7 %); ours does not.
+- Spatial: no side bias. Case 1 and its mirror 98 / 99 %, case 2 and its mirror 99 / 97 %. The only weak case is the chair pulled out in front (67 %), where the model sometimes reasons about the far chair.
+- Common sense: the empty chair is called vacant 98 % of the time, but a coat laid on the chair still gets "yes" 81 % of the time, a coat hung on it 92 %, and the laptop-plus-backpack scenes about 75 %. The model answers the object question, not the definition: exactly the failure the paper reports for open models, at a higher level.
+- Parse failures: 0 of 2,520. Median latency 5.7 s (counting), 6.9 s (spatial), 6.7 s (common sense), 8.1 s (navigation, 390 outputs awaiting the judge).
+- The chain moved on to Qwen2.5-VL-3B at 08:40.
