@@ -1,74 +1,13 @@
 name: ci
-
-on:
-  push:
-  pull_request:
-
+on: [push, pull_request]
 jobs:
   test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
-        with:
-          python-version: "3.11"
-      - name: Install
-        run: |
-          python -m pip install --upgrade pip
-          pip install -e "backend[dev]"
-          pip install -r frontend/requirements.txt
-      - name: Lint
-        run: |
-          ruff check backend frontend
-          ruff format --check backend frontend
-      - name: Test (mock backend)
-        run: pytest backend/tests -q
-      - name: Smoke the CLI end to end
-        run: |
-          python - <<'EOF'
-          import numpy as np, pathlib
-          from PIL import Image
-          d = pathlib.Path("data/ci"); d.mkdir(parents=True, exist_ok=True)
-          rng = np.random.default_rng(0)
-          for i in range(4):
-              Image.fromarray(rng.integers(0,255,(120,160,3),dtype=np.uint8)).save(d/f"{i:06d}.jpg")
-          EOF
-          for m in naive cues memory context; do
-            lvnav run --frames data/ci --mode $m --backend mock
-          done
-          lvnav judge --run results/ci_naive --backend mock --cues-from results/ci_context
-          lvnav judge --run results/ci_context --backend mock
-          lvnav report --a results/ci_naive --b results/ci_context
-      - name: Smoke the shelf pipeline
-        run: |
-          python - <<'PYEOF'
-          import numpy as np, pathlib
-          from PIL import Image
-          root = pathlib.Path("data/shelf")
-          (root/"images").mkdir(parents=True, exist_ok=True)
-          names = ["cinnamon", "oats"]
-          for name, col in {"cinnamon": (150,80,40), "oats": (220,200,150)}.items():
-              d = root/"catalog"/name; d.mkdir(parents=True, exist_ok=True)
-              for r in range(2):
-                  Image.new("RGB",(700,700),col).save(d/f"ref{r}.jpg")
-          rng = np.random.default_rng(0)
-          for i in range(4):
-              tgt = names[i % 2]
-              Image.fromarray(rng.integers(0,255,(700,900,3),dtype=np.uint8)).save(root/"images"/f"{tgt}__d1_{i:02d}.jpg")
-          PYEOF
-          lvnav shelf check  --catalog data/shelf/catalog --images data/shelf/images
-          lvnav shelf index  --catalog data/shelf/catalog --backend mock
-          lvnav shelf detect --images  data/shelf/images  --backend mock
-          lvnav shelf trials --from-filename
-          python - <<'PYEOF'
-          import json, pathlib
-          p = pathlib.Path("results/shelf/trials.jsonl")
-          rows = [json.loads(l) for l in p.read_text().splitlines() if l.strip()]
-          for i, r in enumerate(rows):
-              r["gt_box"] = -1 if r["n_boxes"] == 0 else i % r["n_boxes"]
-          p.write_text("\n".join(json.dumps(r) for r in rows) + "\n")
-          PYEOF
-          lvnav shelf search  --backend mock
-          lvnav shelf correct --backend mock --label ci
-          lvnav shelf report
-          lvnav shelf summary
+        with: { python-version: "3.11" }
+      - run: python -m pip install --upgrade pip && pip install -e ".[dev]"
+      - run: ruff check navbench tests && ruff format --check navbench tests
+      - run: pytest -q
+      - run: nav questions --check

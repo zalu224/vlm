@@ -1,6 +1,0 @@
-# Repo-wide lint/format settings (backend/pyproject.toml extends these for the package).
-line-length = 100
-target-version = "py311"
-
-[lint]
-select = ["E", "F", "I", "UP", "B"]

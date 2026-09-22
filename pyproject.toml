@@ -1,0 +1,33 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "navbench"
+version = "0.1.0"
+description = "Replication of the pBLV navigation VLM benchmark (Li et al. 2026) on local and cloud models."
+requires-python = ">=3.11"
+license = { text = "MIT" }
+dependencies = ["numpy>=1.26", "pillow>=10.0", "pyyaml>=6.0", "requests>=2.31", "tqdm>=4.66"]
+
+[project.optional-dependencies]
+cloud = ["anthropic>=1.0", "openai>=1.50", "google-genai>=1.0"]
+dev = ["pytest>=8.0", "ruff>=0.5"]
+
+[project.scripts]
+nav = "navbench.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["navbench*"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+per-file-ignores = { "navbench/prompts.py" = ["E501"], "navbench/judge.py" = ["E501"], "tests/*" = ["E501"] }
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
