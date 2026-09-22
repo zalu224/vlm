@@ -114,6 +114,26 @@ def cmd_judge(a) -> int:
     return 0
 
 
+def cmd_sheet(a) -> int:
+    from .spotcheck import write_sheet
+
+    sheet, key = write_sheet(
+        Path(a.runs) / "judged.jsonl", load_questions(a.questions), a.out, n=a.n, seed=a.seed
+    )
+    print(f"Blinded sheet -> {sheet}\nKey (do not open while rating) -> {key}")
+    return 0
+
+
+def cmd_agreement(a) -> int:
+    from .spotcheck import agreement
+
+    res = agreement(a.sheet, a.key, Path(a.runs) / "judged.jsonl")
+    print("| criterion | n | agreement | kappa |\n|---|---|---|---|")
+    for c, r in res.items():
+        print(f"| {c} | {r['n']} | {r['agreement']} | {r['kappa']} |")
+    return 0
+
+
 def cmd_report(a) -> int:
     from .report import write_report
 
@@ -165,6 +185,19 @@ def main(argv: list[str] | None = None) -> int:
     s.add_argument("--limit", type=int, default=None)
     common(s)
     s.set_defaults(func=cmd_judge)
+
+    s = sub.add_parser("sheet", help="blinded human spot-check sheet from judged.jsonl")
+    s.add_argument("--n", type=int, default=40)
+    s.add_argument("--seed", type=int, default=0)
+    s.add_argument("--out", type=Path, default=Path("reports/spotcheck.csv"))
+    common(s)
+    s.set_defaults(func=cmd_sheet)
+
+    s = sub.add_parser("agreement", help="judge-human agreement and kappa from a rated sheet")
+    s.add_argument("--sheet", type=Path, default=Path("reports/spotcheck.csv"))
+    s.add_argument("--key", type=Path, default=Path("reports/spotcheck_key.csv"))
+    common(s)
+    s.set_defaults(func=cmd_agreement)
 
     s = sub.add_parser("report", help="docs/RESULTS.md from runs and judged outputs")
     s.add_argument("--out", type=Path, default=Path("docs/RESULTS.md"))
